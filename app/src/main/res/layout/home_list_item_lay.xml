@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/containerRL"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/rounder_corner_light_blue">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.4">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/buisnessImageIV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/dummy_bar_image"
+                    app:riv_corner_radius_bottom_left="20dp"
+                    app:riv_corner_radius_top_left="20dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="vertical">
+
+                    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                        android:id="@+id/buisnessRating"
+                        style="@style/Widget.MaterialRatingBar.RatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/czxnm"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:maxHeight="10dp"
+                        android:minHeight="10dp"
+                        android:rating="5"
+                        app:mrb_progressBackgroundTint="@color/text_gray"
+                        app:mrb_progressTint="@color/ratingColor"
+                        app:mrb_secondaryProgressTint="@color/ratingColor" />
+
+                    <TextView
+                        android:id="@+id/buisnessNameTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_regular"
+                        android:singleLine="true"
+                        android:text="Centrico Bar"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/raleway_regular"
+                        android:singleLine="true"
+                        android:text="Occupation"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/white"
+                        android:textSize="10dp"
+                        android:textStyle="normal" />
+
+                    <com.sasank.roundedhorizontalprogress.RoundedHorizontalProgressBar
+                        android:id="@+id/buisnessProgress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:layout_marginTop="5dp"
+                        android:indeterminate="false"
+                        android:maxHeight="12dp"
+                        android:minHeight="12dp"
+                        android:progress="40"
+                        app:backgroundColor="@color/darkblackk"
+                        app:progressColor="@color/color_green" />
+
+                    <TextView
+                        android:id="@+id/buisnessIntensity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/raleway_regular"
+                        android:letterSpacing="2"
+                        android:singleLine="true"
+                        android:text="Roomy"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/color_green"
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

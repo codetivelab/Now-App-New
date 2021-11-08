@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:background="@color/app_background_black"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
+
+            <LinearLayout
+                android:id="@+id/current_Location_dialog"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_green"
+                    android:textSize="12dp"
+                    android:text="246 Bulevar, Miami, Florida"
+                    android:fontFamily="@font/raleway_regular"/>
+
+                <ImageView
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_drop_down_arrow"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.gms.maps.MapView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/locationSelectionMapView">
+            </com.google.android.gms.maps.MapView>
+
+            <RelativeLayout
+                android:id="@+id/topLay"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <RelativeLayout
+                    android:id="@+id/backIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rounder_circle_light_blue">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_centerInParent="true"
+                        android:scaleType="fitXY"
+                        android:rotation="180"
+                        android:src="@drawable/ic_right_arrow_angle_text_gray" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/rounder_circle_light_blue_low"
+                    android:id="@+id/searchLay"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/backIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_marginRight="40dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_centerVertical="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Search location"
+                            android:textSize="12dp"
+                            android:textColor="@color/white"
+                            android:singleLine="true"/>
+
+                        <RelativeLayout
+                            android:id="@+id/btnCancel"
+                            android:layout_marginRight="10dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent">
+                            <ImageView
+                                android:layout_centerInParent="true"
+                                android:id="@+id/searchHistoryIcon"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_baseline_search_24"/>
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:id="@+id/btnNext"
+            android:background="@drawable/login_gradient_button"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:text="Save ad Exit"
+                android:textAllCaps="true"
+                style="@style/TextAppearance"
+                android:fontFamily="@font/raleway_regular"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

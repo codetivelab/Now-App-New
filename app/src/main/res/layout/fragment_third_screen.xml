@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/third_on_boarding_bg"
+        tools:context=".Fragments.GeneralFragments.OnBoardingFragments.ThirdScreen">
+
+        <LinearLayout
+            android:layout_marginBottom="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray"
+                android:text="Share your real-time\nexperience with the \ncommunity"
+                android:textAlignment="center"
+                android:textSize="16dp"
+                android:fontFamily="@font/raleway_regular"/>
+
+            <LinearLayout
+                android:layout_marginBottom="40dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:background="@drawable/rounder_circle_boarding_gray_dot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp">
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/rounder_circle_boarding_gray_dot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp">
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:background="@drawable/rounder_circle_dark_pink"
+                    android:layout_width="35dp"
+                    android:layout_height="8dp">
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/btnBack"
+                    android:background="@drawable/rounder_border_pink"
+                    android:layout_width="150dp"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        style="@style/TextAppearance"
+                        android:text="Back"
+                        android:fontFamily="@font/raleway_bold"
+                        android:textAllCaps="true"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/btnNext"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/login_gradient_button"
+                    android:layout_width="150dp"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        style="@style/TextAppearance"
+                        android:text="Start Now"
+                        android:fontFamily="@font/raleway_bold"
+                        android:textAllCaps="true"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounder_corner_light_blue"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginRight="15dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/buisnessImageIV"
+        android:src="@drawable/dummy_bar_image"
+        android:scaleType="fitXY"
+        app:riv_corner_radius="20dp"/>
+
+    <LinearLayout
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:layout_gravity="center"
+            android:layout_below="@+id/czxnm"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="10dp"
+            android:maxHeight="10dp"
+            android:id="@+id/buisnessRating"
+            android:layout_marginTop="5dp"
+            android:rating="5"
+            app:mrb_progressBackgroundTint="@color/text_gray"
+            app:mrb_progressTint="@color/ratingColor"
+            app:mrb_secondaryProgressTint="@color/ratingColor"
+            style="@style/Widget.MaterialRatingBar.RatingBar"/>
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Centrico Bar"
+            android:textColor="@color/white"
+            android:id="@+id/buisnessNameTV"
+            android:textSize="14dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:fontFamily="@font/raleway_regular"
+            android:singleLine="true"/>
+
+        <com.sasank.roundedhorizontalprogress.RoundedHorizontalProgressBar
+            android:layout_marginTop="8dp"
+            android:id="@+id/buisnessProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:indeterminate="false"
+            android:maxHeight="12dp"
+            android:minHeight="12dp"
+            android:progress="40"
+            app:backgroundColor="@color/darkblackk"
+            app:progressColor="@color/color_green"/>
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roomy"
+            android:id="@+id/buisnessIntensity"
+            android:letterSpacing="1"
+            android:textColor="@color/color_green"
+            android:textSize="10dp"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:fontFamily="@font/raleway_regular"
+            android:singleLine="true"/>
+    </LinearLayout>
+</RelativeLayout>
+</layout>

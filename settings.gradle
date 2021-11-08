@@ -1,0 +1,3 @@
+include ':app', ':video-effect', ':video-record', ':video-compressor'
+
+rootProject.name = "NowApp"

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/mainLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        app:riv_corner_radius="10dp"
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="196dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/dummy_post_image" />
+
+</RelativeLayout>

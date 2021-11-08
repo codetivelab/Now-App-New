@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/container"
+        android:background="@drawable/rounder_corner_light_blue_two_top">
+
+        <View
+            android:layout_gravity="center"
+            android:id="@+id/line1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="50dp"
+            android:layout_height="3dp"
+            android:background="@drawable/rounder_corner_white_20"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="@font/raleway_bold"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:text="Upload"/>
+
+        <RelativeLayout
+            android:id="@+id/btnTakePhoto"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/raleway_bold"
+                android:textSize="14dp"
+                android:textStyle="normal"
+                android:text="Take a photo"/>
+
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dark_blue"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnChoosePhoto"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/raleway_bold"
+                android:textSize="14dp"
+                android:textStyle="normal"
+                android:text="Choose photo"/>
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

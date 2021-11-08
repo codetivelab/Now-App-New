@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/first_on_boarding_bg"
+        tools:context=".Fragments.GeneralFragments.OnBoardingFragments.FirstScreen">
+
+        <LinearLayout
+            android:layout_marginBottom="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/btnNext"
+                android:background="@drawable/login_gradient_button"
+                android:layout_width="150dp"
+                android:layout_height="45dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:text="Next"
+                    android:textSize="12dp"
+                    android:letterSpacing="0.1"
+                    style="@style/TextAppearance"
+                    android:textAllCaps="true"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                android:text="Skip"
+                style="@style/TextAppearance"
+                android:fontFamily="@font/raleway_bold"
+                android:textAllCaps="true"
+                android:layout_centerInParent="true"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

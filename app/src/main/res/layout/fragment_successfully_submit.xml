@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/profile_bg"
+        tools:context=".Fragments.BuisnessFragments.Application.SuccessfullySubmitFragment">
+
+        <LinearLayout
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tick_green"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Successful Submission"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/raleway_bold"
+                android:textColor="@color/text_gray"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Application Has Been Received. We'll Contact You With Logins Details If Your Account Is Approved"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/raleway_bold"
+                android:textColor="@color/text_gray"
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center"/>
+
+            <RelativeLayout
+                android:id="@+id/btnOk"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/rounder_corner_pink"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:text="OK"
+                    style="@style/TextAppearance"
+                    android:fontFamily="@font/raleway_bold"
+                    android:textAllCaps="true"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

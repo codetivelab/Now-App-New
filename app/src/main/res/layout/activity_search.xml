@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/very_light_blue">
+        <RelativeLayout
+            android:id="@+id/headerLay"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:layout_marginLeft="@dimen/_15ssp"
+            android:layout_marginRight="@dimen/_15ssp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35ssp">
+            <RelativeLayout
+                android:layout_centerVertical="true"
+                android:id="@+id/btnBack"
+                android:layout_width="@dimen/_35ssp"
+                android:layout_height="@dimen/_35ssp"
+                android:background="@drawable/rounder_circle_light_blue">
+
+                <ImageView
+                    android:layout_width="@dimen/_12ssp"
+                    android:layout_height="@dimen/_12ssp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/back_icon" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_centerVertical="true"
+                android:background="@drawable/rounder_circle_light_blue_low"
+                android:layout_toLeftOf="@+id/btnFilter"
+                android:id="@+id/searchLay"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/btnBack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/searchET"
+                        android:maxLines="1"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:textCursorDrawable="@drawable/cursor_drawable"
+                        android:layout_centerVertical="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="What are you looking for?"
+                        android:textColorHint="@color/white"
+                        android:backgroundTint="@android:color/transparent"
+                        android:textSize="@dimen/_9ssp"
+                        android:textColor="@color/white"
+                        android:singleLine="true"/>
+
+                    <RelativeLayout
+                        android:id="@+id/btnCancel"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_centerInParent="true"
+                            android:id="@+id/searchHistoryIcon"
+                            android:layout_width="@dimen/_10ssp"
+                            android:layout_height="@dimen/_10ssp"
+                            android:src="@drawable/ic_search_"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/btnFilter"
+                android:layout_width="@dimen/_35ssp"
+                android:layout_height="@dimen/_35ssp"
+                android:background="@drawable/rounder_circle_light_blue">
+                <ImageView
+                    android:id="@+id/filterIV"
+                    android:layout_width="@dimen/_12ssp"
+                    android:layout_height="@dimen/_12ssp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_filter_" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/_10ssp"
+            android:layout_below="@id/headerLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="140dp"
+                android:id="@+id/rv_search"/>
+
+            <TextView
+                android:id="@+id/info"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Restaurant Not Available"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/raleway_regular"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

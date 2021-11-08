@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/app_background_black"
+    tools:context=".Screens.UserScreens.UploadPostScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:id="@+id/thumbnailIV"
+                    android:layout_width="220dp"
+                    android:layout_height="@dimen/_300sdp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="15dp"
+                    android:scaleType="fitXY"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#33353740">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:id="@+id/containerUserSpinnerRL"
+                        android:layout_height="45dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/rounder_corner_text_gray">
+
+                            <Spinner
+                                android:id="@+id/userSpinner"
+                                style="@style/spinnerStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:id="@+id/containerBusinessSpinnerRL"
+                        android:layout_marginTop="10dp">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:gravity="center"
+                            android:background="@drawable/rounder_corner_text_gray">
+
+                            <ImageView
+                                android:layout_width="@dimen/_10sdp"
+                                android:layout_height="@dimen/_10sdp"
+                                android:src="@drawable/loc"
+                                android:layout_marginStart="@dimen/_10sdp"/>
+                            <Spinner
+                                android:id="@+id/businessSpinner"
+                                style="@style/spinnerStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_30sdp"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/ratingTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/raleway_regular"
+                                android:text="Rate the place"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="12dp"
+                                android:textStyle="bold" />
+
+                            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                                android:id="@+id/userRating"
+                                style="@style/Widget.MaterialRatingBar.RatingBar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/czxnm"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:maxHeight="20dp"
+                                android:minHeight="20dp"
+                                android:rating="1"
+                                app:mrb_progressBackgroundTint="@color/text_gray"
+                                app:mrb_progressTint="@color/ratingColor"
+                                app:mrb_secondaryProgressTint="@color/ratingColor" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="47dp">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:id="@+id/captionField"
+                            android:layout_height="45dp"
+                            android:backgroundTint="@android:color/transparent"
+                            android:hint="Write a caption (Max 250 Characters)"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="12dp"
+                            android:textStyle="normal" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@color/color_pink_primary" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/addPostBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/login_gradient_button">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/raleway_bold"
+                            android:text="Add Post"
+                            android:textAlignment="center"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

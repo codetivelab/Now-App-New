@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FF0082</color>
+    <color name="black">#FF000000</color>
+    <color name="black_alpha_90">#E61E1F24</color>
+    <color name="black_o">#40000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="lightWhite">#474747</color>
+    <color name="app_background_black">#0C060C</color>
+    <color name="app_background_black_O_40">#66353740</color>
+    <color name="app_background_black_O_60">#CC353740</color>
+    <color name="app_background_black_O_50">#80353740</color>
+    <color name="app_background_black_O_70">#B3353740</color>
+    <color name="text_gray">#B3B9DE</color>
+    <color name="color_pink_primary">#FF0082</color>
+    <color name="gradient_colors_dark_pink">#B037C1</color>
+    <color name="gradient_colors_pink">#FF0082</color>
+    <color name="color_green">#00F587</color>
+    <color name="light_blue">#2C3045</color>
+    <color name="very_light_blue">#444A6A</color>
+    <color name="dark_blue">#1C1F29</color>
+    <color name="light_blue_O_20">#A82C3045</color>
+    <color name="darkblack">#6B6B6B</color>
+    <color name="darkblackk">#404040</color>
+    <color name="ratingColor">#FBC348</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="profile_bg">#1E1F24</color>
+    <color name="profile_bg_50">#801E1F24</color>
+    <color name="profile_bg_20">#331E1F24</color>
+    <color name="onDotGrayBoardingColor">#60678B</color>
+
+    <color name="lightgray">#afafaf</color>
+    <color name="lightgrayy">#BCBCBC</color>
+    <color name="lightblack">#858585</color>
+    <color name="lightblackk">#AAAAAA</color>
+    <color name="lightttGrayyy">#E2E2E2</color>
+    <color name="lightGreen">#C1E1C5</color>
+
+    <color name="purple">#E040FB</color>
+    <color name="cccccc">#cccccc</color>
+    <color name="ff7f000000">#7f000000</color>
+    <color name="f4d4d4d">#4d4d4d</color>
+    <color name="ff666666">#666666</color>
+    <color name="alpha_white_70">#4Dffffff</color>
+
+
+    <color name="blue_color_picker">#0066FF</color>
+    <color name="brown_color_picker">#AF593E</color>
+    <color name="green_color_picker">#01A368</color>
+    <color name="orange_color_picker">#FF861F</color>
+    <color name="red_color_picker">#ED0A3F</color>
+    <color name="red_orange_color_picker">#FF3F34</color>
+    <color name="sky_blue_color_picker">#76D7EA</color>
+    <color name="violet_color_picker">#8359A3</color>
+    <color name="yellow_color_picker">#FBE870</color>
+    <color name="yellow_green_color_picker">#C5E17A</color>
+    <color name="tool_bg">#151414</color>
+    <color name="black_trasp">#99000000</color>
+
+</resources>

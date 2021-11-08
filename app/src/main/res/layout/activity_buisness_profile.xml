@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/profile_bg"
+        tools:context=".Screens.BuisnessScreens.BuisnessProfile">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/buissness_home_bg" />
+
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <RelativeLayout
+                        android:id="@+id/backIV"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/back_icon" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_marginRight="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/profileLay"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:visibility="invisible">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/dummy_user" />
+
+                        <RelativeLayout
+                            android:layout_alignParentRight="true"
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:background="@drawable/rounder_circle_green"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/topHead"
+                    android:layout_marginTop="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                        android:layout_below="@+id/czxnm"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="16dp"
+                        android:layout_gravity="center"
+                        android:maxHeight="16dp"
+                        android:id="@+id/userRating"
+                        android:layout_marginTop="5dp"
+                        android:rating="5"
+                        app:mrb_progressBackgroundTint="@color/text_gray"
+                        app:mrb_progressTint="@color/ratingColor"
+                        app:mrb_secondaryProgressTint="@color/ratingColor"
+                        style="@style/Widget.MaterialRatingBar.RatingBar"/>
+
+                    <TextView
+                        android:id="@+id/bNameTV"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hard Rock Cafe"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:letterSpacing="0.07"
+                        android:textAllCaps="false"
+                        android:textAlignment="center"
+                        style="@style/TextAppearance"
+                        android:fontFamily="@font/raleway_regular"
+                        android:singleLine="true"/>
+
+                    <com.sasank.roundedhorizontalprogress.RoundedHorizontalProgressBar
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/progress_bar_1"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="200dp"
+                        android:layout_height="5dp"
+                        android:indeterminate="false"
+                        android:layout_gravity="center"
+                        android:maxHeight="12dp"
+                        android:minHeight="12dp"
+                        android:progress="40"
+                        app:backgroundColor="@color/light_blue"
+                        app:progressColor="@color/color_pink_primary"/>
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Empty"
+                        android:letterSpacing="2"
+                        android:textColor="@color/color_pink_primary"
+                        android:textSize="11dp"
+                        android:textAllCaps="true"
+                        android:textAlignment="center"
+                        style="@style/TextAppearance"
+                        android:fontFamily="@font/raleway_regular"
+                        android:singleLine="true"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/topHead"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="30dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextAppearance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_regular"
+                            android:text="Now Posts"
+                            android:textAlignment="textStart"
+                            android:textAllCaps="true"
+                            android:textColor="@color/color_green"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvlatestPostsProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="100dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextAppearance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_regular"
+                            android:text="Pinned Posts"
+                            android:textAlignment="textStart"
+                            android:textAllCaps="true"
+                            android:textColor="@color/color_green"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvlatest24HourProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>

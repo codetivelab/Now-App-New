@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/profile_bg"
+        tools:context=".Fragments.BuisnessFragments.Application.ThirdTabFragment">
+
+        <RelativeLayout
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ScrollView
+                android:scrollbars="none"
+                android:layout_marginBottom="20dp"
+                android:layout_above="@+id/btnLay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:id="@+id/header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/now_logo">
+                        </ImageView>
+
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_gravity="bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="For Buisness"
+                            android:textStyle="normal"
+                            android:textColor="@color/white"
+                            android:textSize="10dp"
+                            android:fontFamily="@font/raleway_regular"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="40dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:text="Buisness Info"
+                            android:fontFamily="@font/raleway_regular"/>
+
+                        <TextView
+                            android:layout_marginTop="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:textColor="@color/white"
+                            android:textStyle="normal"
+                            android:text="Integer facilisis lobortis arcu, ut ornare mi blandit sed. Morbi gravida, turpis id"
+                            android:fontFamily="@font/raleway_regular"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:weightSum="4"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp">
+                        <View
+                            android:layout_marginRight="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:layout_weight="1"/>
+
+                        <View
+                            android:layout_marginRight="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:layout_weight="1"/>
+
+                        <View
+                            android:layout_marginRight="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/color_pink_primary"
+                            android:layout_weight="1"/>
+
+                        <View
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_marginTop="40dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <RelativeLayout
+                            android:id="@+id/mapView"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp">
+                            <com.google.android.gms.maps.MapView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/locationSelectionMapView">
+                            </com.google.android.gms.maps.MapView>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/nameLay"
+                            android:background="@color/light_blue"
+                            android:layout_marginTop="30dp"
+                            android:layout_below="@+id/mapView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <RelativeLayout
+                                android:padding="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:visibility="gone"
+                                    android:id="@+id/editTv"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Edit"
+                                    android:textColor="@color/color_pink_primary"
+                                    android:textSize="12dp"
+                                    android:layout_gravity="end"/>
+
+                                <TextView
+                                    android:id="@+id/buisnessName"
+                                    android:layout_below="@+id/editTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hard Rock Cafe"
+                                    android:maxLines="1"
+                                    android:textColor="@color/white"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/raleway_regular"
+                                    android:layout_gravity="end"/>
+
+                                <TextView
+                                    android:id="@+id/locationName"
+                                    android:layout_marginBottom="18dp"
+                                    android:layout_below="@+id/buisnessName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="246 Bulevar, Miami, Florida 37403 "
+                                    android:textColor="@color/color_green"
+                                    android:textSize="10dp"
+                                    android:textStyle="bold"
+                                    android:maxLines="2"
+                                    android:fontFamily="@font/raleway_regular"
+                                    android:layout_gravity="end"/>
+                            </RelativeLayout>
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/btnLay"
+                android:layout_alignParentBottom="true"
+                android:weightSum="2"
+                android:layout_gravity="center"
+                android:layout_marginBottom="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:id="@+id/btnBack"
+                    android:background="@drawable/rounder_border_pink"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:textStyle="bold"
+                        android:text="Back"
+                        style="@style/TextAppearance"
+                        android:fontFamily="@font/raleway_bold"
+                        android:textAllCaps="true"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:id="@+id/btnNext"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/rounder_corner_pink"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:textStyle="bold"
+                        android:text="Next"
+                        style="@style/TextAppearance"
+                        android:fontFamily="@font/raleway_bold"
+                        android:textAllCaps="true"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

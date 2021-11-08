@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounder_corner_light_blue_two_top">
+
+    <View
+        android:id="@+id/line1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="50dp"
+        android:layout_height="3dp"
+        android:background="@drawable/rounder_corner_white_20"/>
+
+    <LinearLayout
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            style="@style/TextAppearance"
+            android:fontFamily="@font/raleway_regular"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            android:text="Add or choose and address"/>
+
+        <RelativeLayout
+            android:background="@drawable/rounder_corner_v_light_blue"
+            android:layout_marginTop="@dimen/_16ssp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <ImageView
+                android:id="@+id/pin"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13dp"
+                android:layout_width="@dimen/_15ssp"
+                android:layout_height="@dimen/_15ssp"
+                android:src="@drawable/ic_pin_"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="13dp"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="Type your location"
+                android:textColorHint="@color/white"
+                android:textSize="@dimen/_10ssp"
+                android:maxLines="1"
+                android:fontFamily="@font/raleway_regular" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <RelativeLayout
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/raleway_bold"
+                        android:text="Current Location"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_marginRight="@dimen/_7ssp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp">
+                    <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_target_"/>
+                </RelativeLayout>
+            </RelativeLayout>
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightgray"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <RelativeLayout
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/raleway_bold"
+                        android:text="246 Bulevar, Miami, Florida"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_marginRight="@dimen/_7ssp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp">
+                    <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_searched_location_"/>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

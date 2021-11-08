@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/profile_bg">
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+            <RelativeLayout
+                android:id="@+id/backIcon"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/back_icon"/>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Business Info"
+                style="@style/TextAppearance"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/raleway_bold"
+                android:textColor="@color/color_green">
+            </TextView>
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_above="@+id/btnNext"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="40dp"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounder_corner_text_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:id="@+id/businessNameTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="Name"
+                        android:textColor="@color/text_gray"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+=                <RelativeLayout
+                    android:id="@+id/OpenTypeSpinner1"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounder_corner_text_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                <Spinner
+                    android:id="@+id/businessTypeSpinner"
+                    style="@style/spinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounder_corner_text_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:id="@+id/businessEmailTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="Email"
+                        android:textColor="@color/text_gray"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="Business Number"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/businessPhoneNumberET"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:textSize="14dp"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/login_gradient_button">
+
+            <TextView
+                style="@style/TextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/raleway_regular"
+                android:text="Save"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

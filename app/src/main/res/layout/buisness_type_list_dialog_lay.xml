@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:id="@+id/container"
+    android:background="@drawable/rounder_corner_light_blue_two_top"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <View
+        android:layout_gravity="center"
+        android:id="@+id/line1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="50dp"
+        android:layout_height="3dp"
+        android:background="@drawable/rounder_corner_white_20"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="5"
+        tools:listitem="@layout/buisness_type_item_lay"
+        android:id="@+id/rv_buisness_types">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

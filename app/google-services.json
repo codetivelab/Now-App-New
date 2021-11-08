@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "946654192867",
+    "project_id": "nowapp-bf64a",
+    "storage_bucket": "nowapp-bf64a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946654192867:android:df9c074cbed4ee73ecd1d6",
+        "android_client_info": {
+          "package_name": "com.buzzware.nowapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946654192867-no86uiq2l49fvoi6tjdh48ds7g22ff62.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.buzzware.nowapp",
+            "certificate_hash": "2158b2a2b9a7b297a2848a58476ac0fc7390ff61"
+          }
+        },
+        {
+          "client_id": "946654192867-cm4k3oh0ait9urv01ji5o2f8vvs9c3fm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoOnpoPsE1xCwnWnzBE56T_supm_CnP-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946654192867-cm4k3oh0ait9urv01ji5o2f8vvs9c3fm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "946654192867-gh37tsblq4987i58k84d2jgepo2v5jfg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "NOWApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

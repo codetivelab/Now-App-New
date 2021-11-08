@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.buzzware.nowapp">
+
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:name=".Libraries.App"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+
+        android:theme="@style/Theme.NowApp"
+        android:usesCleartextTraffic="true">
+<!--        <activity android:name=".Screens.General.VideoActivity"></activity>-->
+        <activity android:name=".Screens.UserScreens.SearchActivity" />
+        <activity android:name=".Screens.General.LocationSelectionScreen" />
+        <activity android:name=".Screens.BuisnessScreens.ChangeBuisnessLocation" />
+        <activity android:name=".Screens.BuisnessScreens.ChangeBuinessPassword" />
+        <activity android:name=".Screens.BuisnessScreens.BuisnessAddress" />
+        <activity android:name=".Screens.BuisnessScreens.BuisnessInfo" />
+        <activity android:name=".Screens.BuisnessScreens.ChangeBackgroundCover" />
+        <activity android:name=".Screens.BuisnessScreens.ChangeBuisnessProfilePhoto" />
+        <activity android:name=".Screens.BuisnessScreens.BuisnessProfile" />
+        <activity android:name=".Screens.BuisnessScreens.BuisnessHome" />
+        <activity android:name=".Screens.General.OnBoardingScreen" />
+        <activity android:name=".FilterTextEditor.PreviewVideoActivity"/>
+        <activity
+            android:name=".Screens.BuisnessScreens.BuisnessApplication"
+            android:theme="@style/Theme.NowApp_Profile_bg" />
+        <activity
+            android:name=".Screens.BuisnessScreens.BuisnessApplicationStartUpScreen"
+            android:theme="@style/Theme.NowApp_Profile_bg" />
+        <activity
+            android:name=".Screens.UserScreens.UserProfileScreen"
+            android:theme="@style/Theme.NowApp_acent" />
+        <activity android:name=".Screens.UserScreens.UploadPostScreen" />
+        <activity android:name=".Screens.UserScreens.FilterScreen" />
+        <activity android:name=".Screens.UserScreens.Home" />
+        <activity android:name=".Screens.UserScreens.Signup" />
+<!--        <activity android:name=".Screens.General.filters.FilterActivity" />-->
+        <activity android:name=".Screens.UserScreens.Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:configChanges="keyboard|orientation|screenSize"
+            android:name=".Libraries.libactivities.VideoAlbumActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".Libraries.libactivities.MainActivity">
+
+        </activity>
+
+        <activity
+            android:configChanges="keyboard|orientation|screenSize"
+            android:name=".Libraries.libactivities.VideoCameraActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+
+            android:configChanges="keyboard|orientation|screenSize"
+            android:name=".Libraries.libactivities.TrimVideoActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:configChanges="keyboard|orientation|screenSize"
+            android:name=".Libraries.libactivities.VideoPreviewActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".Fragments.GeneralFragments.OnBoardingFragments.UserFollowActivity"
+            android:screenOrientation="portrait"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths" />
+        </provider>
+    </application>
+
+</manifest>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rootLay"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rounder_corner_light_blue">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/thumbnailIV"
+            android:src="@drawable/dummy_post_image"
+            android:scaleType="fitXY"
+            app:riv_corner_radius_top_left="20dp"
+            app:riv_corner_radius_top_right="20dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/pinIV"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/_2sdp"
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/unpin"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/unPinIV"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="@dimen/_2sdp"
+                android:layout_margin="@dimen/_8sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/pin"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textSize="12dp"
+            android:id="@+id/descriptionTV"
+            android:textAlignment="textStart"
+            android:textColor="@color/text_gray"
+            android:textStyle="normal"
+            android:maxLines="6"
+            android:fontFamily="@font/raleway_regular"
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."/>
+    </LinearLayout>
+</RelativeLayout>

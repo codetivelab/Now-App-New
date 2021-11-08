@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/profile_bg">
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+            <RelativeLayout
+                android:id="@+id/backIcon"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/back_icon"/>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Business Info"
+                style="@style/TextAppearance"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/raleway_bold"
+                android:textColor="@color/color_green">
+            </TextView>
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_above="@+id/btnNext"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="40dp"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="Street"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editText"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:textSize="14dp"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="City"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:textSize="14dp"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <RelativeLayout
+                    android:id="@+id/OpenTypeSpinner"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounder_corner_text_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="State"
+                        android:textColor="@color/text_gray"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="14dp"
+                        android:singleLine="true"/>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:src="@drawable/ic_right_arrow_angle_text_gray"
+                        android:rotation="90"/>
+                </RelativeLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="Zip Code"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:textSize="14dp"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <RelativeLayout
+                    android:id="@+id/btnChangeLocation"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <RelativeLayout
+                        android:layout_centerVertical="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:src="@drawable/ic_pin"/>
+
+                            <TextView
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:text="Change Map Location"
+                                android:layout_gravity="center"/>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/ic_right_arrow_angle_text_gray"/>
+                    </RelativeLayout>
+                    <View
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lightgray"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp">
+                    <com.google.android.gms.maps.MapView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/locationSelectionMapView">
+                    </com.google.android.gms.maps.MapView>
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:id="@+id/btnNext"
+            android:background="@drawable/login_gradient_button"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:text="Save"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:fontFamily="@font/raleway_regular"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

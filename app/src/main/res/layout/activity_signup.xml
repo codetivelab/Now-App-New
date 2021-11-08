@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".Screens.UserScreens.Signup">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+            <RelativeLayout
+                android:id="@+id/backIcon"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/back_icon"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="55dp"
+                android:layout_height="40dp"
+                android:src="@drawable/now_logo">
+            </ImageView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/welcome"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enter_data_continoue"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_gray"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/raleway_bold"
+                    android:layout_gravity="center"/>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="First Name"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:id="@+id/fnameEt"
+                        android:imeOptions="actionNext"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:textSize="14dp"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:id="@+id/lnameEt"
+                        android:imeOptions="actionNext"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:textSize="14dp"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:id="@+id/emailEt"
+                        android:imeOptions="actionNext"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:textSize="14dp"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:id="@+id/phoneEt"
+                        android:imeOptions="actionNext"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:textSize="14dp"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    app:hintTextAppearance="@style/TextLabel"
+                    android:textColorHint="@color/text_gray"
+                    app:hintTextColor="@color/color_pink_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:textColor="@color/text_gray"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:id="@+id/passwordEt"
+                        android:imeOptions="actionDone"
+                        android:textCursorDrawable="@drawable/cursor_pink"
+                        android:textSize="14dp"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <RelativeLayout
+                    android:onClick="Register"
+                    android:background="@drawable/login_gradient_button"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:textColor="@color/white"
+                        android:text="@string/register"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/raleway_regular"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:text="@string/policy_msg"
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:fontFamily="@font/raleway_regular" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</layout>

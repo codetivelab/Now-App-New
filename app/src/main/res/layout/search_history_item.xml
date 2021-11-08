@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Centrico Bar"
+            android:textStyle="bold"
+            android:id="@+id/nameTV"
+            android:maxLines="1"
+            android:textSize="14dp"
+            android:fontFamily="@font/raleway_bold"
+            android:singleLine="true"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+    </RelativeLayout>
+</layout>
