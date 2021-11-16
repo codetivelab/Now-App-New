@@ -6,12 +6,29 @@ public class NormalUserModel {
     String userFirstName;
     String userLastName;
     String userImageUrl;
-    String userFollowers="0";
-    String userFollowings="0";
+    String userFollowers = "0";
+    String userFollowings = "0";
     String userPassword;
     String userPhoneNumber;
     String userToken;
     String userType;
+
+    public NormalUserModel(String userEmail, String userFirstName, String userLastName, String userImageUrl, String userFollowers, String userFollowings, String userPassword, String userPhoneNumber, String userToken, String userType) {
+        this.userEmail = userEmail;
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.userImageUrl = userImageUrl;
+        this.userFollowers = userFollowers;
+        this.userFollowings = userFollowings;
+        this.userPassword = userPassword;
+        this.userPhoneNumber = userPhoneNumber;
+        this.userToken = userToken;
+        this.userType = userType;
+    }
+
+    public NormalUserModel() {
+
+    }
 
     public String getUserFollowers() {
 

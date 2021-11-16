@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
-            android:background="@color/app_background_black"
+            android:background="@color/colorPrimaryDark"
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -113,7 +113,7 @@
                                 android:id="@+id/searchHistoryIcon"
                                 android:layout_width="@dimen/_9ssp"
                                 android:layout_height="@dimen/_9ssp"
-                                android:src="@drawable/ic_search_"/>
+                                android:src="@drawable/ic_baseline_search_24"/>
                         </RelativeLayout>
                     </RelativeLayout>
                 </RelativeLayout>

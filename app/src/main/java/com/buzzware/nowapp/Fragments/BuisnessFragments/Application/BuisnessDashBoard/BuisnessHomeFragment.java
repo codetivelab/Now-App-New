@@ -37,6 +37,7 @@ import com.buzzware.nowapp.NetworkRequests.Interfaces.NetWorkRequestsCallBack;
 import com.buzzware.nowapp.NetworkRequests.NetworkRequests;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.BuisnessScreens.BuisnessProfile;
+import com.buzzware.nowapp.Screens.General.Video.VideoCommentsLikesActivity;
 import com.buzzware.nowapp.Sessions.UserSessions;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.FragmentBuisnessHomeBinding;
@@ -112,11 +113,20 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
             mBinding.tagLocationTab.setOnClickListener(this);
             mBinding.btViewProfile.setOnClickListener(this);
 
-            getMyPosts();
+//            getMyPosts();
         } else {
-            getBusinessData();
+//            getBusinessData();
         }
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (businessId == null)
+            getMyPosts();
+        else
+            getBusinessData();
     }
 
     private void getBusinessData() {
@@ -705,16 +715,20 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
             return;
         }
 
-        Dialog myDialog = new Dialog(getActivity());
+        VideoCommentsLikesActivity.startCommentsLikesActivity(post, getActivity());
 
-        myDialog.setContentView(R.layout.post_detail_dialog_lay);
+        return;
 
-        setDialogUI(myDialog, post);
-
-        myDialog.setCancelable(true);
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        myDialog.show();
+//        Dialog myDialog = new Dialog(getActivity());
+//
+//        myDialog.setContentView(R.layout.post_detail_dialog_lay);
+//
+//        setDialogUI(myDialog, post);
+//
+//        myDialog.setCancelable(true);
+//        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//        myDialog.show();
     }
 
     private void onUserPostTapped(PostsModel post) {
@@ -761,8 +775,8 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
             unPinIV.setVisibility(View.GONE);
         }
 
-        pinIV.setOnClickListener(v -> pinOrUnpinPost(post,pinIV,unPinIV));
-        unPinIV.setOnClickListener(v -> pinOrUnpinPost(post,pinIV,unPinIV));
+        pinIV.setOnClickListener(v -> pinOrUnpinPost(post, pinIV, unPinIV));
+        unPinIV.setOnClickListener(v -> pinOrUnpinPost(post, pinIV, unPinIV));
     }
 
     private void pinOrUnpinPost(PostsModel post, ImageView pinIV, ImageView unPinIV) {

@@ -114,7 +114,7 @@
                                 android:id="@+id/searchHistoryIcon"
                                 android:layout_width="@dimen/_9ssp"
                                 android:layout_height="@dimen/_9ssp"
-                                android:src="@drawable/ic_search_"/>
+                                android:src="@drawable/ic_baseline_search_24"/>
                         </RelativeLayout>
                     </RelativeLayout>
                 </RelativeLayout>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center">
+
+                <ImageView
+                    android:id="@+id/thumbnailIV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <ImageView
+                        android:id="@+id/pinIV"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:src="@drawable/unpin"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/unPinIV"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:src="@drawable/pin"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_30sdp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <ImageView
+                        android:id="@+id/likeIV"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_like_video" />
+
+                    <TextView
+                        android:id="@+id/likeTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_regular"
+                        android:gravity="center"
+                        android:text="Share"
+                        android:textColor="#FFFFFF"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <ImageView
+                        android:id="@+id/commentIV"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:src="@drawable/ic_comment_video" />
+
+                    <TextView
+                        android:id="@+id/commentTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_regular"
+                        android:gravity="center"
+                        android:text="Comment"
+                        android:textColor="#FFFFFF"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <ImageView
+                        android:id="@+id/shareIV"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:src="@drawable/ic_share_video" />
+
+                    <TextView
+                        android:id="@+id/shareTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_regular"
+                        android:gravity="center"
+                        android:text="Share"
+                        android:textColor="#FFFFFF"
+                        android:textSize="@dimen/_12ssp" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black_alpha_45"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/picCIV"
+                        android:layout_width="@dimen/_35ssp"
+                        android:layout_height="@dimen/_35ssp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:src="@drawable/dummy_user"
+                        app:layout_constraintBottom_toTopOf="@+id/descriptionTV"
+                        app:layout_constraintStart_toStartOf="@+id/descriptionTV"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/descriptionTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:fontFamily="@font/raleway_regular"
+                        android:gravity="top"
+                        android:maxLines="3"
+                        android:scrollbars="vertical"
+                        android:text="@string/lorem_ipsum"
+                        android:textColor="#FFFFFF"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                    <TextView
+                        android:id="@+id/userNameTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/raleway"
+                        android:maxLines="1"
+                        android:text="TextView"
+                        android:textColor="@color/color_green"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/picCIV"
+                        app:layout_constraintTop_toTopOf="@+id/picCIV"
+                        app:layout_constraintWidth_percent="0.5" />
+
+                    <TextView
+                        android:id="@+id/tagLocationTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/raleway_regular"
+                        android:maxLines="1"
+                        android:text="TextView"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toEndOf="@+id/picCIV"
+                        app:layout_constraintTop_toBottomOf="@+id/userNameTV"
+                        app:layout_constraintWidth_percent="0.5" />
+
+                    <!--            <me.zhanghai.android.materialratingbar.MaterialRatingBar-->
+                    <!--                android:id="@+id/ratingBar"-->
+                    <!--                app:layout_constraintBottom_toBottomOf="@+id/tagLocationTV"-->
+                    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                app:layout_constraintStart_toEndOf="@+id/userNameTV"-->
+                    <!--                app:layout_constraintTop_toTopOf="@+id/userNameTV"-->
+                    <!--                android:layout_width="0dp"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:rating="2"-->
+                    <!--                android:isIndicator="true"-->
+                    <!--                app:mrb_progressBackgroundTint="@color/white"-->
+                    <!--                app:mrb_progressTint="#FF9800"-->
+                    <!--                app:mrb_secondaryProgressTint="#FF9800"-->
+                    <!--                style="@style/Widget.MaterialRatingBar.RatingBar"-->
+                    <!--                android:scaleX="0.6"-->
+                    <!--                android:scaleY="0.6" />
+                    -->
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        android:id="@+id/ratingBar"
+                        style="@style/RatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="14dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="2.6"
+                        android:secondaryProgressTint="#00000000"
+                        android:stepSize="0.2"
+                        app:layout_constraintBottom_toBottomOf="@+id/tagLocationTV"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/userNameTV"
+                        app:layout_constraintTop_toTopOf="@+id/userNameTV" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        <FrameLayout
+            android:id="@+id/bslContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"></FrameLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

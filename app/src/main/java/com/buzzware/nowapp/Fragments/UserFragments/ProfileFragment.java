@@ -28,6 +28,7 @@ import com.buzzware.nowapp.Models.BusinessModel;
 import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.PostsModel;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.Screens.General.Video.VideoCommentsLikesActivity;
 import com.buzzware.nowapp.Screens.UserScreens.UserProfileScreen;
 import com.buzzware.nowapp.Sessions.UserSessions;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
@@ -73,11 +74,17 @@ public class ProfileFragment extends BaseFragment {
 
         initFirebase();
         setUpViews();
-        getUserData();
-        getMyPosts();
         setListeners();
 
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getUserData();
+        getMyPosts();
     }
 
     private void getUserData() {
@@ -235,16 +242,20 @@ public class ProfileFragment extends BaseFragment {
 
     private void ShowDialog(PostsModel post) {
 
-        Dialog myDialog = new Dialog(getContext());
+        VideoCommentsLikesActivity.startCommentsLikesActivity(post, getActivity());
 
-        myDialog.setContentView(R.layout.post_detail_dialog_lay);
+        return;
 
-        setDialogUI(myDialog, post);
-
-        myDialog.setCancelable(true);
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        myDialog.show();
+//        Dialog myDialog = new Dialog(getContext());
+//
+//        myDialog.setContentView(R.layout.post_detail_dialog_lay);
+//
+//        setDialogUI(myDialog, post);
+//
+//        myDialog.setCancelable(true);
+//        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//        myDialog.show();
     }
 
     private void setDialogUI(Dialog myDialog, PostsModel post) {

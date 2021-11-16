@@ -45,7 +45,10 @@ import com.buzzware.nowapp.Models.HomeListModel;
 import com.buzzware.nowapp.Models.RestaurantDataModel;
 import com.buzzware.nowapp.Permissions.Permissions;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.Screens.UserScreens.HideBSF;
+import com.buzzware.nowapp.Screens.UserScreens.Home;
 import com.buzzware.nowapp.Screens.UserScreens.SearchActivity;
+import com.buzzware.nowapp.Screens.UserScreens.ShowBSF;
 import com.buzzware.nowapp.Sessions.UserSessions;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.FragmentHomeBinding;
@@ -142,6 +145,12 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         mBinding.btnFilter.setOnClickListener(this);
         mBinding.currentLocationDialog.setOnClickListener(this);
         mBinding.profileLay.setOnClickListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().post(new HideBSF());
     }
 
     RestaurantResponseCallback restaurantResponseCallback = new RestaurantResponseCallback() {
@@ -270,8 +279,16 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         } else if (v == mBinding.currentLocationDialog) {
             ShowCurrentLocationDialog();
         } else if (v == mBinding.profileLay) {
+           EventBus.getDefault().post(new HideBSF());
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).addToBackStack("profile").commit();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        EventBus.getDefault().post(new ShowBSF());
     }
 
     private void ShowCurrentLocationDialog() {

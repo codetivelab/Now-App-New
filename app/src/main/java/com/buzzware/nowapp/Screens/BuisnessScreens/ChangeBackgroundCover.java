@@ -6,11 +6,18 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.buzzware.nowapp.Models.BusinessModel;
 import com.buzzware.nowapp.Permissions.Permissions;
@@ -35,6 +42,10 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -74,6 +85,66 @@ public class ChangeBackgroundCover extends AppCompatActivity {
         model = UserSessions.GetUserSession().getBusinessModel(this);
     }
 
+    String currentPhotoPath;
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        // Create the File where the photo should go
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            // Error occurred while creating the File
+            ex.printStackTrace();
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            Uri photoURI = FileProvider.getUriForFile(this,
+                    "com.buzzware.nowapp.provider",
+                    photoFile);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            dispatchTakePictureLauncher.launch(takePictureIntent);
+        }
+    }
+
+    ActivityResultLauncher<Intent> dispatchTakePictureLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        File imageFile = new File(currentPhotoPath);
+                        imageUri = Uri.fromFile(imageFile);
+                        binding.coverPhotoIV.setImageURI(imageUri);
+                        UploadImage();
+//                        mBinding.licenceIV.setImageURI(Uri.fromFile(imageFile));
+//
+//                        pic1Path = currentPhotoPath;
+//
+//                        FirstTabFragment.buisnessSignupModel.setBuisnessLicenceImage(Uri.fromFile(imageFile));
+                    }
+                }
+            });
 
     private void init() {
 
@@ -84,6 +155,7 @@ public class ChangeBackgroundCover extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
     }
+
     private void setViews() {
 
         if (model.businessBackgroundImage != null) {
@@ -102,6 +174,7 @@ public class ChangeBackgroundCover extends AppCompatActivity {
 
 
     }
+
     private void setListener() {
         binding.btnUploadImage.setOnClickListener(v -> {
             imageUri = null;
@@ -142,15 +215,32 @@ public class ChangeBackgroundCover extends AppCompatActivity {
     }
 
     private void CheckPermission(boolean isTakePhoto) {
-        if (permissions.isStoragePermissionGranted() && permissions.isCameraPermissionGranted()) {
-            if (isTakePhoto) {
-                OpenCamera();
-            } else {
-                OpenGallery();
+//        if (permissions.isStoragePermissionGranted() && permissions.isCameraPermissionGranted()) {
+        Dexter.withActivity(ChangeBackgroundCover.this).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.areAllPermissionsGranted()) {
+                    if (isTakePhoto) {
+
+                        dispatchTakePictureIntent();
+                    } else {
+                        OpenGallery();
+                    }
+                } else {
+                    UIUpdate.GetUIUpdate(ChangeBackgroundCover.this).ShowToastMessage(getString(R.string.allow_permission));
+                }
             }
-        } else {
-            RequestPermission(isTakePhoto);
-        }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
+
+
+//        } else {
+//            RequestPermission(isTakePhoto);
+//        }
     }
 
     private void OpenCamera() {
@@ -241,6 +331,7 @@ public class ChangeBackgroundCover extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -85,68 +86,21 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/captureImageRL"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_130sdp"
+            android:layout_height="@dimen/_150sdp"
+
             android:layout_alignParentBottom="true"
             android:background="@color/black_o">
 
-            <RelativeLayout
-                android:id="@+id/topLay"
-                android:layout_width="match_parent"
-                android:layout_height="6dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <RelativeLayout
-                        android:layout_width="60dp"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="Video"
-                            android:textColor="@color/white"
-                            android:textSize="14dp"
-                            android:textStyle="normal" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/white" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="13dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="Shot Video"
-                            android:textColor="@color/white"
-                            android:textSize="14dp"
-                            android:textStyle="normal" />
-                    </RelativeLayout>
-                </LinearLayout>
-            </RelativeLayout>
-
             <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
-                android:layout_below="@+id/topLay"
                 android:orientation="horizontal"
-                android:weightSum="3">
+                android:weightSum="3"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -172,12 +126,26 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
-                    <RelativeLayout
+                    <TextView
+                        android:id="@+id/secLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/holdView"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/raleway_regular"
+
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="normal" />
+
+                    <ImageView
                         android:id="@+id/holdView"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/rounder_circle_gray_stoke"></RelativeLayout>
+                        android:background="@drawable/rounder_circle_gray_stoke" />
 
                     <TextView
                         android:id="@+id/tapToRecordTV"
@@ -213,7 +181,79 @@
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
-        </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 s"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:onClick="select30Sec"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+            <TextView
+                android:id="@+id/textVw4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="15 s"
+                android:onClick="select15Sec"
+                android:textColor="@color/white"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintEnd_toStartOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+            <TextView
+                android:id="@+id/textV4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="60 s"
+                android:onClick="select60Sec"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:id="@+id/sSecCard"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="@+id/textV4"
+                app:layout_constraintStart_toStartOf="@+id/textV4"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tSecCard"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:onClick="select30Sec"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="@+id/textView4"
+                app:layout_constraintStart_toStartOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:id="@+id/fSecCard"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="@+id/textVw4"
+                app:layout_constraintStart_toStartOf="@+id/textVw4"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

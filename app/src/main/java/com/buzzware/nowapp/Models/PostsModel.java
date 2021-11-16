@@ -1,13 +1,16 @@
 package com.buzzware.nowapp.Models;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.buzzware.nowapp.Sessions.UserSessions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
-public class PostsModel {
+public class PostsModel implements Parcelable {
     String UserID;
     String createdAt;
     String tagBusinessId;
@@ -21,6 +24,71 @@ public class PostsModel {
     String userImage;
     String userName;
     Boolean pinned;
+    public List<String> likes;
+
+    public PostsModel() {
+
+    }
+
+    public PostsModel(String userID,
+                      String createdAt,
+                      String tagBusinessId,
+                      String tagBusinessName,
+                      String tagUserID,
+                      String tagUserName,
+                      String userPostComment,
+                      String userPostThumbnail,
+                      String userRating,
+                      String userVideoUrl,
+                      String userImage,
+                      String userName,
+                      Boolean pinned,
+                      String postId) {
+        UserID = userID;
+        this.createdAt = createdAt;
+        this.tagBusinessId = tagBusinessId;
+        this.tagBusinessName = tagBusinessName;
+        this.tagUserID = tagUserID;
+        this.tagUserName = tagUserName;
+        this.userPostComment = userPostComment;
+        this.userPostThumbnail = userPostThumbnail;
+        this.userRating = userRating;
+        this.userVideoUrl = userVideoUrl;
+        this.userImage = userImage;
+        this.userName = userName;
+        this.pinned = pinned;
+        this.postId = postId;
+    }
+
+    protected PostsModel(Parcel in) {
+        UserID = in.readString();
+        createdAt = in.readString();
+        tagBusinessId = in.readString();
+        tagBusinessName = in.readString();
+        tagUserID = in.readString();
+        tagUserName = in.readString();
+        userPostComment = in.readString();
+        userPostThumbnail = in.readString();
+        userRating = in.readString();
+        userVideoUrl = in.readString();
+        userImage = in.readString();
+        userName = in.readString();
+        byte tmpPinned = in.readByte();
+        pinned = tmpPinned == 0 ? null : tmpPinned == 1;
+        postId = in.readString();
+    }
+
+    public static final Creator<PostsModel> CREATOR = new Creator<PostsModel>() {
+        @Override
+        public PostsModel createFromParcel(Parcel in) {
+            return new PostsModel(in);
+        }
+
+        @Override
+        public PostsModel[] newArray(int size) {
+            return new PostsModel[size];
+        }
+    };
 
     public String getUserImage() {
         return userImage;
@@ -221,5 +289,28 @@ public class PostsModel {
         }
 
         return false;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(UserID);
+        parcel.writeString(createdAt);
+        parcel.writeString(tagBusinessId);
+        parcel.writeString(tagBusinessName);
+        parcel.writeString(tagUserID);
+        parcel.writeString(tagUserName);
+        parcel.writeString(userPostComment);
+        parcel.writeString(userPostThumbnail);
+        parcel.writeString(userRating);
+        parcel.writeString(userVideoUrl);
+        parcel.writeString(userImage);
+        parcel.writeString(userName);
+        parcel.writeByte((byte) (pinned == null ? 0 : pinned ? 1 : 2));
+        parcel.writeString(postId);
     }
 }

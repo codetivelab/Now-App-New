@@ -1,21 +1,27 @@
 package com.buzzware.nowapp.Screens.UserScreens;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.opengl.GLException;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.buzzware.nowapp.Libraries.libactivities.TrimVideoActivity;
 import com.buzzware.nowapp.Libraries.widget.SampleGLView;
@@ -24,6 +30,7 @@ import com.daasuu.camerarecorder.CameraRecordListener;
 import com.daasuu.camerarecorder.CameraRecorder;
 import com.daasuu.camerarecorder.CameraRecorderBuilder;
 import com.daasuu.camerarecorder.LensFacing;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,6 +38,8 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLContext;
@@ -46,32 +55,56 @@ public class BaseCameraActivity extends AppCompatActivity {
     protected CameraRecorder cameraRecorder;
     private String filepath;
     private TextView recordBtn;
+    private TextView secLeft;
     protected LensFacing lensFacing = LensFacing.BACK;
     protected int cameraWidth = 1280;
     protected int cameraHeight = 720;
-    RelativeLayout holdBtn;
+    ImageView holdBtn;
     protected int videoWidth = 720;
     protected int videoHeight = 720;
+    CardView tSecCard, sSecCard, fSecCard;
     private AlertDialog filterDialog;
     private boolean toggleClick = false;
+    CountDownTimer timer;
+
+    int sec = 10;
 
     protected void onCreateActivity() {
-//        getSupportActionBar().hide();
+
+        sSecCard = findViewById(R.id.sSecCard);
+        tSecCard = findViewById(R.id.tSecCard);
+        fSecCard = findViewById(R.id.fSecCard);
+        secLeft = findViewById(R.id.secLeft);
         holdBtn = findViewById(R.id.holdView);
         recordBtn = findViewById(R.id.tapToRecordTV);
         recordBtn.setText(getString(R.string.app_record));
-        holdBtn.setOnClickListener(v -> {
-
-            if (recordBtn.getText().equals(getString(R.string.app_record))) {
+        select30Sec();
+        recordBtn.setText(getString(R.string.app_record));
+        holdBtn.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 filepath = getVideoFilePath();
                 cameraRecorder.start(filepath);
                 recordBtn.setText("Stop");
-            } else {
+                setAndStartTimer();
+
+                holdBtn.setImageResource(R.drawable.red_round);
+                secLeft.setText("");
+                return true;
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 cameraRecorder.stop();
+                holdBtn.setImageResource(R.drawable.rounder_circle_gray_stoke);
                 recordBtn.setText(getString(R.string.app_record));
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
+                }
+                secLeft.setText("");
+                return true;
             }
 
+            return false;
         });
+
 //        findViewById(R.id.btn_flash).setOnClickListener(v -> {
 //            if (cameraRecorder != null && cameraRecorder.isFlashSupport()) {
 //                cameraRecorder.switchFlashMode();
@@ -88,6 +121,61 @@ public class BaseCameraActivity extends AppCompatActivity {
             }
             toggleClick = true;
         });
+
+    }
+
+    int count = 0;
+
+    public void select60Sec(View v) {
+        fSecCard.setVisibility(View.GONE);
+        sSecCard.setVisibility(View.VISIBLE);
+        tSecCard.setVisibility(View.GONE);
+        sec = 60;
+    }
+
+    public void select15Sec(View v) {
+        sSecCard.setVisibility(View.GONE);
+        tSecCard.setVisibility(View.GONE);
+        fSecCard.setVisibility(View.VISIBLE);
+        sec = 15;
+    }
+
+    public void select30Sec(View v) {
+        fSecCard.setVisibility(View.GONE);
+        sSecCard.setVisibility(View.GONE);
+        tSecCard.setVisibility(View.VISIBLE);
+        sec = 30;
+    }
+
+    public void select30Sec() {
+        fSecCard.setVisibility(View.GONE);
+        sSecCard.setVisibility(View.GONE);
+        tSecCard.setVisibility(View.VISIBLE);
+        sec = 30;
+    }
+
+    void setAndStartTimer() {
+        if (timer != null)
+            timer.cancel();
+        timer = null;
+        count = 0;
+        timer = new CountDownTimer(sec * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                count = count + 1;
+                secLeft.setText(String.valueOf(count) + " sec");
+
+            }
+
+            public void onFinish() {
+                count = 0;
+                cameraRecorder.stop();
+                recordBtn.setText(getString(R.string.app_record));
+                if (timer != null)
+                    timer.cancel();
+            }
+        };
+
+        timer.start();
 
     }
 
@@ -108,6 +196,10 @@ public class BaseCameraActivity extends AppCompatActivity {
             sampleGLView.onPause();
         }
 
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
         if (cameraRecorder != null) {
             cameraRecorder.stop();
             cameraRecorder.release();
@@ -140,7 +232,7 @@ public class BaseCameraActivity extends AppCompatActivity {
         setUpCameraView();
 
         cameraRecorder = new CameraRecorderBuilder(this, sampleGLView)
-                //.recordNoFilter(true)
+                .recordNoFilter(true)
                 .cameraRecordListener(new CameraRecordListener() {
                     @Override
                     public void onGetFlashSupport(boolean flashSupport) {

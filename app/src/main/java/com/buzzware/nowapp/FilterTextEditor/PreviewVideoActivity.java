@@ -117,7 +117,9 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(videoPath);
         String metaRotation = retriever.extractMetadata(METADATA_KEY_VIDEO_ROTATION);
+
         int rotation = metaRotation == null ? 0 : Integer.parseInt(metaRotation);
+
         if (rotation == 90 || rotation == 270) {
             DRAW_CANVASH = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
             DRAW_CANVASW = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
@@ -126,12 +128,12 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             DRAW_CANVASH = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
         }
         setCanvasAspectRatio();
+//
+//        videoSurface.getLayoutParams().width = newCanvasWidth;
+//        videoSurface.getLayoutParams().height = newCanvasHeight;
 
-        videoSurface.getLayoutParams().width = newCanvasWidth;
-        videoSurface.getLayoutParams().height = newCanvasHeight;
-
-        ivImage.getLayoutParams().width = newCanvasWidth;
-        ivImage.getLayoutParams().height = newCanvasHeight;
+//        ivImage.getLayoutParams().width = newCanvasWidth;
+//        ivImage.getLayoutParams().height = newCanvasHeight;
 
         Log.d(">>", "width>> " + newCanvasWidth + "height>> " + newCanvasHeight + " rotation >> " + rotation);
 
@@ -303,7 +305,7 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             case R.id.imgClose:
                 onBackPressed();
                 break;
-            case R.id.imgDone:
+            case R.id.doneBt:
                 saveImage();
                 break;
             case R.id.imgDraw:
@@ -339,11 +341,11 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         originalDisplayHeight = getDisplayHeight();
         originalDisplayWidth = getDisplayWidth();
 
-        DimensionData displayDiamenion =
-                getScaledDimension(new DimensionData((int) DRAW_CANVASW, (int) DRAW_CANVASH),
-                        new DimensionData(originalDisplayWidth, originalDisplayHeight));
-        newCanvasWidth = displayDiamenion.width;
-        newCanvasHeight = displayDiamenion.height;
+//        DimensionData displayDiamenion =
+//                getScaledDimension(new DimensionData((int) DRAW_CANVASW, (int) DRAW_CANVASH),
+//                        new DimensionData(originalDisplayWidth, originalDisplayHeight));
+        newCanvasWidth = getDisplayWidth();
+        newCanvasHeight = getDisplayHeight();
 
     }
 
@@ -598,6 +600,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         imgDraw = (ImageView) findViewById(R.id.imgDraw);
         imgSticker = (ImageView) findViewById(R.id.imgSticker);
         imgDelete = (ImageView) findViewById(R.id.imgDelete);
-        imgDone = (ImageView) findViewById(R.id.imgDone);
+        imgDone = (ImageView) findViewById(R.id.doneBt);
     }
 }

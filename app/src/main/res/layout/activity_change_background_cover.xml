@@ -64,14 +64,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <com.makeramen.roundedimageview.RoundedImageView
                             android:id="@+id/coverPhotoIV"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_200sdp"
                             android:adjustViewBounds="true"
-                            app:riv_corner_radius="10dp"
-                            android:src="@drawable/upload_cover_example">
-                        </com.makeramen.roundedimageview.RoundedImageView>
+                            android:src="@drawable/upload_cover_example"
+                            app:riv_corner_radius="10dp"></com.makeramen.roundedimageview.RoundedImageView>
 
                         <TextView
                             android:layout_gravity="center"

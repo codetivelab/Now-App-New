@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.MasayukiSuda:CameraRecorder-android:v0.1.5@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/beb75912e87b480ef9efac84f68b9b01/jetified-CameraRecorder-android-v0.1.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/beb75912e87b480ef9efac84f68b9b01/jetified-CameraRecorder-android-v0.1.5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/beb75912e87b480ef9efac84f68b9b01/jetified-CameraRecorder-android-v0.1.5/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.MasayukiSuda/CameraRecorder-android/v0.1.5/d1a6cc6c2adfe45aa7ceee422de5786376b36dae/CameraRecorder-android-v0.1.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

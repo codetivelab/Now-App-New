@@ -31,6 +31,7 @@ import com.buzzware.nowapp.Models.TagUserModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.BuisnessScreens.ChangeBuisnessProfilePhoto;
 import com.buzzware.nowapp.Screens.General.BaseActivity;
+import com.buzzware.nowapp.Screens.General.Video.VideoCommentsLikesActivity;
 import com.buzzware.nowapp.Screens.UserScreens.UserProfileScreen;
 import com.buzzware.nowapp.Sessions.UserSessions;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
@@ -406,16 +407,20 @@ public class UserFollowActivity extends BaseActivity {
 
     private void ShowDialog(PostsModel post) {
 
-        Dialog myDialog = new Dialog(UserFollowActivity.this);
+        VideoCommentsLikesActivity.startCommentsLikesActivity(post, this);
 
-        myDialog.setContentView(R.layout.post_detail_dialog_lay);
-
-        setDialogUI(myDialog, post);
-
-        myDialog.setCancelable(true);
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        myDialog.show();
+        return;
+//
+//        Dialog myDialog = new Dialog(UserFollowActivity.this);
+//
+//        myDialog.setContentView(R.layout.post_detail_dialog_lay);
+//
+//        setDialogUI(myDialog, post);
+//
+//        myDialog.setCancelable(true);
+//        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//        myDialog.show();
     }
 
     private void setDialogUI(Dialog myDialog, PostsModel post) {

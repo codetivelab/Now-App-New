@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
-    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimary">#242838</color>
+    <color name="colorPrimaryDark">#242838</color>
     <color name="colorAccent">#FF0082</color>
     <color name="black">#FF000000</color>
     <color name="black_alpha_90">#E61E1F24</color>
+    <color name="black_alpha_45">#741E1F24</color>
     <color name="black_o">#40000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lightWhite">#474747</color>
@@ -42,6 +43,7 @@
     <color name="cccccc">#cccccc</color>
     <color name="ff7f000000">#7f000000</color>
     <color name="f4d4d4d">#4d4d4d</color>
+    <color name="backgroundBlue">#242838</color>
     <color name="ff666666">#666666</color>
     <color name="alpha_white_70">#4Dffffff</color>
 

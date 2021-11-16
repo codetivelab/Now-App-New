@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.androidessence.lib:richtextview:1.0.4@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/20adeafe4b01110653b87a5cad9115a6/jetified-richtextview-1.0.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/20adeafe4b01110653b87a5cad9115a6/jetified-richtextview-1.0.4/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/20adeafe4b01110653b87a5cad9115a6/jetified-richtextview-1.0.4/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.androidessence.lib/richtextview/1.0.4/85a6b72f04fb1f985b20a3ba37b03d5ae27adaf8/richtextview-1.0.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.androidessence.lib/richtextview/1.0.4/865e3b7ead6ad51bff86b02e098fdcdc87b9f0a8/richtextview-1.0.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

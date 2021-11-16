@@ -98,6 +98,9 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 
+    //shape image view
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
+
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.github.mancj:SlideUp-Android:2.2.8"
@@ -119,6 +122,13 @@ dependencies {
 
     //switch
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+
+    //retro
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
 
     //google
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
@@ -147,6 +157,8 @@ dependencies {
     implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
     implementation 'com.github.MasayukiSuda:CameraRecorder-android:v0.1.5'
 
+    //rating bar
+    implementation 'me.zhanghai.android.materialratingbar:library:1.4.0'
 
     ///firebase
     implementation 'com.google.firebase:firebase-auth:21.0.1'
@@ -154,6 +166,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.google.firebase:firebase-database:20.0.2'
 
+    //api future
 
 //    implementation 'com.github.MasayukiSuda:GPUVideo-android:v0.1.2'
     implementation 'org.greenrobot:eventbus:3.2.0'
@@ -161,8 +174,10 @@ dependencies {
     //video recoding
     implementation 'io.github.memfis19:annca:0.3.7'
 
+    //Mention Edit Text
+//    implementation 'com.buzzware.nowapp.spyglass:spyglass:3.0.1'
+
     //Location
     implementation 'com.github.delight-im:Android-SimpleLocation:v1.1.0'
-
 }
 apply plugin: 'com.google.gms.google-services'

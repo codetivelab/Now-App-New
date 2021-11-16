@@ -59,6 +59,7 @@
                 android:layout_centerInParent="true"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:id="@+id/profileIV"
                 android:src="@drawable/dummy_user"/>
 
             <RelativeLayout
@@ -89,6 +90,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <RelativeLayout
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -111,6 +113,7 @@
                         android:layout_height="45dp"
                         android:textAlignment="textStart"
                         android:textSize="14dp"
+                        android:id="@+id/nameET"
                         android:textStyle="normal"
                         android:textColor="@color/white"
                         android:backgroundTint="@android:color/transparent"
@@ -141,12 +144,13 @@
                         android:layout_height="15dp"
                         android:src="@drawable/ic_email_at_white"/>
 
-                    <EditText
+                    <TextView
                         android:layout_marginLeft="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:textAlignment="textStart"
                         android:textSize="14dp"
+                        android:id="@+id/emailET"
+                        android:gravity="center_vertical"
                         android:textStyle="normal"
                         android:textColor="@color/white"
                         android:backgroundTint="@android:color/transparent"
@@ -177,17 +181,18 @@
                         android:layout_height="15dp"
                         android:src="@drawable/ic_profile"/>
 
-                    <EditText
+                    <TextView
                         android:layout_marginLeft="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:textAlignment="textStart"
                         android:textSize="14dp"
                         android:textStyle="normal"
+                        android:gravity="center_vertical"
                         android:textColor="@color/white"
                         android:backgroundTint="@android:color/transparent"
                         android:textColorHint="@color/white"
-                        android:hint="Graphic Designer"/>
+                        android:hint="User"/>
                 </LinearLayout>
 
                 <View
@@ -218,6 +223,7 @@
                         android:layout_height="45dp"
                         android:textAlignment="textStart"
                         android:textSize="14dp"
+                        android:id="@+id/phoneEt"
                         android:textStyle="normal"
                         android:textColor="@color/white"
                         android:backgroundTint="@android:color/transparent"
@@ -278,6 +284,31 @@
                     android:background="@color/lightgray" />
             </RelativeLayout>
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_29sdp"
+
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="@dimen/_80sdp"
+            android:background="@drawable/login_gradient_button">
+
+            <TextView
+                style="@style/TextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/raleway_regular"
+                android:text="Save"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_marginBottom="40dp"

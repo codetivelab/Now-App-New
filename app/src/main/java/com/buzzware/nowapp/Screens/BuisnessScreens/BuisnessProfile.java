@@ -1,19 +1,16 @@
 package com.buzzware.nowapp.Screens.BuisnessScreens;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.buzzware.nowapp.Addapters.Latest24HourAdapter;
 import com.buzzware.nowapp.Addapters.LatestPostAddapters;
@@ -23,6 +20,7 @@ import com.buzzware.nowapp.Models.BusinessModel;
 import com.buzzware.nowapp.Models.PostsModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.General.BaseActivity;
+import com.buzzware.nowapp.Screens.General.Video.VideoCommentsLikesActivity;
 import com.buzzware.nowapp.Sessions.UserSessions;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.ActivityBuisnessProfileBinding;
@@ -63,10 +61,21 @@ public class BuisnessProfile extends BaseActivity {
             setUpViews();
             initFirebase();
             setListener();
-            getMyPosts();
+
         } else {
-            getBusinessData();
+
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(businessId == null)
+            getMyPosts();
+        else
+            getBusinessData();
+
     }
 
     private void getExtrasFromIntent() {
@@ -86,6 +95,7 @@ public class BuisnessProfile extends BaseActivity {
         FirebaseRequests.GetFirebaseRequests(this).getBusinessData((FirebaseRequests.SnapshotCallback) (snapshot, error) -> {
 
             if (snapshot != null && snapshot.getData() != null)
+
                 parseBusinessSnapshot(snapshot);
 
         }, businessId);
@@ -135,10 +145,7 @@ public class BuisnessProfile extends BaseActivity {
 
             db.collection("UserPosts")
                     .get()
-                    .addOnCompleteListener(task -> {
-
-                        parseMyPostsSnapshot(task);
-                    });
+                    .addOnCompleteListener(this::parseMyPostsSnapshot);
         }
     }
 
@@ -250,16 +257,20 @@ public class BuisnessProfile extends BaseActivity {
 
     private void ShowDialog(PostsModel post) {
 
-        Dialog myDialog = new Dialog(this);
+        VideoCommentsLikesActivity.startCommentsLikesActivity(post, this);
 
-        myDialog.setContentView(R.layout.post_detail_dialog_lay);
+        return;
 
-        setDialogUI(myDialog, post);
-
-        myDialog.setCancelable(true);
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        myDialog.show();
+//        Dialog myDialog = new Dialog(this);
+//
+//        myDialog.setContentView(R.layout.post_detail_dialog_lay);
+//
+//        setDialogUI(myDialog, post);
+//
+//        myDialog.setCancelable(true);
+//        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//        myDialog.show();
     }
 
     private void setDialogUI(Dialog myDialog, PostsModel post) {

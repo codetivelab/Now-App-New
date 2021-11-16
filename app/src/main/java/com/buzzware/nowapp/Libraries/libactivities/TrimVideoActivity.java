@@ -6,8 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -74,6 +78,7 @@ import com.marvhong.videoeffect.utils.ConfigUtils;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -132,7 +137,7 @@ public class TrimVideoActivity extends BaseActivity {
 
     private static final String TAG = TrimVideoActivity.class.getSimpleName();
     private static final long MIN_CUT_DURATION = 3 * 1000L;// 最小剪辑时间3s
-    private static final long MAX_CUT_DURATION = 10 * 1000L;//视频最多剪切多长时间
+    private static final long MAX_CUT_DURATION = 60 * 1000L;//视频最多剪切多长时间
     private static final int MAX_COUNT_RANGE = 10;//seekBar的区域内一共有多少张图片
     private static final int MARGIN = UIUtils.dp2Px(56); //左右两边间距
     private ExtractVideoInfoUtil mExtractVideoInfoUtil;
@@ -159,9 +164,16 @@ public class TrimVideoActivity extends BaseActivity {
     private Mp4Composer mMp4Composer;
 
     public static void startActivity(Context context, String videoPath) {
-        Intent intent = new Intent(context, TrimVideoActivity.class);
-        intent.putExtra("videoPath", videoPath);
-        context.startActivity(intent);
+        if (videoPath != null) {
+            Intent intent = new Intent(context, TrimVideoActivity.class);
+            intent.putExtra("videoPath", videoPath);
+            context.startActivity(intent);
+        } else {
+
+            UIUpdate.destroy();
+            UIUpdate.GetUIUpdate(context).AlertDialog("Alert", "Unable to save video because of storage issue.");
+
+        }
     }
 
     @Override
@@ -177,12 +189,9 @@ public class TrimVideoActivity extends BaseActivity {
         mMaxWidth = UIUtils.getScreenWidth() - MARGIN * 2;
         mScaledTouchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
 
-        Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> e) {
-                e.onNext(mExtractVideoInfoUtil.getVideoLength());
-                e.onComplete();
-            }
+        Observable.create((ObservableOnSubscribe<String>) e -> {
+            e.onNext(mExtractVideoInfoUtil.getVideoLength());
+            e.onComplete();
         })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -296,8 +305,8 @@ public class TrimVideoActivity extends BaseActivity {
 
         UIUpdate.GetUIUpdate(this).setProgressDialog("Converting", "Please Wait", TrimVideoActivity.this);
         new Mp4Composer(mVideoPath, outputPath)
-//                .rotation(Rotation.ROTATION_90)
-//                .size((width) 540, (height) 960)
+                .rotation(Rotation.ROTATION_90)
+                .size( 540, 960)
                 .fillMode(FillMode.PRESERVE_ASPECT_FIT)
 
                 .filter(filterGroup)
@@ -361,7 +370,7 @@ public class TrimVideoActivity extends BaseActivity {
 //            mMediaPlayer = null;
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         startActivity(new Intent(TrimVideoActivity.this, PreviewVideoActivity.class)
@@ -469,7 +478,7 @@ public class TrimVideoActivity extends BaseActivity {
             seekBar.setSelectedMinValue(0L);
             seekBar.setSelectedMaxValue(endPosition);
         }
-        seekBar.setMin_cut_time(MIN_CUT_DURATION);//设置最小裁剪时间
+        seekBar.setMin_cut_time(MAX_CUT_DURATION);//设置最小裁剪时间
         seekBar.setNotifyWhileDragging(true);
         seekBar.setOnRangeSeekBarChangeListener(mOnRangeSeekBarChangeListener);
         seekBarLayout.addView(seekBar);
@@ -489,11 +498,11 @@ public class TrimVideoActivity extends BaseActivity {
 
         //init pos icon start
         leftProgress = 0;
-        if (isOver_10_s) {
+//        if (isOver_10_s) {
             rightProgress = MAX_CUT_DURATION;
-        } else {
-            rightProgress = endPosition;
-        }
+//        } else {
+//            rightProgress = endPosition;
+//        }
         mTvShootTip.setText(String.format("裁剪 %d s", rightProgress / 1000));
         averagePxMs = (mMaxWidth * 1.0f / (rightProgress - leftProgress));
         Log.d(TAG, "------averagePxMs----:>>>>>" + averagePxMs);
@@ -505,51 +514,88 @@ public class TrimVideoActivity extends BaseActivity {
      */
     private void initMediaPlayer(SurfaceTexture surfaceTexture) {
         mMediaPlayer = new MediaPlayer();
+        Log.d(TAG, "initMediaPlayer: L1");
         try {
-            mMediaPlayer.setDataSource(mVideoPath);
+            mMediaPlayer.setDataSource(this, Uri.parse(mVideoPath));
+
+//            mMediaPlayer.setDataSource(mVideoPath);
             Surface surface = new Surface(surfaceTexture);
             mMediaPlayer.setSurface(surface);
-            surface.release();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mMediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                        .build());
+            } else {
+                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            }
+//            surface.release();
+            Log.d(TAG, "initMediaPlayer: Surface Released");
             mMediaPlayer.setLooping(true);
-            mMediaPlayer.setOnPreparedListener(new OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    ViewGroup.LayoutParams lp = mSurfaceView.getLayoutParams();
-                    int videoWidth = mp.getVideoWidth();
-                    int videoHeight = mp.getVideoHeight();
-                    float videoProportion = (float) videoWidth / (float) videoHeight;
-                    int screenWidth = mRlVideo.getWidth();
-                    int screenHeight = mRlVideo.getHeight();
-                    float screenProportion = (float) screenWidth / (float) screenHeight;
-                    if (videoProportion > screenProportion) {
-                        lp.width = screenWidth;
-                        lp.height = (int) ((float) screenWidth / videoProportion);
-                    } else {
-                        lp.width = (int) (videoProportion * (float) screenHeight);
-                        lp.height = screenHeight;
-                    }
-                    mSurfaceView.setLayoutParams(lp);
+//            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setOnPreparedListener(mp -> {
 
-                    mOriginalWidth = videoWidth;
-                    mOriginalHeight = videoHeight;
-                    Log.e("videoView", "videoWidth:" + videoWidth + ", videoHeight:" + videoHeight);
+                Log.d(TAG, "initMediaPlayer: Prepared");
 
-                    //设置MediaPlayer的OnSeekComplete监听
-                    mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-                        @Override
-                        public void onSeekComplete(MediaPlayer mp) {
-                            Log.d(TAG, "------ok----real---start-----");
-                            Log.d(TAG, "------isSeeking-----" + isSeeking);
-                            if (!isSeeking) {
-                                videoStart();
-                            }
-                        }
-                    });
+                ViewGroup.LayoutParams lp = mSurfaceView.getLayoutParams();
+                int videoWidth = mp.getVideoWidth();
+                int videoHeight = mp.getVideoHeight();
+                float videoProportion = (float) videoWidth / (float) videoHeight;
+                int screenWidth = mRlVideo.getWidth();
+                int screenHeight = mRlVideo.getHeight();
+                float screenProportion = (float) screenWidth / (float) screenHeight;
+                if (videoProportion > screenProportion) {
+                    lp.width = screenWidth;
+                    lp.height = (int) ((float) screenWidth / videoProportion);
+                } else {
+                    lp.width = (int) (videoProportion * (float) screenHeight);
+                    lp.height = screenHeight;
                 }
+                mSurfaceView.setLayoutParams(lp);
+
+                Log.d(TAG, "initMediaPlayer: Surface params changed");
+
+                mOriginalWidth = videoWidth;
+                mOriginalHeight = videoHeight;
+                Log.e("videoView", "videoWidth:" + videoWidth + ", videoHeight:" + videoHeight);
+
+                Log.d(TAG, "initMediaPlayer: Video Width and height calculated");
+
+                //设置MediaPlayer的OnSeekComplete监听
+                mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                    @Override
+                    public void onSeekComplete(MediaPlayer mp) {
+                        Log.d(TAG, "initMediaPlayer: Complete");
+
+                        Log.d(TAG, "------ok----real---start-----");
+                        Log.d(TAG, "------isSeeking-----" + isSeeking);
+                        if (!isSeeking) {
+                            videoStart();
+                        }
+                    }
+                });
+
             });
+
+            Log.d(TAG, "initMediaPlayer: Path"+mVideoPath);
+
+            Log.d(TAG, "initMediaPlayer: ready to prepare");
+
             mMediaPlayer.prepare();
+
+            Log.d(TAG, "initMediaPlayer: Prepare called");
+
             videoStart();
-        } catch (Exception e) {
+
+            Log.d(TAG, "initMediaPlayer: Started");
+
+
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -885,13 +931,20 @@ public class TrimVideoActivity extends BaseActivity {
     private void videoStart() {
         Log.d(TAG, "----videoStart----->>>>>>>");
         mMediaPlayer.start();
+        Log.d(TAG, "initMediaPlayer: Starting");
         mIvPosition.clearAnimation();
         if (animator != null && animator.isRunning()) {
             animator.cancel();
         }
+        Log.d(TAG, "initMediaPlayer: Animation cancelled");
         anim();
+        Log.d(TAG, "initMediaPlayer: animation called");
         handler.removeCallbacks(run);
+
+        Log.d(TAG, "initMediaPlayer: handler callbacks removed");
+
         handler.post(run);
+        Log.d(TAG, "initMediaPlayer: thread started");
     }
 
     private void videoProgressUpdate() {

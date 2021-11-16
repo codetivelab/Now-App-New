@@ -66,10 +66,12 @@ public class FourthTabFragment extends Fragment implements View.OnClickListener 
 
         Init();
 
-        ///click
+        //click
+
         mBinding.btnBack.setOnClickListener(this);
         mBinding.btnNext.setOnClickListener(this);
         mBinding.btnUploadImage.setOnClickListener(this);
+
         return mBinding.getRoot();
     }
 

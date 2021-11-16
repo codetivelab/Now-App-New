@@ -9,7 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.buzzware.nowapp.BottomSheets.PlacesDialogListFragment;
 import com.buzzware.nowapp.EventMessages.OnRestaurantSelectedMessage;
 import com.buzzware.nowapp.EventMessages.OpenSearchFragment;
 import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.BuisnessDashBoard.BuisnessHomeFragment;
@@ -33,8 +37,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 public class Home extends AppCompatActivity implements View.OnClickListener {
-    public static ActivityHomeBinding mBinding;
+
+    public ActivityHomeBinding mBinding;
+
     Context context;
+
     Fragment selectedFragment = new HomeFragment();
 
     @Override
@@ -50,8 +57,14 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
     private void Init() {
         context = this;
+        //
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).addToBackStack("home").commit();
         //clicks
+
+        PlacesDialogListFragment placesDialogListFragment = new PlacesDialogListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.bslContainer, placesDialogListFragment).addToBackStack("home").commit();
+
         mBinding.settings.setOnClickListener(this);
         mBinding.home.setOnClickListener(this);
         mBinding.openCamera.setOnClickListener(this);
@@ -61,18 +74,19 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
 
         if (v == mBinding.settings) {
-
+            hideBottomSheet(new HideBSF());
             selectedFragment = new SettingsFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).addToBackStack("home").commit();
             SetBottomNavigation(1);
 
         } else if (v == mBinding.home) {
-
+            showBottomSheet(new ShowBSF());
             selectedFragment = new HomeFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).addToBackStack("settings").commit();
             SetBottomNavigation(0);
 
         } else if (v == mBinding.openCamera) {
+            hideBottomSheet(new HideBSF());
 
             checkCameraPermissions();
 
@@ -80,14 +94,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
 
-        if (getFragmentManager().getBackStackEntryCount() >= 0)
-        {
-           super.onBackPressed();
-        }
-        else
-        {
+        if (getFragmentManager().getBackStackEntryCount() >= 0) {
+            super.onBackPressed();
+        } else {
             finish();
         }
 
@@ -96,20 +112,57 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void pushSearchFragment(OpenSearchFragment event) {
 
+        hideBottomSheet(new HideBSF());
         Fragment s = new SearchFragment(event.isFromFilter, event.filtersList);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, s).addToBackStack("Search").commit();
 
-    };
+    }
+
+    ;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void pushSearchFragment(OnRestaurantSelectedMessage event) {
-
+        hideBottomSheet(new HideBSF());
         Fragment s = new BuisnessHomeFragment(event.id);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, s).addToBackStack("BusinessHome").commit();
+    }
 
-    };
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void hideBottomSheet(HideBSF event) {
+        mBinding.bslContainer.setVisibility(View.GONE);
+        setMargin(this,mBinding.menuRL.getLayoutParams(),15);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void SetNavigationPosition(NavigationPosition position) {
+       SetBottomNavigation(position.position);
+    }
+
+    public void setMargin(Context con,ViewGroup.LayoutParams params,int dp) {
+
+        final float scale = con.getResources().getDisplayMetrics().density;
+        // convert the DP into pixel
+        int bottom =  (int)(dp * scale + 0.5f);
+        int left =  (int)(15 * scale + 0.5f);
+        int right =  (int)(15 * scale + 0.5f);
+
+        ViewGroup.MarginLayoutParams s =(ViewGroup.MarginLayoutParams)params;
+        s.setMargins(left,0,right,bottom);
+
+        mBinding.menuRL.setLayoutParams(params);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showBottomSheet(ShowBSF event) {
+        mBinding.bslContainer.setVisibility(View.VISIBLE);
+        setMargin(this,mBinding.menuRL.getLayoutParams(),190);
+    }
+
+    ;
 
     @Override
     public void onStart() {
@@ -124,6 +177,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         EventBus.getDefault().unregister(this);
 
     }
+
     private void checkCameraPermissions() {
         Dexter.withActivity(this).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA).withListener(new MultiplePermissionsListener() {
             @Override
@@ -144,7 +198,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         }).check();
     }
 
-    public static void SetBottomNavigation(int position) {
+
+
+    public void SetBottomNavigation(int position) {
         if (position == 0) {
             mBinding.homeIcon.setImageResource(R.drawable.ic_home_pink);
             mBinding.settingsIcon.setImageResource(R.drawable.ic_settings);
