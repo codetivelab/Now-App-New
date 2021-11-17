@@ -25,6 +25,7 @@ import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.BuisnessDashB
 import com.buzzware.nowapp.Libraries.libactivities.VideoCameraActivity;
 import com.buzzware.nowapp.Models.PostsModel;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.Screens.JCCameraActivity;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.ActivityBuisnessHomeBinding;
 import com.buzzware.nowapp.services.UploadVideoService;
@@ -174,7 +175,7 @@ public class BuisnessHome extends AppCompatActivity implements View.OnClickListe
             }
             else
             {
-                startActivity(new Intent(this, VideoCameraActivity.class));
+                startActivity(new Intent(this, JCCameraActivity.class));
             }
 
         } else {

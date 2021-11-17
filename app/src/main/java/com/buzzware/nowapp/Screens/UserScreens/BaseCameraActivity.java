@@ -350,7 +350,9 @@ public class BaseCameraActivity extends AppCompatActivity {
     }
 
     public static String getVideoFilePath() {
-        return getAndroidMoviesFolder().getAbsolutePath() + "/" + new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "cameraRecorder.mp4";
+        return Environment.getExternalStorageDirectory().getPath() + File.separator
+                + "videoeditor" + File.separator + "small_video.mp4";
+//        return getAndroidMoviesFolder().getAbsolutePath() + "/" + new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "cameraRecorder.mp4";
     }
 
     public static File getAndroidMoviesFolder() {

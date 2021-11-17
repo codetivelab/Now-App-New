@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.buzzware.nowapp.Libraries.base.BaseActivity;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.Screens.JCCameraActivity;
 import com.buzzware.nowapp.Screens.UserScreens.BaseCameraActivity;
 import com.camerakit.CameraKitView;
 
@@ -35,7 +36,7 @@ public class VideoCameraActivity extends BaseCameraActivity {
 
     private CameraKitView cameraKitView;
     public static void startActivity(Activity activity) {
-        Intent intent = new Intent(activity, VideoCameraActivity.class);
+        Intent intent = new Intent(activity, JCCameraActivity.class);
         activity.startActivity(intent);
     }
 

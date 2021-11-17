@@ -20,6 +20,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.annotation.RequiresApi;
@@ -93,6 +94,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     private ImageView mSwitchCamera;
     private ImageView mFlashLamp;
     private ImageView mIvBack;
+    TextView flashTV;
+    TextView flipTV;
     private CaptureLayout mCaptureLayout;
     private FoucsView mFoucsView;
     private MediaPlayer mMediaPlayer;
@@ -161,6 +164,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         View view = LayoutInflater.from(mContext).inflate(R.layout.camera_view, this);
         mVideoView = (VideoView) view.findViewById(R.id.video_preview);
         mPhoto = (ImageView) view.findViewById(R.id.image_photo);
+//        flashTV = (TextView) view.findViewById(R.id.flashTV);
+//        flipTV = (TextView) view.findViewById(R.id.flipTV);
         mSwitchCamera = (ImageView) view.findViewById(R.id.image_switch);
         mSwitchCamera.setImageResource(iconSrc);
         mFlashLamp = (ImageView) view.findViewById(R.id.image_flash);
@@ -202,15 +207,19 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         mCaptureLayout.setCaptureLisenter(new CaptureListener() {
             @Override
             public void takePictures() {
-                mSwitchCamera.setVisibility(INVISIBLE);
-                mFlashLamp.setVisibility(INVISIBLE);
+//                mSwitchCamera.setVisibility(INVISIBLE);
+//                mFlashLamp.setVisibility(INVISIBLE);
+//                flashTV.setVisibility(INVISIBLE);
+//                flipTV.setVisibility(INVISIBLE);
                 machine.capture();
             }
 
             @Override
             public void recordStart() {
-                mSwitchCamera.setVisibility(INVISIBLE);
-                mFlashLamp.setVisibility(INVISIBLE);
+//                flashTV.setVisibility(INVISIBLE);
+//                flipTV.setVisibility(INVISIBLE);
+//                mSwitchCamera.setVisibility(INVISIBLE);
+//                mFlashLamp.setVisibility(INVISIBLE);
                 machine.record(mVideoView.getHolder().getSurface(), screenProp);
                 if (mRecordStateListener != null) {
                     mRecordStateListener.recordStart();
@@ -220,8 +229,12 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             @Override
             public void recordShort(final long time) {
                 mCaptureLayout.setTextWithAnimation(mRecordShortTip);
-                mSwitchCamera.setVisibility(VISIBLE);
+//                mSwitchCamera.setVisibility(VISIBLE);
 //                mFlashLamp.setVisibility(VISIBLE);
+
+//                flashTV.setVisibility(VISIBLE);
+//                flipTV.setVisibility(VISIBLE);
+
                 postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -493,7 +506,10 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 mVideoView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
                 break;
         }
-        mSwitchCamera.setVisibility(VISIBLE);
+//        mSwitchCamera.setVisibility(VISIBLE);
+
+//        flashTV.setVisibility(VISIBLE);
+//VISIBLE        flipTV.setVisibility(VISIBLE);
 //        mFlashLamp.setVisibility(VISIBLE);
         mCaptureLayout.resetCaptureLayout();
     }

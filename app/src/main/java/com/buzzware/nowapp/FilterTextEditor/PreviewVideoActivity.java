@@ -284,7 +284,7 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
                 @Override
                 public void onStart() {
-                    progressDialog.setTitle("Preccesing");
+                    progressDialog.setTitle("Processing");
                     progressDialog.setMessage("Starting");
                     progressDialog.show();
                 }

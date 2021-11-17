@@ -46,6 +46,7 @@
     <color name="backgroundBlue">#242838</color>
     <color name="ff666666">#666666</color>
     <color name="alpha_white_70">#4Dffffff</color>
+    <color name="g1">#86878B</color>
 
 
     <color name="blue_color_picker">#0066FF</color>
@@ -54,6 +55,7 @@
     <color name="orange_color_picker">#FF861F</color>
     <color name="red_color_picker">#ED0A3F</color>
     <color name="red_orange_color_picker">#FF3F34</color>
+    <color name="red">#FF0E00</color>
     <color name="sky_blue_color_picker">#76D7EA</color>
     <color name="violet_color_picker">#8359A3</color>
     <color name="yellow_color_picker">#FBE870</color>

@@ -44,6 +44,7 @@
         <activity android:name=".Screens.BuisnessScreens.BuisnessHome" />
         <activity android:name=".Screens.General.OnBoardingScreen" />
         <activity android:name=".FilterTextEditor.PreviewVideoActivity"/>
+        <activity android:name=".Screens.JCCameraActivity"/>
         <activity
             android:name=".Screens.BuisnessScreens.BuisnessApplication"
             android:theme="@style/Theme.NowApp_Profile_bg" />
@@ -57,6 +58,7 @@
         <activity android:name=".Screens.UserScreens.UploadPostScreen" />
         <activity android:name=".Screens.UserScreens.FilterScreen" />
         <activity android:name=".Screens.UserScreens.Home" />
+        <activity android:name=".Screens.General.TrimSampleVideoActivity" />
         <activity android:name=".Screens.UserScreens.Signup" />
 <!--        <activity android:name=".Screens.General.filters.FilterActivity" />-->
         <activity android:name=".Screens.UserScreens.Login">

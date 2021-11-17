@@ -12,6 +12,7 @@
 
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_10sdp"
@@ -39,7 +40,7 @@
                 android:fontFamily="@font/raleway_regular"
                 android:gravity="center"
                 android:text=""
-                android:textColor="#FFFFFF"
+                android:textColor="@color/text_gray"
                 android:textSize="@dimen/_12ssp" />
 
         </LinearLayout>
@@ -96,11 +97,27 @@
             android:ellipsize="end"
             android:fontFamily="@font/raleway_regular"
             android:minHeight="@dimen/_20sdp"
-            android:textColor="@color/white"
+            android:textColor="@color/g1"
             android:textColorLink="@color/blue_color_picker"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/picCIV"
             app:layout_constraintWidth_percent="0.6" />
+
+        <TextView
+            android:id="@+id/timeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:fontFamily="@font/raleway_regular"
+            android:minHeight="@dimen/_20sdp"
+            android:text="Reply"
+            android:textSize="@dimen/_9ssp"
+            android:textColor="@color/g1"
+            android:textColorLink="@color/blue_color_picker"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout4"/>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/stickerIV"

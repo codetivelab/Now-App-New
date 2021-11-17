@@ -22,6 +22,7 @@ import com.buzzware.nowapp.Fragments.UserFragments.HomeFragment;
 import com.buzzware.nowapp.Fragments.UserFragments.SettingsFragment;
 import com.buzzware.nowapp.Libraries.libactivities.VideoCameraActivity;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.Screens.JCCameraActivity;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.ActivityHomeBinding;
 import com.karumi.dexter.Dexter;
@@ -184,7 +185,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             public void onPermissionsChecked(MultiplePermissionsReport report) {
                 if (report.areAllPermissionsGranted()) {
 
-                    startActivity(new Intent(Home.this, VideoCameraActivity.class));
+                    startActivity(new Intent(Home.this, JCCameraActivity.class));
 
                 }
             }

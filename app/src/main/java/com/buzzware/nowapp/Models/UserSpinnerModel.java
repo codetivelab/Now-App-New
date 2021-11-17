@@ -7,6 +7,16 @@ public class UserSpinnerModel {
     String userLastName;
     String userType;
 
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
+    }
+
+    String businessName;
+
     public UserSpinnerModel() {
 
 

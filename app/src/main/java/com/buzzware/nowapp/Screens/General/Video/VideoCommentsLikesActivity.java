@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -178,6 +179,18 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
         else
             binding.likeTV.setText(post.likes.size() + "");
 
+        if (post.likes != null)
+            if (post.likes.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
+                binding.likeIV.setColorFilter(ContextCompat.getColor(this, R.color.red));
+
+            } else {
+
+                binding.likeIV.setColorFilter(ContextCompat.getColor(this, R.color.white));
+
+            }
+
+        
         getComments();
 
     }
@@ -257,7 +270,7 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
         if (post != null) {
             CommentsFragment placesDialogListFragment = new CommentsFragment(post);
 //            BlankFragment blankFragment = new BlankFragment();
-            placesDialogListFragment.show(getSupportFragmentManager(),"VideoCommentsLikes");
+            placesDialogListFragment.show(getSupportFragmentManager(), "VideoCommentsLikes");
 //            getSupportFragmentManager().beginTransaction().replace(R.id.bslContainer, placesDialogListFragment).addToBackStack("home").commit();
         }
 

@@ -266,7 +266,7 @@ public class CommentsFragment extends BottomSheetDialogFragment implements Stick
     public List<Person> getSuggestions(QueryToken queryToken) {
         String[] namePrefixes = queryToken.getKeywords().toLowerCase().split(" ");
         List<Person> suggestions = new ArrayList<>();
-//        if (mData != null) {
+
         for (Person suggestion : persons) {
             String firstName = suggestion.getFirstName().toLowerCase();
             String lastName = suggestion.getLastName().toLowerCase();
@@ -280,7 +280,7 @@ public class CommentsFragment extends BottomSheetDialogFragment implements Stick
                 }
             }
         }
-//        }
+
         return suggestions;
     }
 
@@ -305,8 +305,6 @@ public class CommentsFragment extends BottomSheetDialogFragment implements Stick
                         mentionsList.add(p);
                     }
                 }
-
-//                Toast.makeText(AddCommentsActivity.this, mentionsList.size() + text, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -320,8 +318,6 @@ public class CommentsFragment extends BottomSheetDialogFragment implements Stick
                         mentionsList.remove(p);
                     }
                 }
-
-//                Toast.makeText(AddCommentsActivity.this, mentionsList.size() + text, Toast.LENGTH_LONG).show();
             }
 
             @Override

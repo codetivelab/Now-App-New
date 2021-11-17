@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.buzzware.nowapp.Libraries.base.BaseActivity;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.Screens.JCCameraActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
@@ -62,7 +63,7 @@ public class MainActivity extends BaseActivity {
 
 //                            createTempFiles();
 
-                            Intent intent = new Intent(MainActivity.this, VideoCameraActivity.class);
+                            Intent intent = new Intent(MainActivity.this, JCCameraActivity.class);
                             startActivityForResult(intent, 100);
                         } else {
                             Toast.makeText(MainActivity.this, "给点权限行不行？", Toast.LENGTH_SHORT).show();

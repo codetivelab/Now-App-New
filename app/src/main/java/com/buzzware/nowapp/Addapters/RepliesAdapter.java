@@ -6,12 +6,14 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +23,7 @@ import com.buzzware.nowapp.Models.CommentModel;
 import com.buzzware.nowapp.Models.MentionUser;
 import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.ReplyModel;
+import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.databinding.ItemCommentBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,7 +32,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.CommentsHolder> {
 
@@ -54,7 +59,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.Comments
 
         ReplyModel comment = comments.get(position);
 
-        if (comment.likes != null)
+        if (comment.likes != null) {
 
             if (comment.likes.size() == 1)
 
@@ -67,6 +72,22 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.Comments
             else
 
                 holder.binding.likeTV.setText("");
+
+            if (comment.likes.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
+                holder.binding.likeIV.setColorFilter(ContextCompat.getColor(c, R.color.red));
+
+            } else {
+
+                holder.binding.likeIV.setColorFilter(ContextCompat.getColor(c, R.color.white));
+
+            }
+
+        }
+
+        String time = covertTimeToText(new Date(comment.time));
+
+        holder.binding.timeTV.setText(time);
 
         if (comment.text != null) {
 
@@ -120,6 +141,59 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.Comments
                     }
 
                 });
+    }
+
+
+    public String covertTimeToText(Date date) {
+
+        String convTime = null;
+
+        String prefix = "";
+        String suffix = "Ago";
+
+        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//            Date pasTime = dateFormat.parse(dataDate);
+
+            Date nowTime = new Date();
+
+            long dateDiff = nowTime.getTime() - date.getTime();
+
+            long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
+            long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
+            long hour   = TimeUnit.MILLISECONDS.toHours(dateDiff);
+            long day  = TimeUnit.MILLISECONDS.toDays(dateDiff);
+
+            if (second < 60) {
+                convTime = second + " Seconds " + suffix;
+            } else if (minute < 60) {
+                convTime = minute + " Minutes "+suffix;
+            } else if (hour < 24) {
+                convTime = hour + " Hours "+suffix;
+            } else if (day >= 7) {
+                if (day > 360) {
+                    convTime = (day / 360) + " Years " + suffix;
+                } else if (day > 30) {
+                    convTime = (day / 30) + " Months " + suffix;
+                } else {
+                    convTime = (day / 7) + " Week " + suffix;
+                }
+            } else if (day < 7) {
+
+                String days = "Days";
+
+                if(day == 1)
+                    days = "Day";
+
+                convTime = day+ " "+ days +" "+suffix;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("ConvTimeE", e.getMessage());
+        }
+
+        return convTime;
     }
 
     public void likeAComment(ReplyModel commentModel) {

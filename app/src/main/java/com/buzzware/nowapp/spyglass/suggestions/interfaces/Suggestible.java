@@ -45,4 +45,5 @@ public interface Suggestible extends Parcelable {
 	@NonNull
 	String getSuggestiblePrimaryText();
 
+
 }

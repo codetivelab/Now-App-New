@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/very_light_blue">
+        android:background="@color/black">
         <RelativeLayout
             android:id="@+id/headerLay"
             android:layout_marginTop="@dimen/_15ssp"
@@ -67,8 +67,8 @@
                         <ImageView
                             android:layout_centerInParent="true"
                             android:id="@+id/searchHistoryIcon"
-                            android:layout_width="@dimen/_10ssp"
-                            android:layout_height="@dimen/_10ssp"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/ic_baseline_search_24"/>
                     </RelativeLayout>
                 </RelativeLayout>

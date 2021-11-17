@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.buzzware.nowapp.Addapters.HomeListAddapters;
@@ -101,7 +103,55 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         }).check();
 
 
+        mBinding.btnBack.setOnClickListener(view -> removeCurrentFragment());
+
         return mBinding.getRoot();
+    }
+
+    private void removeCurrentFragment() {
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).addToBackStack("home").commit();
+
+    }
+
+    private void ApplySearchListener() {
+        mBinding.searchET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+
+                if (text.length() == 0) {
+
+                    SetData(restaurantDataModelList);
+
+                    return;
+                }
+
+                filterList.clear();
+
+                for (int i = 0; i < nearestRestaurantData.size(); i++) {
+
+                    RestaurantDataModel restaurantDataModel = nearestRestaurantData.get(i);
+
+                    if (restaurantDataModel.getBusinessName().toLowerCase().contains(text.toLowerCase())) {
+
+                        filterList.add(restaurantDataModel);
+                    }
+
+                }
+
+                SetData(filterList);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
 
@@ -191,6 +241,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
 
         filterList = new ArrayList<>();
         mBinding.rvSearch.setLayoutManager(new LinearLayoutManager(getContext()));
+        ApplySearchListener();
 
         //setData
         if (filtersListJson == null) {
@@ -211,59 +262,20 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         }
 
         //clicks
-        mBinding.btnBack.setOnClickListener(this);
+//        mBinding.btnBack.setOnClickListener(this);
         mBinding.btnFilter.setOnClickListener(this);
 
         //search listener
-        ApplySearchListener();
     }
 
-    private void ApplySearchListener() {
-        mBinding.searchET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = s.toString().toLowerCase();
-                if (text.length() >= 2) {
-                    if (nearestRestaurantData.size() > 0) {
-                        filterList.clear();
-                        for (int i = 0; i < nearestRestaurantData.size(); i++) {
-                            RestaurantDataModel restaurantDataModel = nearestRestaurantData.get(i);
-                            if (restaurantDataModel.getBusinessName().toLowerCase().contains(text)) {
-                                filterList.add(restaurantDataModel);
-                            }
-                        }
-
-                        ///check
-                        if (filterList.size() > 0) {
-                            Log.e("zxczx", filterList.size() + " Size");
-                            SetData(filterList);
-                        } else {
-                            Log.e("zxczx", "0 Filter");
-                        }
-                    } else {
-                        Log.e("zxczx", "0 Size");
-                    }
-                } else {
-                    Log.e("zxczx", "Reset Size");
-                    filterList.clear();
-                    SetData(nearestRestaurantData);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-    }
 
     private void SetData(List<RestaurantDataModel> list) {
+
         homeListAddapters = new HomeListAddapters(getActivity(), list);
+
         mBinding.rvSearch.setAdapter(homeListAddapters);
-        homeListAddapters.notifyDataSetChanged();
+
+//        homeListAddapters.notifyDataSetChanged();
     }
 
     @Override

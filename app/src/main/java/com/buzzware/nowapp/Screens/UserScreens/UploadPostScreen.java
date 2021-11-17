@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
+import com.buzzware.nowapp.FirebaseRequests.Interfaces.RestaurantResponseCallback;
+import com.buzzware.nowapp.Models.RestaurantDataModel;
 import com.buzzware.nowapp.Models.UserSpinnerModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.BuisnessScreens.BuisnessHome;
@@ -50,6 +52,8 @@ public class UploadPostScreen extends BaseActivity {
     FirebaseFirestore db;
 
     String userType;
+
+    List<RestaurantDataModel> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,28 @@ public class UploadPostScreen extends BaseActivity {
 
     }
 
+    public void getRestaurants() {
+
+        FirebaseRequests.GetFirebaseRequests(this
+        ).GetRestaurant(restaurantResponseCallback, this);
+
+    }
+
+
+    RestaurantResponseCallback restaurantResponseCallback = new RestaurantResponseCallback() {
+        @Override
+        public void onResponse(List<RestaurantDataModel> datalist, boolean isError, String message) {
+            if (!isError) {
+
+                list = datalist;
+                setSpinner();
+
+            } else {
+                UIUpdate.GetUIUpdate(UploadPostScreen.this).DismissProgressDialog();
+                UIUpdate.GetUIUpdate(UploadPostScreen.this).ShowToastMessage(message);
+            }
+        }
+    };
     private void validateAndUpload() {
 
         if (validate()) {
@@ -103,7 +129,7 @@ public class UploadPostScreen extends BaseActivity {
             if (userType != null && !userType.equalsIgnoreCase("b")) {
 
                 if (businessPosition > 0) {
-                    tagBusinessId = businessList.get(businessPosition).getUserID();
+                    tagBusinessId = list.get(businessPosition).getId();
                 }
 
                 if (usersPosition > 0) {
@@ -269,7 +295,7 @@ public class UploadPostScreen extends BaseActivity {
                         if (task.isSuccessful()) {
 
                             populateBusinessList(task);
-
+                            getRestaurants();
                         } else {
 
                             Log.w("TAG", "Error getting documents.", task.getException());
@@ -304,37 +330,38 @@ public class UploadPostScreen extends BaseActivity {
             }
 
         }
-        setSpinner();
+
     }
 
     private void setSpinner() {
-        ArrayAdapter<UserSpinnerModel> adapter = new ArrayAdapter<UserSpinnerModel>(this,
-                android.R.layout.simple_spinner_item, userList) {
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
+//        ArrayAdapter<UserSpinnerModel> adapter = new ArrayAdapter<UserSpinnerModel>(this,
+//                android.R.layout.simple_spinner_item, userList) {
+//            public View getView(int position, View convertView, ViewGroup parent) {
+//                View v = super.getView(position, convertView, parent);
+//
+//                ((TextView) v).setTextSize(16);
+//                ((TextView) v).setGravity(Gravity.LEFT);
+//                ((TextView) v).setTextColor(
+//                        getResources().getColorStateList(R.color.text_gray)
+//                );
+//
+//
+//                return v;
+//            }
+//
+//            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+//                View v = super.getDropDownView(position, convertView, parent);
+//                ((TextView) v).setGravity(Gravity.LEFT);
+//
+//                return v;
+//            }
+//        };
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        binding.userSpinner.setAdapter(adapter);
 
-                ((TextView) v).setTextSize(16);
-                ((TextView) v).setGravity(Gravity.LEFT);
-                ((TextView) v).setTextColor(
-                        getResources().getColorStateList(R.color.text_gray)
-                );
-
-                return v;
-            }
-
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View v = super.getDropDownView(position, convertView, parent);
-                ((TextView) v).setGravity(Gravity.LEFT);
-
-                return v;
-            }
-        };
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.userSpinner.setAdapter(adapter);
-
-
-        adapter = new ArrayAdapter<UserSpinnerModel>(this,
-                android.R.layout.simple_spinner_item, businessList) {
+        ArrayAdapter<RestaurantDataModel> adapter;
+        adapter = new ArrayAdapter<RestaurantDataModel>(this,
+                android.R.layout.simple_spinner_item, list) {
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 View v = super.getView(position, convertView, parent);
@@ -345,6 +372,8 @@ public class UploadPostScreen extends BaseActivity {
 
                 ((TextView) v).setTextColor(getResources().getColorStateList(R.color.text_gray));
 
+                ((TextView) v).setText(list.get(position).getBusinessName());
+
                 return v;
 
             }
@@ -354,6 +383,8 @@ public class UploadPostScreen extends BaseActivity {
                 View v = super.getDropDownView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.LEFT);
+
+                ((TextView) v).setText(list.get(position).getBusinessName());
 
                 return v;
 

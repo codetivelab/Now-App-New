@@ -43,6 +43,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         binding= DataBindingUtil.setContentView(this, R.layout.activity_search);
 
+        Init();
     }
 
     private void Init() {

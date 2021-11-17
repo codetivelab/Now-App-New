@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.cjt2325.cameralibrary.JCameraView
+        android:background="@drawable/rounder_corner_light_blue_two_top"
+        android:id="@+id/jcameraview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:duration_max="10000"
+        app:iconSrc="@drawable/flip"
+        />
+
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:onClick="select30Sec"
+        android:text="30 s"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/tSecCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textVw4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="5dp"
+        android:onClick="select15Sec"
+        android:text="15 s"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/fSecCard"
+        app:layout_constraintEnd_toStartOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textV4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginBottom="5dp"
+        android:onClick="select60Sec"
+        android:text="60 s"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/sSecCard"
+        app:layout_constraintStart_toEndOf="@+id/textView4" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sSecCard"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textV4"
+        app:layout_constraintStart_toStartOf="@+id/textV4" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tSecCard"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginBottom="5dp"
+        android:onClick="select30Sec"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/textView4" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fSecCard"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textVw4"
+        app:layout_constraintStart_toStartOf="@+id/textVw4" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

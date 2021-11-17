@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +26,7 @@ import com.buzzware.nowapp.Models.MentionUser;
 import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.ReplyModel;
 //import com.buzzware.nowapp.Screens.General.AddCommentsActivity;
+import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.General.AddReplyActivity;
 import com.buzzware.nowapp.Screens.UserScreens.UserProfileScreen;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
@@ -40,10 +43,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentsHolder> {
 
@@ -69,7 +75,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         CommentModel comment = comments.get(position);
 
 
-        if (comment.likes != null)
+        if (comment.likes != null) {
 
             if (comment.likes.size() == 1)
 
@@ -83,6 +89,19 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
                 holder.binding.likeTV.setText("");
 
+            if (comment.likes.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
+                holder.binding.likeIV.setColorFilter(ContextCompat.getColor(c, R.color.red));
+
+            } else {
+
+                holder.binding.likeIV.setColorFilter(ContextCompat.getColor(c, R.color.g1));
+
+            }
+        }
+        String time = covertTimeToText(new Date(comment.time));
+
+        holder.binding.timeTV.setText(time);
         if (comment.text != null) {
 
             holder.binding.commentTV.setMovementMethod(LinkMovementMethod.getInstance());
@@ -124,6 +143,60 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         getUserData(holder.binding, comment);
 
     }
+
+    public String covertTimeToText(Date date) {
+
+        String convTime = null;
+
+        String prefix = "";
+        String suffix = "Ago";
+
+        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//            Date pasTime = dateFormat.parse(dataDate);
+
+            Date nowTime = new Date();
+
+            long dateDiff = nowTime.getTime() - date.getTime();
+
+            long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
+            long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
+            long hour   = TimeUnit.MILLISECONDS.toHours(dateDiff);
+            long day  = TimeUnit.MILLISECONDS.toDays(dateDiff);
+
+            if (second < 60) {
+                convTime = second + " Seconds " + suffix;
+            } else if (minute < 60) {
+                convTime = minute + " Minutes "+suffix;
+            } else if (hour < 24) {
+                convTime = hour + " Hours "+suffix;
+            } else if (day >= 7) {
+                if (day > 360) {
+                    convTime = (day / 360) + " Years " + suffix;
+                } else if (day > 30) {
+                    convTime = (day / 30) + " Months " + suffix;
+                } else {
+                    convTime = (day / 7) + " Week " + suffix;
+                }
+            } else if (day < 7) {
+
+                String days = "Days";
+
+                if(day == 1)
+                    days = "Day";
+
+                convTime = day+ " "+ days +" "+suffix;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("ConvTimeE", e.getMessage());
+        }
+
+        return convTime;
+    }
+
+
 
     private void getUserData(ItemCommentBinding binding, CommentModel comment) {
 
