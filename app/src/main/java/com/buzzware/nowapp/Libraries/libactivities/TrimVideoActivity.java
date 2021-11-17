@@ -304,6 +304,7 @@ public class TrimVideoActivity extends BaseActivity {
         UIUpdate.destroy();
 
         UIUpdate.GetUIUpdate(this).setProgressDialog("Converting", "Please Wait", TrimVideoActivity.this);
+
         new Mp4Composer(mVideoPath, outputPath)
 //                .rotation(Rotation.ROTATION_90)
 //                .size((width) 540, (height) 960)

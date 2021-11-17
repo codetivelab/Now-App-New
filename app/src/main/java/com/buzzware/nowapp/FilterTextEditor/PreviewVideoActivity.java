@@ -89,7 +89,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
     private int DRAW_CANVASW = 0;
     private int DRAW_CANVASH = 0;
 
-    private MediaPlayer.OnCompletionListener onCompletionListener = mediaPlayer -> mediaPlayer.start();
     private TextureView videoSurface;
     private PhotoEditorView ivImage;
     private ImageView imgClose;
@@ -110,7 +109,7 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         initViews();
 //        Drawable transparentDrawable = new ColorDrawable(Color.TRANSPARENT);
 //        Glide.with(this).load(getIntent().getStringExtra("DATA")).into(ivImage.getSource());
-        Glide.with(this).load(R.drawable.trans).into(ivImage.getSource());
+//        Glide.with(this).load(R.drawable.trans).into(ivImage.getSource());
 
         videoPath = getIntent().getStringExtra("DATA");
         thumbPath = getIntent().getStringExtra("thumb");
@@ -177,37 +176,52 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
                     mediaPlayer.setDataSource(videoPath);
                     mediaPlayer.setSurface(surface);
                     mediaPlayer.prepare();
-                    mediaPlayer.setOnCompletionListener(onCompletionListener);
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            mediaPlayer.start();
+                        }
+                    });
                     mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     mediaPlayer.start();
                 } catch (IllegalArgumentException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                    Log.d(TAG, "onSurfaceTextureAvailable: IllegalArgumentException"+e.getLocalizedMessage());
                 } catch (SecurityException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                    Log.d(TAG, "onSurfaceTextureAvailable: SecurityException"+e.getLocalizedMessage());
+
                 } catch (IllegalStateException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                    Log.d(TAG, "onSurfaceTextureAvailable: IllegalStateException"+e.getLocalizedMessage());
+
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                    Log.d(TAG, "onSurfaceTextureAvailable: IOException"+e.getLocalizedMessage());
+
                 }
 
             }
 
             @Override
             public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
+                Log.d(TAG, "onSurfaceTextureSizeChanged: ");
 
             }
 
             @Override
             public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+                Log.d(TAG, "onSurfaceTextureDestroyed: ");
                 return false;
             }
 
             @Override
             public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+                Log.d(TAG, "onSurfaceTextureUpdated: ");
 
             }
         });
@@ -241,8 +255,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         } catch (FFmpegNotSupportedException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void executeCommand(String[] command, final String absolutePath) {
@@ -401,7 +413,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             e.printStackTrace();
 
         }
-
     }
 
 

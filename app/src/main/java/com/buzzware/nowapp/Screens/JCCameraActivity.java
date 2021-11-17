@@ -14,10 +14,12 @@ import androidx.cardview.widget.CardView;
 
 import butterknife.BindView;
 
+import com.buzzware.nowapp.FilterTextEditor.PreviewVideoActivity;
 import com.buzzware.nowapp.Libraries.libactivities.TrimVideoActivity;
+import com.buzzware.nowapp.Libraries.utils.ExtractVideoInfoUtil;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.cjt2325.cameralibrary.JCameraView;
-import com.cjt2325.cameralibrary.listener.ClickListener;
 import com.cjt2325.cameralibrary.listener.ErrorListener;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
 import com.cjt2325.cameralibrary.listener.RecordStateListener;
@@ -64,12 +66,13 @@ public class JCCameraActivity extends Base1 {
         mJCameraView.setSaveVideoPath(
                 Environment.getExternalStorageDirectory().getPath() + File.separator
                         + "videoeditor" + File.separator + "small_video");
+
         mJCameraView.setMinDuration(1000); //设置最短录制时长
         mJCameraView.setDuration(10000); //设置最长录制时长
         mJCameraView.setFeatures(JCameraView.BUTTON_STATE_ONLY_RECORDER);
         mJCameraView.setTip("");
         mJCameraView.setRecordShortTip("");
-        mJCameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);
+        mJCameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_HIGH);
         mJCameraView.setErrorLisenter(new ErrorListener() {
             @Override
             public void onError() {
@@ -98,26 +101,38 @@ public class JCCameraActivity extends Base1 {
             @Override
             public void recordSuccess(String url, Bitmap firstFrame) {
                 //获取视频路径
-                String path = FileUtil.saveBitmap("small_video", firstFrame);
                 //url:/storage/emulated/0/haodiaoyu/small_video/video_1508930416375.mp4, Bitmap:/storage/emulated/0/haodiaoyu/small_video/picture_1508930429832.jpg
-                Log.d("CJT", "url:" + url + ", firstFrame:" + path);
+                Log.d("CJT", "url:" + url + ", firstFrame:" + url);
+                ExtractVideoInfoUtil mExtractVideoInfoUtil = new ExtractVideoInfoUtil(url);
+                Bitmap bitmap = mExtractVideoInfoUtil.extractFrame();
+//
+//                if (bitmap != null && !bitmap.isRecycled()) {
+//                    bitmap.recycle();
+//                    bitmap = null;
+//                }
+//
+                String thumb = FileUtil.saveBitmap("small_video", bitmap);
 
-                TrimVideoActivity.startActivity(JCCameraActivity.this, url);
+                if (url != null) {
+                    Intent intent = new Intent(JCCameraActivity.this, PreviewVideoActivity.class);
+                    intent.putExtra("DATA", url);
+                    intent.putExtra("thumb", thumb);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+
+                    UIUpdate.destroy();
+                    UIUpdate.GetUIUpdate(JCCameraActivity.this).AlertDialog("Alert", "Unable to save video because of storage issue.");
+
+                }
+
                 finish();
             }
         });
-        mJCameraView.setLeftClickListener(new ClickListener() {
-            @Override
-            public void onClick() {
-                finish();
-            }
-        });
-        mJCameraView.setRightClickListener(new ClickListener() {
-            @Override
-            public void onClick() {
-                Toast.makeText(JCCameraActivity.this, "Right", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mJCameraView.setLeftClickListener(() -> finish());
+        mJCameraView.setRightClickListener(() -> Toast.makeText(JCCameraActivity.this, "Right", Toast.LENGTH_SHORT).show());
         mJCameraView.setRecordStateListener(new RecordStateListener() {
             @Override
             public void recordStart() {
@@ -135,8 +150,8 @@ public class JCCameraActivity extends Base1 {
 
             }
         });
+
         select30Second();
-//        mJCameraView.setDuration(3000); //设置最长录制时长
 
     }
 
