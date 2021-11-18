@@ -34,8 +34,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.buzzware.nowapp.Addapters.FiltersAdapter;
 import com.buzzware.nowapp.FilterTextEditor.Utils.DimensionData;
 import com.buzzware.nowapp.FilterTextEditor.photoeditor.OnPhotoEditorListener;
 import com.buzzware.nowapp.FilterTextEditor.photoeditor.PhotoEditor;
@@ -43,8 +46,18 @@ import com.buzzware.nowapp.FilterTextEditor.photoeditor.PhotoEditorView;
 import com.buzzware.nowapp.FilterTextEditor.photoeditor.SaveSettings;
 import com.buzzware.nowapp.FilterTextEditor.photoeditor.TextStyleBuilder;
 import com.buzzware.nowapp.FilterTextEditor.photoeditor.ViewType;
+import com.buzzware.nowapp.Libraries.libactivities.TrimVideoActivity;
+import com.buzzware.nowapp.Libraries.utils.ExtractVideoInfoUtil;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.UserScreens.UploadPostScreen;
+import com.buzzware.nowapp.UIUpdates.UIUpdate;
+import com.cjt2325.cameralibrary.util.FileUtil;
+import com.daasuu.mp4compose.FillMode;
+import com.daasuu.mp4compose.composer.Mp4Composer;
+import com.daasuu.mp4compose.filter.GlContrastFilter;
+import com.daasuu.mp4compose.filter.GlFilterGroup;
+import com.daasuu.mp4compose.filter.GlHueFilter;
+import com.daasuu.mp4compose.filter.GlSepiaFilter;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.FFmpegExecuteResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpegLoadBinaryResponseHandler;
@@ -92,14 +105,17 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
     private TextureView videoSurface;
     private PhotoEditorView ivImage;
+    private RecyclerView filtersRV;
     private ImageView imgClose;
     private ImageView imgUndo;
     private ImageView imgText;
     private ImageView imgDraw;
     private ImageView imgSticker;
     private ImageView imgDelete;
+    private ImageView filterIV;
     private ImageView imgDone;
 
+    String selectedPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,13 +125,17 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_preview_video_view_video_editor);
         initView();
+        filtersRV.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        filtersRV.setAdapter(new FiltersAdapter(this, position -> onItemSelected(position)));
         initViews();
+        ivImage.setOnClickListener(view -> filtersRV.setVisibility(View.GONE));
 //        Drawable transparentDrawable = new ColorDrawable(Color.TRANSPARENT);
 //        Glide.with(this).load(getIntent().getStringExtra("DATA")).into(ivImage.getSource());
         Glide.with(this).load(R.drawable.trans).into(ivImage.getSource());
 
         videoPath = getIntent().getStringExtra("DATA");
         thumbPath = getIntent().getStringExtra("thumb");
+        selectedPath = videoPath;
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(videoPath);
         String metaRotation = retriever.extractMetadata(METADATA_KEY_VIDEO_ROTATION);
@@ -141,6 +161,11 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
     }
 
+    public void onItemSelected(int position) {
+
+        mediaComposer(position);
+    }
+
     private void initViews() {
         fFmpeg = FFmpeg.getInstance(this);
         progressDialog = new ProgressDialog(this);
@@ -158,22 +183,48 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         mPhotoEditor.setOnPhotoEditorListener(this);
 
         imgClose.setOnClickListener(this);
+        filterIV.setOnClickListener(this);
         imgDone.setOnClickListener(this);
         imgDraw.setOnClickListener(this);
         imgText.setOnClickListener(this);
         imgUndo.setOnClickListener(this);
         imgSticker.setOnClickListener(this);
-
-
+//        findViewById(R.id.containerCV).setOnClickListener(view -> filtersRV.setVisibility(View.GONE));
+        findViewById(R.id.overlayVw).setOnClickListener(view -> hideOrDisplayFiltersRV());
+//        videoSurface.setOnClickListener(view -> filtersRV.setVisibility(View.GONE));
+//        mPhotoEditor.setOnClickListener(view -> filtersRV.setVisibility(View.GONE));
     }
+
+    private void hideOrDisplayFiltersRV() {
+
+        if (filtersRV.getVisibility() == View.GONE) {
+            filtersRV.setVisibility(View.VISIBLE);
+
+            findViewById(R.id.overlayVw).setVisibility(View.VISIBLE);
+        } else {
+            filtersRV.setVisibility(View.GONE);
+            findViewById(R.id.overlayVw).setVisibility(View.GONE);
+
+        }
+    }
+
 
     private void setUpVideoSurface() {
 
-        if(mediaPlayer != null) {
+        if (mediaPlayer != null) {
 
-            mediaPlayer.release();
+            try {
+                mediaPlayer.stop();
+                mediaPlayer.reset();
+                mediaPlayer.release();
 
-            mediaPlayer.stop();
+                mediaPlayer = null;
+
+//                videoSurface.
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         videoSurface.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
@@ -191,11 +242,17 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
                                     .build()
                     );
 
-                    mediaPlayer.setDataSource(getApplicationContext(),Uri.parse(videoPath));
+                    mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(selectedPath));
                     mediaPlayer.setSurface(surface);
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                        @Override
+//                        public void onPrepared(MediaPlayer mediaPlayer) {
+//                            mediaPlayer.start();
+//                        }
+//                    });
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
-                        public void onPrepared(MediaPlayer mediaPlayer) {
+                        public void onCompletion(MediaPlayer mediaPlayer) {
                             mediaPlayer.start();
                         }
                     });
@@ -205,7 +262,7 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                    Log.d(TAG, "onSurfaceTextureAvailable: Exception"+e.getLocalizedMessage());
+                    Log.d(TAG, "onSurfaceTextureAvailable: Exception" + e.getLocalizedMessage());
                 }
 
             }
@@ -269,9 +326,18 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
                     try {
                         mediaPlayer.stop();
                         mediaPlayer.release();
-                    }catch (Exception e) {
+                    } catch (Exception e) {
 
                     }
+
+//                    ExtractVideoInfoUtil mExtractVideoInfoUtil = new ExtractVideoInfoUtil(selectedPath);
+//                    Bitmap bitmap = mExtractVideoInfoUtil.extractFrame();
+//
+//                    String firstFrame = FileUtil.saveBitmap("small_video", bitmap);
+//                    if (bitmap != null && !bitmap.isRecycled()) {
+//                        bitmap.recycle();
+//                        bitmap = null;
+//                    }
 
                     Log.d("CommandExecute", "onSuccess" + "  " + s);
                     Toast.makeText(getApplicationContext(), "Sucess", Toast.LENGTH_SHORT).show();
@@ -320,6 +386,10 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             case R.id.imgClose:
                 onBackPressed();
                 break;
+            case R.id.filterIV:
+
+                hideOrDisplayFiltersRV();
+                break;
             case R.id.doneBt:
                 saveImage();
                 break;
@@ -345,7 +415,13 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
                 mPhotoEditor.clearBrushAllViews();
                 break;
             case R.id.imgSticker:
-                mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
+                try {
+                    mStickerBSFragment.dismiss();//to hide it
+                    mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
 
         }
@@ -378,7 +454,7 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
 
     public String getVideoFilePath() {
-        return getAndroidImageFolder().getAbsolutePath() + "/" + new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "filter_applyImage.png";
+        return getAndroidMoviesFolder().getAbsolutePath() + "/" + new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "filter_applyImage.png";
     }
 
     @SuppressLint("MissingPermission")
@@ -418,6 +494,170 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         }
     }
 
+
+    private void mediaComposer(int selectedIndex) {
+
+        final String outputPath = getVideoFilePath();
+
+        GlFilterGroup filterGroup = new GlFilterGroup();
+
+
+        if (selectedIndex == 0) {
+
+            selectedPath = videoPath;
+
+//            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//            retriever.setDataSource(selectedPath);
+//                            setUpVideoSurface();
+            if (mediaPlayer != null) {
+
+                try {
+                    mediaPlayer.stop();
+                    mediaPlayer.reset();
+//                                    mediaPlayer.release();
+
+//                                    mediaPlayer = null;
+
+//                videoSurface.
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            try {
+
+                mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(selectedPath));
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                Log.d(TAG, "onSurfaceTextureAvailable: Exception" + e.getLocalizedMessage());
+            }
+            return;
+        } else if (selectedIndex == 1) {
+
+            filterGroup = new GlFilterGroup(new GlContrastFilter());
+
+        } else if (selectedIndex == 2) {
+
+            filterGroup = new GlFilterGroup(new GlSepiaFilter());
+
+        } else if (selectedIndex == 3) {
+
+            filterGroup = new GlFilterGroup(new GlHueFilter());
+
+        } else if (selectedIndex == 4) {
+
+            filterGroup = new GlFilterGroup(new GlContrastFilter());
+
+        } else if (selectedIndex == 5) {
+
+            filterGroup = new GlFilterGroup(new GlHueFilter());
+
+        }
+
+        selectedPath = outputPath;
+
+        UIUpdate.destroy();
+
+        UIUpdate.GetUIUpdate(this).setProgressDialog("Converting", "Please Wait", PreviewVideoActivity.this);
+
+        new Mp4Composer(videoPath, outputPath)
+//                .rotation(Rotation.ROTATION_90)
+//                .size((width) 540, (height) 960)
+                .fillMode(FillMode.PRESERVE_ASPECT_FIT)
+
+                .filter(filterGroup)
+//                .trim((trimStartMs) 200, (trimEndMs) 5000)
+                .listener(new Mp4Composer.Listener() {
+                    @Override
+                    public void onProgress(double progress) {
+                        Log.d(TAG, "onProgress = " + progress);
+                    }
+
+                    @Override
+                    public void onCurrentWrittenVideoTime(long timeUs) {
+
+                    }
+
+                    @Override
+                    public void onCompleted() {
+
+                        UIUpdate.GetUIUpdate(PreviewVideoActivity.this).DismissProgressDialog();
+
+                        Log.d(TAG, "onCompleted()");
+                        runOnUiThread(() -> {
+//                            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//                            retriever.setDataSource(selectedPath);
+//                            setUpVideoSurface();
+                            if (mediaPlayer != null) {
+
+                                try {
+                                    mediaPlayer.stop();
+                                    mediaPlayer.reset();
+//                                    mediaPlayer.release();
+
+//                                    mediaPlayer = null;
+
+//                videoSurface.
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            try {
+//                                mediaPlayer = new MediaPlayer();
+//                                mediaPlayer.setAudioAttributes(
+//                                        new AudioAttributes.Builder()
+//                                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                                                .setUsage(AudioAttributes.USAGE_MEDIA)
+//                                                .build()
+//                                );
+
+                                mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(selectedPath));
+//                                mediaPlayer.setSurface(surface);
+//                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                        @Override
+//                        public void onPrepared(MediaPlayer mediaPlayer) {
+//                            mediaPlayer.start();
+//                        }
+//                    });
+//                                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                                    @Override
+//                                    public void onCompletion(MediaPlayer mediaPlayer) {
+//                                        mediaPlayer.start();
+//                                    }
+//                                });
+                                mediaPlayer.prepare();
+                                mediaPlayer.start();
+
+                            } catch (Exception e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                                Log.d(TAG, "onSurfaceTextureAvailable: Exception" + e.getLocalizedMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCanceled() {
+                        Log.d(TAG, "onCanceled");
+                    }
+
+                    @Override
+                    public void onFailed(Exception exception) {
+
+//                        UIUpdate.Get .UIUpdate(TrimVideoActivity.this).DismissProgressDialog();
+
+                        Log.e(TAG, "onFailed()", exception);
+                    }
+                })
+                .start();
+    }
 
     public String getVideoFilePath1() {
         return getAndroidDCIMFolder().getAbsolutePath() + "/" + new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "filter_apply.mp4";
@@ -502,11 +742,15 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
     protected void onPause() {
         super.onPause();
 
-        if(mediaPlayer != null) {
+        if (mediaPlayer != null) {
 
-            mediaPlayer.release();
+            try {
+                mediaPlayer.release();
 
-            mediaPlayer.stop();
+                mediaPlayer.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -630,10 +874,12 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         ivImage = (PhotoEditorView) findViewById(R.id.ivImage);
         imgClose = (ImageView) findViewById(R.id.imgClose);
         imgUndo = (ImageView) findViewById(R.id.imgUndo);
+        filtersRV = (RecyclerView) findViewById(R.id.filtersListRV);
         imgText = (ImageView) findViewById(R.id.imgText);
         imgDraw = (ImageView) findViewById(R.id.imgDraw);
         imgSticker = (ImageView) findViewById(R.id.imgSticker);
         imgDelete = (ImageView) findViewById(R.id.imgDelete);
         imgDone = (ImageView) findViewById(R.id.doneBt);
+        filterIV = (ImageView) findViewById(R.id.filterIV);
     }
 }

@@ -137,8 +137,6 @@ public class JCCameraActivity extends Base1 {
                     UIUpdate.GetUIUpdate(JCCameraActivity.this).AlertDialog("Alert", "Unable to save video because of storage issue.");
 
                 }
-
-                finish();
             }
         });
         mJCameraView.setLeftClickListener(() -> finish());

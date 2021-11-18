@@ -1,24 +1,20 @@
 package com.buzzware.nowapp.Libraries.libactivities;
 
 import android.Manifest.permission;
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
 import com.buzzware.nowapp.Libraries.base.BaseActivity;
 import com.buzzware.nowapp.R;
+
 import com.buzzware.nowapp.Screens.JCCameraActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
-import java.io.IOException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends BaseActivity {
 
@@ -64,7 +60,7 @@ public class MainActivity extends BaseActivity {
 //                            createTempFiles();
 
                             Intent intent = new Intent(MainActivity.this, JCCameraActivity.class);
-                            startActivityForResult(intent, 100);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(MainActivity.this, "给点权限行不行？", Toast.LENGTH_SHORT).show();
                         }

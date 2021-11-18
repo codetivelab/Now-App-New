@@ -8,6 +8,7 @@
     tools:viewBindingIgnore="true">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/containerCV"
         android:layout_width="match_parent"
         app:layout_constraintBottom_toTopOf="@+id/doneBt"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,6 +65,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/overlayVw"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:background="#85000000"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/filtersListRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="#85000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <ImageView
         android:id="@+id/imgUndo"
@@ -101,6 +118,16 @@
         app:layout_constraintTop_toBottomOf="@id/imgText" />
 
     <ImageView
+        android:id="@+id/filterIV"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_text"
+        app:layout_constraintEnd_toEndOf="@+id/imgSticker"
+        app:layout_constraintStart_toStartOf="@+id/imgSticker"
+        app:layout_constraintTop_toBottomOf="@+id/imgSticker" />
+
+    <ImageView
         android:id="@+id/imgSticker"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -121,6 +148,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/imgSticker"
         app:layout_constraintTop_toBottomOf="@id/imgSticker" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

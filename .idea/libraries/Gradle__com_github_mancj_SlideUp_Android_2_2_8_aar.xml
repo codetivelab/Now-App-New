@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.mancj:SlideUp-Android:2.2.8@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c2a68ba36fbd15ae0312915d1863ac03/jetified-SlideUp-Android-2.2.8/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bdd62e7618e657dc0686b6359fb27168/jetified-SlideUp-Android-2.2.8/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c2a68ba36fbd15ae0312915d1863ac03/jetified-SlideUp-Android-2.2.8/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c2a68ba36fbd15ae0312915d1863ac03/jetified-SlideUp-Android-2.2.8/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c2a68ba36fbd15ae0312915d1863ac03/jetified-SlideUp-Android-2.2.8/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bdd62e7618e657dc0686b6359fb27168/jetified-SlideUp-Android-2.2.8/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bdd62e7618e657dc0686b6359fb27168/jetified-SlideUp-Android-2.2.8/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bdd62e7618e657dc0686b6359fb27168/jetified-SlideUp-Android-2.2.8/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mancj/SlideUp-Android/2.2.8/122bbf0ef954a3ce1fb5143c8577dfbd94510e2d/SlideUp-Android-2.2.8-javadoc.jar!/" />

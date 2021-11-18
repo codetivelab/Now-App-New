@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.MasayukiSuda:Mp4Composer-android:v0.4.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0dc3a924038e7a567840e2393a84acc0/jetified-Mp4Composer-android-v0.4.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0dc3a924038e7a567840e2393a84acc0/jetified-Mp4Composer-android-v0.4.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0dc3a924038e7a567840e2393a84acc0/jetified-Mp4Composer-android-v0.4.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a88713ecd50b96f7e4dfe83d00d886e7/jetified-Mp4Composer-android-v0.4.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a88713ecd50b96f7e4dfe83d00d886e7/jetified-Mp4Composer-android-v0.4.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a88713ecd50b96f7e4dfe83d00d886e7/jetified-Mp4Composer-android-v0.4.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

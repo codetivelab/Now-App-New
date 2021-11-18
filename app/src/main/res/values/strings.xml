@@ -22,6 +22,13 @@
     <string name="allow_permission">Allow All Permissions</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+<!--    Camera 2-->
+    <string name="record">Record</string>
+    <string name="stop">Stop</string>
+    <string name="description_info">Info</string>
+    <string name="permission_request">This sample needs permission for camera and audio recording.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+
 
     <!-- Buisness Types -->
     <string name="restaurant">Restaurant</string>
@@ -30,8 +37,19 @@
     <string name="club">Club</string>
     <string name="coffeeShop">Coffee Shop</string>
     <string name="fastFood">Fast Food</string>
+    <string name="intro_message">
+        <![CDATA[
+            This sample demonstrates how to record video using Camera2 API.
+        ]]>
+    </string>
 
+<!--    android hive camera 2-->
+    <string name="message_need_permission">Need Permissions</string>
+    <string name="message_permission">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="title_go_to_setting">GOTO SETTINGS</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="play_stop">Play or Stop</string>
     <string name="buisness_name_req">Buisness name shouldn\'t be empty</string>
     <string name="buisness_type_req">Select Business Type</string>
     <string name="buisness_email_req">Buisness email shouldn\'t be empty</string>

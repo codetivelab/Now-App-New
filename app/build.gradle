@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+//    id "org.jetbrains.kotlin.jvm" version "1.5.31"
 }
 
 android {
@@ -167,6 +168,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.2'
 
     //api future
+//    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.5.31'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 //    implementation 'com.github.MasayukiSuda:GPUVideo-android:v0.1.2'
     implementation 'org.greenrobot:eventbus:3.2.0'
@@ -180,4 +183,6 @@ dependencies {
     //Location
     implementation 'com.github.delight-im:Android-SimpleLocation:v1.1.0'
 }
+apply plugin: 'kotlin-android'
+
 apply plugin: 'com.google.gms.google-services'

@@ -2,15 +2,12 @@ package com.buzzware.nowapp.Screens.UserScreens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.buzzware.nowapp.Addapters.FilterListAddapters;
 import com.buzzware.nowapp.Models.FilterModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.databinding.ActivityFilterScreenBinding;
@@ -43,10 +40,10 @@ public class FilterScreen extends AppCompatActivity {
         filterModels.add(new FilterModel());
         filterModels.add(new FilterModel());
         filterModels.add(new FilterModel());
-
-        mBinding.rvFilters.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        FilterListAddapters filterListAddapters= new FilterListAddapters(this, filterModels);
-        mBinding.rvFilters.setAdapter(filterListAddapters);
-        filterListAddapters.notifyDataSetChanged();
+//
+//        mBinding.rvFilters.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+//        FilterListAddapters filterListAddapters= new FilterListAddapters(this, filterModels);
+//        mBinding.rvFilters.setAdapter(filterListAddapters);
+//        filterListAddapters.notifyDataSetChanged();
     }
 }

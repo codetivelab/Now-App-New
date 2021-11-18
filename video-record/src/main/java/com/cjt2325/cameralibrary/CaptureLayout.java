@@ -136,7 +136,7 @@ public class CaptureLayout extends FrameLayout {
 
             }
         });
-        set.setDuration(5000);
+        set.setDuration(200);
         set.start();
     }
 

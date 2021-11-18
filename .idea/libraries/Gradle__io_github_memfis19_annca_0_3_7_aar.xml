@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: io.github.memfis19:annca:0.3.7@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3d80bd306ed999719ab99fe3f172620f/jetified-annca-0.3.7/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cbac40c53ea01edf7b0032dff5644f35/jetified-annca-0.3.7/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3d80bd306ed999719ab99fe3f172620f/jetified-annca-0.3.7/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3d80bd306ed999719ab99fe3f172620f/jetified-annca-0.3.7/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3d80bd306ed999719ab99fe3f172620f/jetified-annca-0.3.7/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cbac40c53ea01edf7b0032dff5644f35/jetified-annca-0.3.7/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cbac40c53ea01edf7b0032dff5644f35/jetified-annca-0.3.7/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cbac40c53ea01edf7b0032dff5644f35/jetified-annca-0.3.7/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.memfis19/annca/0.3.7/2927eb0f53eddd64e47bf9b49ec2eaef047c3ee4/annca-0.3.7-javadoc.jar!/" />
