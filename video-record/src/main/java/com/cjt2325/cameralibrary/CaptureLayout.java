@@ -129,13 +129,14 @@ public class CaptureLayout extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                startAlphaAnimation();
                 if (typeLisenter != null) {
                     typeLisenter.confirm();
                 }
-                startAlphaAnimation();
+
             }
         });
-        set.setDuration(200);
+        set.setDuration(5000);
         set.start();
     }
 

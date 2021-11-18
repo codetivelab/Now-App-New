@@ -91,7 +91,7 @@
         <activity
             android:configChanges="keyboard|orientation|screenSize"
             android:name=".Libraries.libactivities.VideoPreviewActivity"
-            android:hardwareAccelerated="true"
+            android:hardwareAccelerated="false"
             android:screenOrientation="portrait"/>
 
         <activity

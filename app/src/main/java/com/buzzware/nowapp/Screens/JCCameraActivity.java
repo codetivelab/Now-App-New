@@ -24,7 +24,12 @@ import com.cjt2325.cameralibrary.listener.ErrorListener;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
 import com.cjt2325.cameralibrary.listener.RecordStateListener;
 import com.cjt2325.cameralibrary.util.FileUtil;
+
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.buzzware.nowapp.Screens.UserScreens.BaseCameraActivity.getAndroidMoviesFolder;
 
 /**
  * @author LLhon
@@ -51,6 +56,10 @@ public class JCCameraActivity extends Base1 {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_jc_camera;
+    }
+
+    public String getVideoFilePath() {
+        return getAndroidMoviesFolder().getAbsolutePath() + "/" + new SimpleDateFormat("yyyyMM_dd-HHmmss").format(new Date()) + "filter_apply.mp4";
     }
 
     @Override
@@ -100,28 +109,29 @@ public class JCCameraActivity extends Base1 {
 
             @Override
             public void recordSuccess(String url, Bitmap firstFrame) {
-                //获取视频路径
-                //url:/storage/emulated/0/haodiaoyu/small_video/video_1508930416375.mp4, Bitmap:/storage/emulated/0/haodiaoyu/small_video/picture_1508930429832.jpg
+
                 Log.d("CJT", "url:" + url + ", firstFrame:" + url);
+
+
                 ExtractVideoInfoUtil mExtractVideoInfoUtil = new ExtractVideoInfoUtil(url);
+
                 Bitmap bitmap = mExtractVideoInfoUtil.extractFrame();
-//
-//                if (bitmap != null && !bitmap.isRecycled()) {
-//                    bitmap.recycle();
-//                    bitmap = null;
-//                }
-//
+
                 String thumb = FileUtil.saveBitmap("small_video", bitmap);
 
                 if (url != null) {
+
                     Intent intent = new Intent(JCCameraActivity.this, PreviewVideoActivity.class);
+
                     intent.putExtra("DATA", url);
                     intent.putExtra("thumb", thumb);
+
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
                     startActivity(intent);
+
                     finish();
-                }
-                else{
+                } else {
 
                     UIUpdate.destroy();
                     UIUpdate.GetUIUpdate(JCCameraActivity.this).AlertDialog("Alert", "Unable to save video because of storage issue.");
@@ -204,7 +214,7 @@ public class JCCameraActivity extends Base1 {
         mJCameraView.setDuration(30 * 1000);
     }
 
-     void select30Second() {
+    void select30Second() {
 
         fSecCard.setVisibility(View.INVISIBLE);
         sSecCard.setVisibility(View.INVISIBLE);

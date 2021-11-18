@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -99,17 +100,19 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
     private ImageView imgDelete;
     private ImageView imgDone;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_preview_video_view_video_editor);
         initView();
         initViews();
 //        Drawable transparentDrawable = new ColorDrawable(Color.TRANSPARENT);
 //        Glide.with(this).load(getIntent().getStringExtra("DATA")).into(ivImage.getSource());
-//        Glide.with(this).load(R.drawable.trans).into(ivImage.getSource());
+        Glide.with(this).load(R.drawable.trans).into(ivImage.getSource());
 
         videoPath = getIntent().getStringExtra("DATA");
         thumbPath = getIntent().getStringExtra("thumb");
@@ -161,48 +164,48 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         imgUndo.setOnClickListener(this);
         imgSticker.setOnClickListener(this);
 
+
+    }
+
+    private void setUpVideoSurface() {
+
+        if(mediaPlayer != null) {
+
+            mediaPlayer.release();
+
+            mediaPlayer.stop();
+        }
+
         videoSurface.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-//                activityHomevideoSurface.getLayoutParams().height=640;
-//                activityHomevideoSurface.getLayoutParams().width=720;
+
                 Surface surface = new Surface(surfaceTexture);
 
                 try {
                     mediaPlayer = new MediaPlayer();
-//                    mediaPlayer.setDataSource("http://daily3gp.com/vids/747.3gp");
+                    mediaPlayer.setAudioAttributes(
+                            new AudioAttributes.Builder()
+                                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                                    .build()
+                    );
 
-                    Log.d("VideoPath>>", videoPath);
-                    mediaPlayer.setDataSource(videoPath);
+                    mediaPlayer.setDataSource(getApplicationContext(),Uri.parse(videoPath));
                     mediaPlayer.setSurface(surface);
-                    mediaPlayer.prepare();
-                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
-                        public void onCompletion(MediaPlayer mediaPlayer) {
+                        public void onPrepared(MediaPlayer mediaPlayer) {
                             mediaPlayer.start();
                         }
                     });
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    mediaPlayer.prepare();
                     mediaPlayer.start();
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    Log.d(TAG, "onSurfaceTextureAvailable: IllegalArgumentException"+e.getLocalizedMessage());
-                } catch (SecurityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    Log.d(TAG, "onSurfaceTextureAvailable: SecurityException"+e.getLocalizedMessage());
 
-                } catch (IllegalStateException e) {
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                    Log.d(TAG, "onSurfaceTextureAvailable: IllegalStateException"+e.getLocalizedMessage());
-
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    Log.d(TAG, "onSurfaceTextureAvailable: IOException"+e.getLocalizedMessage());
-
+                    Log.d(TAG, "onSurfaceTextureAvailable: Exception"+e.getLocalizedMessage());
                 }
 
             }
@@ -486,6 +489,26 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
         mPhotoEditor.setBrushDrawingMode(false);
         imgDraw.setBackgroundColor(ContextCompat.getColor(this, R.color.black_trasp));
         mPhotoEditor.addImage(bitmap);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpVideoSurface();
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(mediaPlayer != null) {
+
+            mediaPlayer.release();
+
+            mediaPlayer.stop();
+        }
+
     }
 
     @Override
