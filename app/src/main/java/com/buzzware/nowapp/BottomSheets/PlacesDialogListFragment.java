@@ -1,6 +1,7 @@
 package com.buzzware.nowapp.BottomSheets;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -154,6 +155,9 @@ public class PlacesDialogListFragment extends BottomSheetDialogFragment {
 //        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
+    public float dpFromPx(final Context context, final float px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
     private void setSheetBehaviour() {
 
         sheetBehavior = BottomSheetBehavior.from(binding.include.bottomSheetLayout);
@@ -162,7 +166,7 @@ public class PlacesDialogListFragment extends BottomSheetDialogFragment {
 
         sheetBehavior.setHideable(false);
 
-        sheetBehavior.setPeekHeight(500);
+        sheetBehavior.setPeekHeight(new Float(pxFromDp(getActivity(),180)).intValue());
 
 //        sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
 //            @Override
@@ -193,7 +197,9 @@ public class PlacesDialogListFragment extends BottomSheetDialogFragment {
 //            }
 //        });
     }
-
+    public float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

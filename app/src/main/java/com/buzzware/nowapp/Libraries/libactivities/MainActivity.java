@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
                             Intent intent = new Intent(MainActivity.this, JCCameraActivity.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(MainActivity.this, "给点权限行不行？", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Permissions Required", Toast.LENGTH_SHORT).show();
                         }
                     }
 

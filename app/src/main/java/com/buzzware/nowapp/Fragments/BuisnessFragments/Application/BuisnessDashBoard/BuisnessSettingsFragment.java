@@ -38,17 +38,25 @@ public class BuisnessSettingsFragment extends Fragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_buisness_settings, container, false);
 
-        businessModel = UserSessions.GetUserSession().getBusinessModel(getActivity());
-
         mBinding.basicInfo.setOnClickListener(this);
         mBinding.changePassword.setOnClickListener(this);
         mBinding.changeProfilePhoto.setOnClickListener(this);
         mBinding.changeBackgroundCover.setOnClickListener(this);
         mBinding.btnLogout.setOnClickListener(this::onClick);
 
-        setData();
-
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getActivity() != null) {
+
+            businessModel = UserSessions.GetUserSession().getBusinessModel(getActivity());
+
+            setData();
+        }
     }
 
     private void setData() {

@@ -11,6 +11,8 @@ import androidx.core.content.FileProvider;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Permissions.Permissions;
 import com.buzzware.nowapp.R;
@@ -49,6 +53,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -88,6 +95,7 @@ public class UserProfileScreen extends AppCompatActivity {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         setListener();
+
         getUserData();
     }
 
@@ -112,6 +120,7 @@ public class UserProfileScreen extends AppCompatActivity {
 
         });
 
+        binding.backIV.setOnClickListener(view -> finish());
         binding.profileIV.setOnClickListener(view -> ShowImageUploadDailog());
     }
 
@@ -205,25 +214,20 @@ public class UserProfileScreen extends AppCompatActivity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-        // Create the File where the photo should go
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException ex) {
-            // Error occurred while creating the File
-            ex.printStackTrace();
-        }
-        // Continue only if the File was successfully created
-        if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(this,
-                    "com.buzzware.nowapp.provider",
-                    photoFile);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            dispatchTakePictureLauncher.launch(takePictureIntent);
-        }
+
+        dispatchTakePictureLauncher.launch(takePictureIntent);
     }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
 
     ActivityResultLauncher<Intent> dispatchTakePictureLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -231,8 +235,14 @@ public class UserProfileScreen extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        File imageFile = new File(currentPhotoPath);
-                        imageUri = Uri.fromFile(imageFile);
+                        Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+//                        File imageFile = new File(currentPhotoPath);
+                        imageUri = getImageUri(UserProfileScreen.this, photo);
+
+                        Glide.with(UserProfileScreen.this).load(imageUri)
+                                .apply(new RequestOptions().centerCrop()).into(binding.profileIV);
+//                        binding.coverPhotoIV.setBit
+
                         UploadImage();
 //                        mBinding.licenceIV.setImageURI(Uri.fromFile(imageFile));
 //
@@ -242,6 +252,14 @@ public class UserProfileScreen extends AppCompatActivity {
                     }
                 }
             });
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, new Date().toString(), null);
+        return Uri.parse(path);
+    }
 
     private void OpenCamera() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -258,12 +276,7 @@ public class UserProfileScreen extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ACCESS_CAMERA && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            binding.profileIV.setImageURI(uri);
-            imageUri = uri;
-            UploadImage();
-        } else if (requestCode == ACCESS_Gallery && resultCode == Activity.RESULT_OK) {
+        if (requestCode == ACCESS_Gallery && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             binding.profileIV.setImageURI(uri);
             imageUri = uri;

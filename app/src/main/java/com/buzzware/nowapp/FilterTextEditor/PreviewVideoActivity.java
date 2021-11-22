@@ -150,12 +150,6 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
             DRAW_CANVASH = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
         }
         setCanvasAspectRatio();
-//
-//        videoSurface.getLayoutParams().width = newCanvasWidth;
-//        videoSurface.getLayoutParams().height = newCanvasHeight;
-
-//        ivImage.getLayoutParams().width = newCanvasWidth;
-//        ivImage.getLayoutParams().height = newCanvasHeight;
 
         Log.d(">>", "width>> " + newCanvasWidth + "height>> " + newCanvasHeight + " rotation >> " + rotation);
 
@@ -330,20 +324,20 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
                     }
 
-//                    ExtractVideoInfoUtil mExtractVideoInfoUtil = new ExtractVideoInfoUtil(selectedPath);
-//                    Bitmap bitmap = mExtractVideoInfoUtil.extractFrame();
-//
-//                    String firstFrame = FileUtil.saveBitmap("small_video", bitmap);
-//                    if (bitmap != null && !bitmap.isRecycled()) {
-//                        bitmap.recycle();
-//                        bitmap = null;
-//                    }
+                    ExtractVideoInfoUtil mExtractVideoInfoUtil = new ExtractVideoInfoUtil(selectedPath);
+                    Bitmap bitmap = mExtractVideoInfoUtil.extractFrame();
+
+                    String firstFrame = FileUtil.saveBitmap("small_video", bitmap);
+                    if (bitmap != null && !bitmap.isRecycled()) {
+                        bitmap.recycle();
+                        bitmap = null;
+                    }
 
                     Log.d("CommandExecute", "onSuccess" + "  " + s);
                     Toast.makeText(getApplicationContext(), "Sucess", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(PreviewVideoActivity.this, UploadPostScreen.class);
                     i.putExtra("path", absolutePath);
-                    i.putExtra("thumb", thumbPath);
+                    i.putExtra("thumb", firstFrame);
                     startActivity(i);
                     finish();
 
@@ -688,7 +682,7 @@ public class PreviewVideoActivity extends AppCompatActivity implements OnPhotoEd
 
             exeCmd.add("-y");
             exeCmd.add("-i");
-            exeCmd.add(videoPath);
+            exeCmd.add(selectedPath);
 //            exeCmd.add("-framerate 30000/1001 -loop 1");
             exeCmd.add("-i");
             exeCmd.add(imagePath);

@@ -356,6 +356,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="45dp"
                                     android:layout_gravity="center"
+                                    android:visibility="gone"
                                     android:layout_marginTop="10dp"
                                     android:background="@drawable/rounder_border_pink">
 
@@ -367,6 +368,7 @@
                                         android:fontFamily="@font/raleway_bold"
                                         android:letterSpacing="0.07"
                                         android:text="See All"
+                                        android:visibility="invisible"
                                         android:textAlignment="center"
                                         android:textAllCaps="true"
                                         android:textColor="@color/white"

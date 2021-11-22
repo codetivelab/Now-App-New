@@ -46,11 +46,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FirstTabFragment extends Fragment implements View.OnClickListener{
+public class FirstTabFragment extends Fragment implements View.OnClickListener {
 
     FragmentFirstTabBinding mBinding;
     Context context;
-    public static BuisnessSignupModel buisnessSignupModel;
+    public BuisnessSignupModel buisnessSignupModel;
     BottomSheetDialog bottomSheetDialog;
 
     public FirstTabFragment() {
@@ -59,9 +59,9 @@ public class FirstTabFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding= DataBindingUtil.inflate(inflater, R.layout.fragment_first_tab, container, false);
-        context= getContext();
-        buisnessSignupModel= new BuisnessSignupModel();
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_first_tab, container, false);
+        context = getContext();
+        buisnessSignupModel = new BuisnessSignupModel();
         mBinding.OpenTypeSpinner.setOnClickListener(this);
         mBinding.btnNext.setOnClickListener(this);
         return mBinding.getRoot();
@@ -69,18 +69,21 @@ public class FirstTabFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if(v == mBinding.OpenTypeSpinner)
-        {
+
+        if (v == mBinding.OpenTypeSpinner) {
+
             ShowTypeListDialog();
-        }else if(v == mBinding.btnNext)
-        {
+
+        } else if (v == mBinding.btnNext) {
+
             Validation();
+
         }
     }
 
     private void Validation() {
-        if(!TextUtils.isEmpty(mBinding.buisnessNameET.getText().toString())){
-            if(buisnessSignupModel.getBuisnessType() != null) {
+        if (!TextUtils.isEmpty(mBinding.buisnessNameET.getText().toString())) {
+            if (buisnessSignupModel.getBuisnessType() != null) {
                 if (!TextUtils.isEmpty(mBinding.buisnessEmailET.getText().toString())) {
                     if (!TextUtils.isEmpty(mBinding.buisnessPhoneNumberET.getText().toString())) {
                         if (!TextUtils.isEmpty(mBinding.firstNameET.getText().toString())) {
@@ -106,10 +109,10 @@ public class FirstTabFragment extends Fragment implements View.OnClickListener{
                 } else {
                     UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.buisness_email_req));
                 }
-            }else{
+            } else {
                 UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.buisness_type_req));
             }
-        }else{
+        } else {
             UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.buisness_name_req));
         }
     }
@@ -126,28 +129,35 @@ public class FirstTabFragment extends Fragment implements View.OnClickListener{
     }
 
     private void CallSecondTabFragment() {
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new SecondTabFragment()).addToBackStack("secondTab").commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new SecondTabFragment(buisnessSignupModel)).addToBackStack("secondTab").commit();
     }
 
     private void ShowTypeListDialog() {
         RecyclerView recyclerView;
-        bottomSheetDialog= new BottomSheetDialog(getContext(), R.style.SheetDialog);
+
+        bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.SheetDialog);
+
         View view = getLayoutInflater().inflate(R.layout.buisness_type_list_dialog_lay, (LinearLayout) getActivity().findViewById(R.id.container));
-        recyclerView= view.findViewById(R.id.rv_buisness_types);
+
+        recyclerView = view.findViewById(R.id.rv_buisness_types);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        BuisnessTypeListAddapters buisnessTypeListAddapters= new BuisnessTypeListAddapters(getContext(), Constant.GetConstant().GetBuisnessTypes(context), clickListener);
+
+        BuisnessTypeListAddapters buisnessTypeListAddapters = new BuisnessTypeListAddapters(getContext(), Constant.GetConstant().GetBuisnessTypes(context), clickListener);
+
         recyclerView.setAdapter(buisnessTypeListAddapters);
+
         buisnessTypeListAddapters.notifyDataSetChanged();
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
     }
 
-    BuisnessTypeListAddapters.ClickListener clickListener= new BuisnessTypeListAddapters.ClickListener() {
+    BuisnessTypeListAddapters.ClickListener clickListener = new BuisnessTypeListAddapters.ClickListener() {
         @Override
         public void OnClick(SelectionModel selectionModel) {
             buisnessSignupModel.setBuisnessType(selectionModel.getName());
             mBinding.businessTypeTV.setText(selectionModel.getName());
-            if(bottomSheetDialog != null)
+            if (bottomSheetDialog != null)
                 bottomSheetDialog.dismiss();
         }
     };

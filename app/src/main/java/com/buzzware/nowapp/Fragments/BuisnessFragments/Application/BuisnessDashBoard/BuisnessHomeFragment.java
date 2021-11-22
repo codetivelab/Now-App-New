@@ -288,9 +288,16 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
         }
     }
 
+
     private void GetData() {
 
-        NetworkRequests.GetNetworkRequests(getContext()).GetVenueDetail(callBack, model.getBusinessName(), model.getBusinessAddress(), getContext());
+        try {
+
+            NetworkRequests.GetNetworkRequests(getContext()).GetVenueDetail(callBack, model.getBusinessName(), model.getBusinessAddress(), getContext());
+
+        } catch ( Exception e) {
+
+        }
     }
 
     NetWorkRequestsCallBack callBack = new NetWorkRequestsCallBack() {
@@ -490,6 +497,7 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
             }
         }
     }
+
 
     private void SetProgressColor(int progress, ProgressBar verticalProgressbar) {
 
@@ -737,7 +745,7 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
             startActivity(new Intent(getActivity(), UserFollowActivity.class)
                     .putExtra("userId", post.getUserID()));
         else
-            openVideoPlayer(post);
+            VideoCommentsLikesActivity.startCommentsLikesActivity(post, getActivity());
     }
 
     private void setDialogUI(Dialog myDialog, PostsModel post) {

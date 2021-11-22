@@ -109,15 +109,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
             android:ellipsize="end"
-            android:maxLines="1"
             android:fontFamily="@font/raleway_regular"
+            android:maxLines="1"
             android:minHeight="@dimen/_20sdp"
             android:text="Reply"
-            android:textSize="@dimen/_9ssp"
             android:textColor="@color/g1"
             android:textColorLink="@color/blue_color_picker"
+            android:textSize="@dimen/_9ssp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout4"/>
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout4"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/stickerIV"

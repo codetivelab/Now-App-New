@@ -23,6 +23,7 @@ import com.buzzware.nowapp.FilterTextEditor.PreviewVideoActivity;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
 import com.buzzware.nowapp.Fragments.GeneralFragments.CommentsFragment;
 import com.buzzware.nowapp.Libraries.libactivities.VideoPreviewActivity;
+import com.buzzware.nowapp.Models.BusinessModel;
 import com.buzzware.nowapp.Models.CommentModel;
 import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.PostsModel;
@@ -69,7 +70,9 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
     private void setPinOrUnpin() {
 
         if (!post.getUserID().equalsIgnoreCase(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+
             binding.pinIV.setVisibility(View.GONE);
+
             binding.unPinIV.setVisibility(View.GONE);
 
             return;
@@ -78,14 +81,16 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
         if (!post.getPinned() == true) {
 
             binding.pinIV.setVisibility(View.GONE);
+
             binding.unPinIV.setVisibility(View.VISIBLE);
 
         } else {
 
             binding.pinIV.setVisibility(View.VISIBLE);
-            binding.unPinIV.setVisibility(View.GONE);
 
+            binding.unPinIV.setVisibility(View.GONE);
         }
+
         binding.unPinIV.setOnClickListener(v -> pinOrUnpinPost(post));
         binding.pinIV.setOnClickListener(v -> pinOrUnpinPost(post));
 
@@ -100,11 +105,13 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
         if (!post.getPinned() == true) {
 
             binding.pinIV.setVisibility(View.GONE);
+
             binding.unPinIV.setVisibility(View.VISIBLE);
 
         } else {
 
             binding.pinIV.setVisibility(View.VISIBLE);
+
             binding.unPinIV.setVisibility(View.GONE);
 
         }
@@ -148,6 +155,8 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
                 setPinOrUnpin();
 
                 setRating();
+
+                checkAndGetBusinessData();
             }
 
         } else {
@@ -156,6 +165,35 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
         }
     }
 
+    private void checkAndGetBusinessData() {
+
+        if (post.getTagBusinessId() == null || post.getTagBusinessId().equalsIgnoreCase( "N/A")){
+
+            return;
+        }
+
+        DocumentReference ref = FirebaseFirestore.getInstance()
+                .collection("BusinessData").document(post.getTagBusinessId());
+
+                ref.addSnapshotListener((documentSnapshot, error) -> {
+
+                    if (documentSnapshot != null && documentSnapshot.getData() != null)
+
+                        parseBusinessSnapshot(documentSnapshot);
+
+                } );
+    }
+
+
+    private void parseBusinessSnapshot(DocumentSnapshot snapshot) {
+
+        BusinessModel model = snapshot.toObject(BusinessModel.class);
+
+        if (model != null && model.getBusinessAddress() != null) {
+
+            binding.tagLocationTV.setText(model.getBusinessAddress());
+        }
+    }
     private void setRating() {
 
         float rating = 0.0f;
@@ -180,6 +218,7 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
             binding.likeTV.setText(post.likes.size() + "");
 
         if (post.likes != null)
+
             if (post.likes.contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
 
                 binding.likeIV.setColorFilter(ContextCompat.getColor(this, R.color.red));
@@ -268,14 +307,11 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
 
     private void openCommentFragment() {
         if (post != null) {
+
             CommentsFragment placesDialogListFragment = new CommentsFragment(post);
-//            BlankFragment blankFragment = new BlankFragment();
+
             placesDialogListFragment.show(getSupportFragmentManager(), "VideoCommentsLikes");
-//            getSupportFragmentManager().beginTransaction().replace(R.id.bslContainer, placesDialogListFragment).addToBackStack("home").commit();
         }
-
-
-//        AddCommentsActivity.startActivity(post, this);
 
     }
 
@@ -323,7 +359,7 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
 
         if (isNotNull(userModel.getUserImageUrl())) {
 
-            Glide.with(this).load(userModel.getUserImageUrl()).into(binding.picCIV);
+            Glide.with(this).load(userModel.getUserImageUrl()).apply(new RequestOptions().placeholder(R.drawable.no_image_placeholder)).into(binding.picCIV);
 
         }
 
@@ -353,7 +389,7 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
 
         if (isNotNull(post.getUserPostComment())) {
 
-            binding.descriptionTV.setText(getResources().getString(R.string.lorem_ipsum));
+            binding.descriptionTV.setText(post.getUserPostComment());
 
             binding.descriptionTV.setMovementMethod(new ScrollingMovementMethod());
         }

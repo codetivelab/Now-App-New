@@ -31,6 +31,7 @@ public class ChangeBuinessPassword extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         init();
+        binding.backIcon.setOnClickListener(view -> finish());
         setListener();
     }
 

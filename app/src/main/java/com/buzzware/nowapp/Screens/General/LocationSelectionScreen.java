@@ -1,5 +1,6 @@
 package com.buzzware.nowapp.Screens.General;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -7,6 +8,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
@@ -21,12 +23,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.FirstTabFragment;
 import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.SecondTabFragment;
 import com.buzzware.nowapp.NetworkRequests.NetworkRequests;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.ActivityLocationSelectionScreenBinding;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,9 +40,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class LocationSelectionScreen extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener{
@@ -54,14 +65,58 @@ public class LocationSelectionScreen extends AppCompatActivity implements OnMapR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Places.initialize(getApplicationContext(), Constant.GOOGLE_PLACES_API_KEY);
+
+        // Create a new PlacesClient instance
+        PlacesClient placesClient = Places.createClient(this);
+
         binding= DataBindingUtil.setContentView(this, R.layout.activity_location_selection_screen);
         try{
             Init();
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        binding.searchLay.setOnClickListener(view -> {
+
+
+            // Set the fields to specify which types of place data to
+            // return after the user has made a selection.
+            List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+
+            // Start the autocomplete intent.
+            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                    .build(this);
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+        } );
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                ConvertLatLangToAddress(place.getLatLng().latitude, place.getLatLng().longitude);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 17));
+                if(locationManager != null){
+                    locationManager.removeUpdates(locationListener);
+                }
+//                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+//                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     private void Init() {
         context= LocationSelectionScreen.this;
         if (binding.homeMapView != null) {
@@ -71,6 +126,7 @@ public class LocationSelectionScreen extends AppCompatActivity implements OnMapR
         }
 
         //click
+
         binding.btbBack.setOnClickListener(this);
         binding.btnSelect.setOnClickListener(this);
     }

@@ -4,8 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/second_on_boarding_bg"
-        tools:context=".Fragments.GeneralFragments.OnBoardingFragments.SecondScreen">
+        android:background="@drawable/second_on_boarding_bg">
 
         <LinearLayout
             android:layout_marginBottom="60dp"

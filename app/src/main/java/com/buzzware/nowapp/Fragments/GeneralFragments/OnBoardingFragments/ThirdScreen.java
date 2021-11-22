@@ -38,7 +38,9 @@ public class ThirdScreen extends Fragment implements View.OnClickListener{
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.onBoardingContainer, new SecondScreen()).commit();
         }else if(v == mBinding.btnNext)
         {
-            startActivity(new Intent(getContext(), Login.class));
+            Intent intent= new Intent(getContext(), Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             getActivity().finish();
         }
     }

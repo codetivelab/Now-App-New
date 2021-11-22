@@ -443,7 +443,13 @@ public class CommentsFragment extends BottomSheetDialogFragment implements Stick
     private void showStickerView() {
 
         binding.lockableNSV.setScrollingEnabled(true);
+        try {
 
+            mStickerBSFragment.dismiss();
+
+        } catch (Exception e) {
+
+        }
         mStickerBSFragment.show(getActivity().getSupportFragmentManager(), mStickerBSFragment.getTag());
 
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
@@ -23,7 +24,12 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.buzzware.nowapp.CustomColorPickerDialog;
 import com.buzzware.nowapp.R;
+import com.github.dhaval2404.colorpicker.ColorPickerDialog;
+import com.github.dhaval2404.colorpicker.listener.ColorListener;
+import com.github.dhaval2404.colorpicker.model.ColorShape;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,23 +103,42 @@ public class TextEditorDialogFragment extends DialogFragment {
         mAddTextEditText = view.findViewById(R.id.add_text_edit_text);
         mInputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         mAddTextDoneTextView = view.findViewById(R.id.add_text_done_tv);
+        ImageView colorBallIV = view.findViewById(R.id.colorBallIV);
+
+        colorBallIV.setOnClickListener(view1 -> {
+
+            new CustomColorPickerDialog
+                    .Builder(getActivity())
+                    .setTitle("Pick Theme")
+                    .setColorShape(ColorShape.CIRCLE)
+//                .setDefaultColor(mDefaultColor)
+                    .setColorListener(new ColorListener() {
+                        @Override
+                        public void onColorSelected(int color, @NotNull String colorHex) {
+                            // Handle Color Selection
+                            mColorCode = color;
+                            mAddTextEditText.setTextColor(color);
+                        }
+                    })
+                    .show();
+        });
 
         //Setup the color picker for text color
-        RecyclerView addTextColorPickerRecyclerView = view.findViewById(R.id.add_text_color_picker_recycler_view);
+//        RecyclerView addTextColorPickerRecyclerView = view.findViewById(R.id.add_text_color_picker_recycler_view);
         RecyclerView reyFonts = view.findViewById(R.id.reyFonts);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManagerFonts = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        addTextColorPickerRecyclerView.setLayoutManager(layoutManager);
+//        addTextColorPickerRecyclerView.setLayoutManager(layoutManager);
         reyFonts.setLayoutManager(layoutManagerFonts);
-        addTextColorPickerRecyclerView.setHasFixedSize(true);
+//        addTextColorPickerRecyclerView.setHasFixedSize(true);
         reyFonts.setHasFixedSize(true);
         ColorPickerAdapter colorPickerAdapter = new ColorPickerAdapter(getActivity());
         //This listener will change the text color when clicked on any color from picker
-        colorPickerAdapter.setOnColorPickerClickListener(colorCode -> {
-            mColorCode = colorCode;
-            mAddTextEditText.setTextColor(colorCode);
-        });
-        addTextColorPickerRecyclerView.setAdapter(colorPickerAdapter);
+//        colorPickerAdapter.setOnColorPickerClickListener(colorCode -> {
+//            mColorCode = colorCode;
+//            mAddTextEditText.setTextColor(colorCode);
+//        });
+//        addTextColorPickerRecyclerView.setAdapter(colorPickerAdapter);
         position = getArguments().getInt(SELECTED_POSITION);
         final FontPickerAdapter fontPickerAdapter = new FontPickerAdapter(getActivity(), position, getDefaultFonts(getActivity()), getDefaultFontIds(getActivity()));
         fontPickerAdapter.setOnFontSelectListener(new FontPickerAdapter.OnFontSelectListner() {

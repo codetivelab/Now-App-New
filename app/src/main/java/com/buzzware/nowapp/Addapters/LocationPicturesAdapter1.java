@@ -13,21 +13,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.databinding.ItemPlacePicBinding;
-import com.buzzware.nowapp.placeresponse.Photo;
+import com.buzzware.nowapp.response.Photo;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import retrofit2.Callback;
-
-public class LocationPicturesAdapter extends RecyclerView.Adapter<LocationPicturesAdapter.LocationPictureHolder> {
+public class LocationPicturesAdapter1 extends RecyclerView.Adapter<LocationPicturesAdapter1.LocationPictureHolder> {
 
 
     List<Photo> results;
     Activity c;
 
-    public LocationPicturesAdapter(Activity c, List<Photo> results) {
+    public LocationPicturesAdapter1(Activity c, List<Photo> results) {
         this.c = c;
         this.results = results;
     }
@@ -35,8 +33,8 @@ public class LocationPicturesAdapter extends RecyclerView.Adapter<LocationPictur
     @NonNull
     @NotNull
     @Override
-    public LocationPicturesAdapter.LocationPictureHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return new LocationPicturesAdapter.LocationPictureHolder(ItemPlacePicBinding.inflate(LayoutInflater.from(parent.getContext()),
+    public LocationPicturesAdapter1.LocationPictureHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        return new LocationPicturesAdapter1.LocationPictureHolder(ItemPlacePicBinding.inflate(LayoutInflater.from(parent.getContext()),
                 parent, false));
     }
 
@@ -49,7 +47,7 @@ public class LocationPicturesAdapter extends RecyclerView.Adapter<LocationPictur
         try {
             url = "https://maps.googleapis.com/maps/api/place/photo" +
                     "?maxwidth=400" +
-                    "&photo_reference=" + result.photo_reference +
+                    "&photo_reference=" + result.getPhotoReference() +
                     "&key=" + Constant.GOOGLE_PLACES_API_KEY;
         } catch (Exception e) {
 //            url = result.getHtmlAttributions().get(0);

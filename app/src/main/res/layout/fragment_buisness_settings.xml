@@ -5,8 +5,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/profile_bg"
-        tools:context=".Fragments.BuisnessFragments.Application.BuisnessDashBoard.BuisnessSettingsFragment">
+        android:background="@color/profile_bg">
 
         <RelativeLayout
             android:id="@+id/header"

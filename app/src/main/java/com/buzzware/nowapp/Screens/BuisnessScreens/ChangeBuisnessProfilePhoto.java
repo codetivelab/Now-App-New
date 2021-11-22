@@ -3,7 +3,9 @@ package com.buzzware.nowapp.Screens.BuisnessScreens;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.nowapp.Permissions.Permissions;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Sessions.UserSessions;
@@ -41,6 +45,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -114,9 +119,7 @@ public class ChangeBuisnessProfilePhoto extends AppCompatActivity {
             finish();
         });
         binding.btnSave.setOnClickListener(v -> {
-            if (imageUri != null) {
-                UploadImage();
-            }
+           finish();
         });
     }
 
@@ -198,21 +201,21 @@ public class ChangeBuisnessProfilePhoto extends AppCompatActivity {
         // Ensure that there's a camera activity to handle the intent
 //        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
         // Create the File where the photo should go
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException ex) {
-            // Error occurred while creating the File
-            ex.printStackTrace();
-        }
-        // Continue only if the File was successfully created
-        if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(this,
-                    "com.buzzware.nowapp.provider",
-                    photoFile);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//        File photoFile = null;
+//        try {
+//            photoFile = createImageFile();
+//        } catch (IOException ex) {
+//            // Error occurred while creating the File
+//            ex.printStackTrace();
+//        }
+//        // Continue only if the File was successfully created
+//        if (photoFile != null) {
+//            Uri photoURI = FileProvider.getUriForFile(this,
+//                    "com.buzzware.nowapp.provider",
+//                    photoFile);
+//            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             dispatchTakePictureLauncher.launch(takePictureIntent);
-        }
+//        }
     }
 
     ActivityResultLauncher<Intent> dispatchTakePictureLauncher = registerForActivityResult(
@@ -221,8 +224,14 @@ public class ChangeBuisnessProfilePhoto extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        File imageFile = new File(currentPhotoPath);
-                        imageUri = Uri.fromFile(imageFile);
+                        Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+//                        File imageFile = new File(currentPhotoPath);
+                        imageUri = getImageUri(ChangeBuisnessProfilePhoto.this, photo);
+
+                        Glide.with(ChangeBuisnessProfilePhoto.this).load(imageUri)
+                                .apply(new RequestOptions().centerCrop()).into(binding.profileIV);
+//                        binding.coverPhotoIV.setBit
+
                         UploadImage();
 //                        mBinding.licenceIV.setImageURI(Uri.fromFile(imageFile));
 //
@@ -233,11 +242,20 @@ public class ChangeBuisnessProfilePhoto extends AppCompatActivity {
                 }
             });
 
-    private void OpenCamera() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, ACCESS_CAMERA);
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, new Date().toString(), null);
+        return Uri.parse(path);
     }
 
+//    private void OpenCamera() {
+//        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        startActivityForResult(cameraIntent, ACCESS_CAMERA);
+//    }
+//
     private void OpenGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -248,14 +266,12 @@ public class ChangeBuisnessProfilePhoto extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ACCESS_CAMERA && resultCode == Activity.RESULT_OK) {
+        if (requestCode == ACCESS_Gallery && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             binding.profileIV.setImageURI(uri);
             imageUri = uri;
-        } else if (requestCode == ACCESS_Gallery && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            binding.profileIV.setImageURI(uri);
-            imageUri = uri;
+            UploadImage();
+
         }
     }
 
@@ -265,9 +281,9 @@ public class ChangeBuisnessProfilePhoto extends AppCompatActivity {
             public void onPermissionsChecked(MultiplePermissionsReport report) {
                 if (report.areAllPermissionsGranted()) {
                     if (isTakePhoto) {
-                        OpenCamera();
+//                        OpenCamera();
                     } else {
-                        OpenGallery();
+//                        OpenGallery();
                     }
                 } else {
                     UIUpdate.GetUIUpdate(ChangeBuisnessProfilePhoto.this).ShowToastMessage(getString(R.string.allow_permission));

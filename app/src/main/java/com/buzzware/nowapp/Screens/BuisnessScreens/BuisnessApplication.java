@@ -16,6 +16,7 @@ public class BuisnessApplication extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mBinding= DataBindingUtil.setContentView(this, R.layout.activity_buisness_application);
 
         SetFirstTabFragment();
@@ -30,7 +31,7 @@ public class BuisnessApplication extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (getFragmentManager().getBackStackEntryCount() >= 0)
+        if (getSupportFragmentManager().getBackStackEntryCount() >= 0)
         {
             super.onBackPressed();
         }

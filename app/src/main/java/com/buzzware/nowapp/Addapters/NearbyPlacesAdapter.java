@@ -12,16 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.Models.ReplyModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.General.PlaceActivity;
 import com.buzzware.nowapp.databinding.ItemPlaceBinding;
+import com.buzzware.nowapp.placeresponse.PlaceDetailResponse;
 import com.buzzware.nowapp.response.Result;
+import com.buzzware.nowapp.retrofit.Controller;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NearbyPlacesAdapter extends RecyclerView.Adapter<NearbyPlacesAdapter.NearByPlaceHolder> {
 
@@ -56,11 +63,11 @@ public class NearbyPlacesAdapter extends RecyclerView.Adapter<NearbyPlacesAdapte
         }
 
         if (result.getPhotos() != null) {
-            holder.binding.locationPicIV.setVisibility(View.GONE);
-            holder.binding.locationPicsRV.setLayoutManager(new LinearLayoutManager(c, RecyclerView.HORIZONTAL, false));
-            holder.binding.locationPicsRV.setAdapter(new LocationPicturesAdapter(c, result.getPhotos()));
-        } else {
-            Glide.with(c).load(result.getIcon()).apply(new RequestOptions().centerCrop().placeholder(R.drawable.no_image_placeholder)).into(holder.binding.locationPicIV);
+
+            getPlaceDetail(result.getPlaceId(),holder);
+
+            } else {
+//            Glide.with(c).load(result.getIcon()).apply(new RequestOptions().centerCrop().placeholder(R.drawable.no_image_placeholder)).into(holder.binding.locationPicIV);
         }
 
         if (result.getName() != null)
@@ -100,6 +107,37 @@ public class NearbyPlacesAdapter extends RecyclerView.Adapter<NearbyPlacesAdapte
                     .putExtra("place",json));
 
         });
+    }
+
+    void getPlaceDetail(String placeId, NearByPlaceHolder holder) {
+
+        String url = "/maps/api/place/details/json?place_id=" + placeId + "&key=" + Constant.GOOGLE_PLACES_API_KEY;
+
+        Controller.getApi().getPlaces(url, "asdasd")
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        Gson gson = new Gson();
+
+                        if (response.body() != null && response.isSuccessful()) {
+
+                            PlaceDetailResponse placeDetail = gson.fromJson(response.body(), PlaceDetailResponse.class);
+                            holder.binding.locationPicIV.setVisibility(View.GONE);
+
+                            if (placeDetail.result.photos != null) {
+                                holder.binding.locationPicsRV.setLayoutManager(new LinearLayoutManager(c, RecyclerView.HORIZONTAL, false));
+                                holder.binding.locationPicsRV.setAdapter(new LocationPicturesAdapter(c, placeDetail.result.photos));
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
     }
 
     @Override

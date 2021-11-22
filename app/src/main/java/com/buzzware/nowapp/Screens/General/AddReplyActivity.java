@@ -369,7 +369,13 @@ public class AddReplyActivity extends AppCompatActivity implements QueryTokenRec
     }
 
     private void showStickerView() {
+        try {
 
+            mStickerBSFragment.dismiss();
+
+        } catch (Exception e) {
+
+        }
         mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
 
     }

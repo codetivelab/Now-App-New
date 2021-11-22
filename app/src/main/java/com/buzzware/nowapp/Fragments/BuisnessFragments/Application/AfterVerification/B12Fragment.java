@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -23,15 +24,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
 import com.buzzware.nowapp.FirebaseRequests.Interfaces.SignupResponseCallback;
 import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.FirstTabFragment;
 import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.SuccessfullySubmitFragment;
 import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.ThirdTabFragment;
+import com.buzzware.nowapp.Models.BuisnessSignupModel;
 import com.buzzware.nowapp.Permissions.Permissions;
 import com.buzzware.nowapp.Screens.BuisnessScreens.BuisnessHome;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.Screens.UserScreens.UserProfileScreen;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.FragmentB12Binding;
 import com.buzzware.nowapp.databinding.UploadImageBottomDialogBinding;
@@ -42,6 +47,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -50,11 +56,11 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class B12Fragment extends Fragment implements View.OnClickListener{
+public class B12Fragment extends Fragment implements View.OnClickListener {
 
     FragmentB12Binding mBinding;
-    public static final int ACCESS_CAMERA= 101;
-    public static final int ACCESS_Gallery= 102;
+    public static final int ACCESS_CAMERA = 101;
+    public static final int ACCESS_Gallery = 102;
     Permissions permissions;
     Context context;
 
@@ -62,16 +68,18 @@ public class B12Fragment extends Fragment implements View.OnClickListener{
 
     String pic1Path;
 
+    BuisnessSignupModel buisnessSignupModel;
 
-    public B12Fragment() {
+    public B12Fragment(BuisnessSignupModel buisnessSignupModel) {
         // Required empty public constructor
+        this.buisnessSignupModel = buisnessSignupModel;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding= DataBindingUtil.inflate(inflater, R.layout.fragment_b12, container, false);
-        context= getContext();
-        permissions= new Permissions(context);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_b12, container, false);
+        context = getContext();
+        permissions = new Permissions(context);
         mBinding.btnUploadImage.setOnClickListener(this);
         mBinding.btnNext.setOnClickListener(this::onClick);
         mBinding.btnBack.setOnClickListener(this::onClick);
@@ -80,29 +88,26 @@ public class B12Fragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if(v == mBinding.btnUploadImage)
-        {
+        if (v == mBinding.btnUploadImage) {
             ShowImageUploadDailog();
-        }else if(v == mBinding.btnNext)
-        {
-           Validation();
-        }else if(v == mBinding.btnBack)
-        {
+        } else if (v == mBinding.btnNext) {
+            Validation();
+        } else if (v == mBinding.btnBack) {
             getActivity().onBackPressed();
         }
     }
 
     private void StartSignup() {
-        FirebaseRequests.GetFirebaseRequests(context).SignUpUser(FirstTabFragment.buisnessSignupModel, context, callback, Constant.GetConstant().getBuisnessUser());
+        FirebaseRequests.GetFirebaseRequests(context).SignUpUser(buisnessSignupModel, context, callback, Constant.GetConstant().getBuisnessUser());
     }
 
-    SignupResponseCallback callback= new SignupResponseCallback() {
+    SignupResponseCallback callback = new SignupResponseCallback() {
         @Override
         public void onResponse(boolean isError, String message) {
-            if(!isError){
+            if (!isError) {
                 UIUpdate.GetUIUpdate(context).DismissProgressDialog();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new SuccessfullySubmitFragment()).commit();
-            }else {
+            } else {
                 UIUpdate.GetUIUpdate(context).DismissProgressDialog();
                 UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.signup_failed));
             }
@@ -110,18 +115,22 @@ public class B12Fragment extends Fragment implements View.OnClickListener{
     };
 
     private void Validation() {
-        if(FirstTabFragment.buisnessSignupModel.getBuisnessBackgroundImages() != null){
+        if (buisnessSignupModel.getBuisnessBackgroundImages() != null) {
             StartSignup();
-        }else{
+        } else {
             UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.background_image_req));
         }
     }
 
     private void ShowImageUploadDailog() {
+
         UploadImageBottomDialogBinding binding;
-        BottomSheetDialog bottomSheetDialog= new BottomSheetDialog(getContext(), R.style.SheetDialog);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.SheetDialog);
+
         binding = UploadImageBottomDialogBinding.inflate(LayoutInflater.from(getContext()));
+
         bottomSheetDialog.setContentView(binding.getRoot());
+
         binding.btnTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,14 +151,13 @@ public class B12Fragment extends Fragment implements View.OnClickListener{
 
 
     private void CheckPermission(boolean isTakePhoto) {
-//        if (permissions.isStoragePermissionGranted() && permissions.isCameraPermissionGranted()) {
 
         RequestPermission(isTakePhoto);
-//        }
+
     }
 
     private void RequestPermission(boolean isTakePhoto) {
-        Dexter.withActivity(getActivity()).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA).withListener(new MultiplePermissionsListener() {
+        Dexter.withActivity(getActivity()).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
                 if (report.areAllPermissionsGranted()) {
@@ -200,25 +208,37 @@ public class B12Fragment extends Fragment implements View.OnClickListener{
                         pic1Path = picturePath;
                         mBinding.backgroundImageIV.setImageURI(Uri.fromFile(file));
 
-                        FirstTabFragment.buisnessSignupModel.setBuisnessBackgroundImages(Uri.fromFile(file));
+                        buisnessSignupModel.setBuisnessBackgroundImages(Uri.fromFile(file));
                     }
                 }
             });
+
     ActivityResultLauncher<Intent> dispatchTakePictureLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        File imageFile = new File(currentPhotoPath);
 
-                        pic1Path = currentPhotoPath;
-                        mBinding.backgroundImageIV.setImageURI(Uri.fromFile(imageFile));
+                        Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+//                        File imageFile = new File(currentPhotoPath);
+                        Uri imageUri = getImageUri(getActivity(), photo);
 
-                        FirstTabFragment.buisnessSignupModel.setBuisnessBackgroundImages(Uri.fromFile(imageFile));
+                        Glide.with(getActivity()).load(imageUri)
+                                .apply(new RequestOptions().centerCrop()).into(mBinding.backgroundImageIV);
+
+                        buisnessSignupModel.setBuisnessBackgroundImages(imageUri);
                     }
                 }
             });
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, new Date().toString(), null);
+        return Uri.parse(path);
+    }
 
 
     private File createImageFile() throws IOException {
@@ -237,26 +257,21 @@ public class B12Fragment extends Fragment implements View.OnClickListener{
         return image;
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-        // Create the File where the photo should go
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException ex) {
-            // Error occurred while creating the File
-            ex.printStackTrace();
-        }
-        // Continue only if the File was successfully created
-        if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(getActivity(),
-                    "com.buzzware.nowapp.provider",
-                    photoFile);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            dispatchTakePictureLauncher.launch(takePictureIntent);
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(buisnessSignupModel.getBuisnessBackgroundImages() != null) {
+
+            Glide.with(getActivity()).load(buisnessSignupModel.getBuisnessBackgroundImages())
+                    .apply(new RequestOptions().centerCrop()).into(mBinding.backgroundImageIV);
         }
     }
 
+    private void dispatchTakePictureIntent() {
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        dispatchTakePictureLauncher.launch(takePictureIntent);
+    }
 }

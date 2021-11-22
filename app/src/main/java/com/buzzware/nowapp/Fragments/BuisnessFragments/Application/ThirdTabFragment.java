@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.buzzware.nowapp.Models.BuisnessSignupModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.databinding.FragmentHomeBinding;
 import com.buzzware.nowapp.databinding.FragmentThirdTabBinding;
@@ -33,10 +34,12 @@ public class ThirdTabFragment extends Fragment implements OnMapReadyCallback, Vi
     public static GoogleMap mMap;
     Context context;
     public static Marker marker;
-    public LatLng dummyLatLang= new LatLng(37.819927, -122.478256);
+    public LatLng dummyLatLang = new LatLng(37.819927, -122.478256);
+    BuisnessSignupModel buisnessSignupModel;
 
-    public ThirdTabFragment() {
+    public ThirdTabFragment(BuisnessSignupModel buisnessSignupModel) {
         // Required empty public constructor
+        this.buisnessSignupModel = buisnessSignupModel;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class ThirdTabFragment extends Fragment implements OnMapReadyCallback, Vi
     }
 
     private void Init() {
-        context= getContext();
+        context = getContext();
         if (mBinding.locationSelectionMapView != null) {
             mBinding.locationSelectionMapView.onCreate(null);
             mBinding.locationSelectionMapView.onResume();
@@ -65,17 +68,17 @@ public class ThirdTabFragment extends Fragment implements OnMapReadyCallback, Vi
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        boolean result= mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style));
+        boolean result = mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style));
         SetData();
     }
 
     private void SetData() {
-        LatLng latLng= new LatLng(Double.parseDouble(FirstTabFragment.buisnessSignupModel.getBuisnessLatitude()), Double.parseDouble(FirstTabFragment.buisnessSignupModel.getBuisnessLongitude()));
+        LatLng latLng = new LatLng(Double.parseDouble(buisnessSignupModel.getBuisnessLatitude()), Double.parseDouble(buisnessSignupModel.getBuisnessLongitude()));
         ///move to dummy location
-        marker = mMap.addMarker(new MarkerOptions().position(latLng).title(FirstTabFragment.buisnessSignupModel.getBuisnessName()).icon(BitmapFromVector(context, R.drawable.dummy_marker)));
+        marker = mMap.addMarker(new MarkerOptions().position(latLng).title(buisnessSignupModel.getBuisnessName()).icon(BitmapFromVector(context, R.drawable.dummy_marker)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0F));
-        mBinding.buisnessName.setText(FirstTabFragment.buisnessSignupModel.getBuisnessName());
-        mBinding.locationName.setText(FirstTabFragment.buisnessSignupModel.getBuisnessLocation());
+        mBinding.buisnessName.setText(buisnessSignupModel.getBuisnessName());
+        mBinding.locationName.setText(buisnessSignupModel.getBuisnessLocation());
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
@@ -89,11 +92,9 @@ public class ThirdTabFragment extends Fragment implements OnMapReadyCallback, Vi
 
     @Override
     public void onClick(View v) {
-        if(v == mBinding.btnNext)
-        {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new FourthTabFragment()).addToBackStack("thirdTab").commit();
-        }else if(v == mBinding.btnBack)
-        {
+        if (v == mBinding.btnNext) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new FourthTabFragment(buisnessSignupModel)).addToBackStack("thirdTab").commit();
+        } else if (v == mBinding.btnBack) {
             getActivity().onBackPressed();
         }
     }

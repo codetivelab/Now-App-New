@@ -49,6 +49,7 @@ public class TagUserAdapters extends RecyclerView.Adapter<TagUserAdapters.imageV
         holder.binding.timeTV.setText(getDate(Long.parseLong(model.getCreatedAt())));
 
         holder.binding.layout.setOnClickListener(v -> callback.onPostTapped(model));
+
         if (model.hasImage())
 
             Picasso.with(context).load(model.getUserImage()).placeholder(R.drawable.dummy_post_image).fit().into(holder.binding.userIV);

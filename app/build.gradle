@@ -44,6 +44,13 @@ android {
 
 dependencies {
 
+    // Color Picker
+    implementation 'com.github.dhaval2404:colorpicker:2.0'
+
+    implementation 'com.google.android.libraries.places:places:2.5.0'
+
+//    compile 'com.google.android.gms:play-services:12.0.1'
+
     implementation 'com.kbeanie:multipicker:1.6@aar'
 
     implementation 'com.writingminds:FFmpegAndroid:0.3.2'
@@ -132,6 +139,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
 
     //google
+
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

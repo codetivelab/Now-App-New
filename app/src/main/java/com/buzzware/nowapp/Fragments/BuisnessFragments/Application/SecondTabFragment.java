@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.buzzware.nowapp.Constants.Constant;
+import com.buzzware.nowapp.Models.BuisnessSignupModel;
 import com.buzzware.nowapp.NetworkRequests.Interfaces.NetWorkRequestsCallBack;
 import com.buzzware.nowapp.NetworkRequests.NetworkRequests;
 import com.buzzware.nowapp.Permissions.Permissions;
@@ -56,24 +57,26 @@ import java.util.List;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class SecondTabFragment extends Fragment implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class SecondTabFragment extends Fragment implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     FragmentSecondTabBinding mBinding;
     Context context;
     GoogleApiClient mGoogleApiClient;
     int REQUEST_CHECK_SETTINGS = 100;
     Permissions permissions;
-    public static double latitude=0, longitude=0;
-    String venueAddress= "";
-    public static String locationName="", stateName, cityName="", zipCode="", throughFare= "";
+    public static double latitude = 0, longitude = 0;
+    String venueAddress = "";
+    public static String locationName = "", stateName, cityName = "", zipCode = "", throughFare = "";
+    BuisnessSignupModel buisnessSignupModel;
 
-    public SecondTabFragment() {
+    public SecondTabFragment(BuisnessSignupModel buisnessSignupModel) {
         // Required empty public constructor
+        this.buisnessSignupModel = buisnessSignupModel;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding= DataBindingUtil.inflate(inflater, R.layout.fragment_second_tab, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_second_tab, container, false);
         Init();
         ///clicks
         mBinding.btnNext.setOnClickListener(this);
@@ -83,18 +86,18 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
     }
 
     private void Init() {
-        context= getContext();
-        permissions= new Permissions(context);
+        context = getContext();
+        permissions = new Permissions(context);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(!locationName.equals("") && latitude != 0 && longitude != 0){
+        if (!locationName.equals("") && latitude != 0 && longitude != 0) {
             mBinding.selectedAddress.setText(locationName);
             mBinding.selectedCity.setText(cityName);
             mBinding.selectedState.setText(stateName);
-            if(zipCode != null){
+            if (zipCode != null) {
                 mBinding.zipCodeET.setText(zipCode);
             }
         }
@@ -102,29 +105,27 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        if(v == mBinding.btnNext)
-        {
+        if (v == mBinding.btnNext) {
             Validation();
-        }else if(v == mBinding.btnBack)
-        {
+        } else if (v == mBinding.btnBack) {
             getActivity().onBackPressed();
-        }else if(v == mBinding.addressLay){
+        } else if (v == mBinding.addressLay) {
             CheckPermission();
         }
     }
 
     private void Validation() {
-        if(!locationName.equals("") && !cityName.equals("") && !stateName.equals("")){
-            if(!TextUtils.isEmpty(mBinding.zipCodeET.getText().toString())){
-                if(Constant.GetConstant().getNetworkInfo(context)){
+        if (!locationName.equals("") && !cityName.equals("") && !stateName.equals("")) {
+            if (!TextUtils.isEmpty(mBinding.zipCodeET.getText().toString())) {
+                if (Constant.GetConstant().getNetworkInfo(context)) {
                     CheckBuisnessAvailability();
-                }else{
+                } else {
                     UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.no_internet));
                 }
-            }else{
+            } else {
                 UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.zip_code_req));
             }
-        }else{
+        } else {
             UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.select_location));
         }
     }
@@ -132,24 +133,24 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
     private void CheckBuisnessAvailability() {
         Log.e("zxczc", locationName);
         String[] separated = locationName.split("\\,");
-        if(separated.length >= 1){
+        if (separated.length >= 1) {
             String[] separatedSpace = separated[1].split("\\ ");
-            if(separatedSpace.length > 1){
-                String venueName= FirstTabFragment.buisnessSignupModel.getBuisnessName();
-                venueAddress= separatedSpace[1]+", "+cityName;
+            if (separatedSpace.length > 1) {
+                String venueName = buisnessSignupModel.getBuisnessName();
+                venueAddress = separatedSpace[1] + ", " + cityName;
                 Log.e("zxczc", venueAddress);
                 NetworkRequests.GetNetworkRequests(context).GetVenueDetail(callBack, venueName, venueAddress, context);
             }
         }
     }
 
-    NetWorkRequestsCallBack callBack= new NetWorkRequestsCallBack() {
+    NetWorkRequestsCallBack callBack = new NetWorkRequestsCallBack() {
         @Override
         public void ResponseListener(String response, boolean isError) {
             UIUpdate.GetUIUpdate(context).DismissProgressDialog();
-            if(!isError){
+            if (!isError) {
                 ReadResponse(response);
-            }else{
+            } else {
                 UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.error_occur));
             }
         }
@@ -157,14 +158,14 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
 
     private void ReadResponse(String response) {
         try {
-            JSONObject jsonObject= new JSONObject(response);
-            String status= jsonObject.getString(Constant.GetConstant().getStatus());
-            if(status.equals(getString(R.string.OK))){
-                JSONObject jsonObjectVenuInfo= jsonObject.getJSONObject(Constant.GetConstant().getVenue_info());
-                String venueName= jsonObjectVenuInfo.getString(Constant.GetConstant().getVenue_name());
-                String venueAddress= jsonObjectVenuInfo.getString(Constant.GetConstant().getVenue_address());
+            JSONObject jsonObject = new JSONObject(response);
+            String status = jsonObject.getString(Constant.GetConstant().getStatus());
+            if (status.equals(getString(R.string.OK))) {
+                JSONObject jsonObjectVenuInfo = jsonObject.getJSONObject(Constant.GetConstant().getVenue_info());
+                String venueName = jsonObjectVenuInfo.getString(Constant.GetConstant().getVenue_name());
+                String venueAddress = jsonObjectVenuInfo.getString(Constant.GetConstant().getVenue_address());
                 SetDataToModel(venueName, venueAddress, response);
-            }else{
+            } else {
                 UIUpdate.GetUIUpdate(context).ShowAlertDialog(getString(R.string.business_availability), getString(R.string.business_avail_message), context);
             }
         } catch (JSONException e) {
@@ -174,21 +175,21 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
     }
 
     private void SetDataToModel(String venueName, String venueAddress, String response) {
-        FirstTabFragment.buisnessSignupModel.setBuisnessLocation(venueAddress);
-        FirstTabFragment.buisnessSignupModel.setBuisnessLatitude(String.valueOf(latitude));
-        FirstTabFragment.buisnessSignupModel.setBuisnessLongitude(String.valueOf(longitude));
-        FirstTabFragment.buisnessSignupModel.setBuisnessState(stateName);
-        FirstTabFragment.buisnessSignupModel.setBuisnessCity(cityName);
-        FirstTabFragment.buisnessSignupModel.setBuisnessZipcode(zipCode);
-        FirstTabFragment.buisnessSignupModel.setVenueAddress(this.venueAddress);
-        FirstTabFragment.buisnessSignupModel.setBuisnessResponse(response);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new ThirdTabFragment()).addToBackStack("thirdTab").commit();
+        buisnessSignupModel.setBuisnessLocation(venueAddress);
+        buisnessSignupModel.setBuisnessLatitude(String.valueOf(latitude));
+        buisnessSignupModel.setBuisnessLongitude(String.valueOf(longitude));
+        buisnessSignupModel.setBuisnessState(stateName);
+        buisnessSignupModel.setBuisnessCity(cityName);
+        buisnessSignupModel.setBuisnessZipcode(zipCode);
+        buisnessSignupModel.setVenueAddress(this.venueAddress);
+        buisnessSignupModel.setBuisnessResponse(response);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new ThirdTabFragment(buisnessSignupModel)).addToBackStack("thirdTab").commit();
     }
 
     private void CheckPermission() {
-        if(permissions.isLocationPermissionGranted()){
+        if (permissions.isLocationPermissionGranted()) {
             CreateLocationRequest();
-        }else{
+        } else {
             RequestPermission();
         }
     }
@@ -202,8 +203,8 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
         mGoogleApiClient.connect();
 
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000*2);
-        mLocationRequest.setFastestInterval(1000*1);
+        mLocationRequest.setInterval(1000 * 2);
+        mLocationRequest.setFastestInterval(1000 * 1);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
@@ -222,7 +223,7 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
                         // All location settings are satisfied. The client can
-                        Intent intent= new Intent(context, LocationSelectionScreen.class);
+                        Intent intent = new Intent(context, LocationSelectionScreen.class);
                         startActivity(intent);
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -246,14 +247,11 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CHECK_SETTINGS)
-        {
-            if(resultCode == RESULT_OK)
-            {
-                Intent intent= new Intent(context, LocationSelectionScreen.class);
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == RESULT_OK) {
+                Intent intent = new Intent(context, LocationSelectionScreen.class);
                 startActivity(intent);
-            }else if(resultCode == RESULT_CANCELED)
-            {
+            } else if (resultCode == RESULT_CANCELED) {
                 UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.need_location));
             }
         }
@@ -263,9 +261,9 @@ public class SecondTabFragment extends Fragment implements View.OnClickListener,
         Dexter.withActivity(getActivity()).withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
-                if(report.areAllPermissionsGranted()){
+                if (report.areAllPermissionsGranted()) {
                     CreateLocationRequest();
-                }else{
+                } else {
                     UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.allow_permission));
                 }
             }

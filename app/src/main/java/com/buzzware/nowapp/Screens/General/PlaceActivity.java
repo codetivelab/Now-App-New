@@ -72,14 +72,23 @@ public class PlaceActivity extends AppCompatActivity {
                                 binding.phoneTV.setText(placeDetail.result.formatted_phone_number);
 
                             String openingHours = "";
+
                             for (String time : placeDetail.result.opening_hours.weekday_text) {
+
                                 openingHours = openingHours + time;
 
                                 openingHours = openingHours + "\n";
 
                             }
 
-                           binding.timingsTv.setText(openingHours);
+
+                            if (placeDetail.result.photos != null) {
+                                binding.locationPicsRV.setLayoutManager(new LinearLayoutManager(PlaceActivity.this, RecyclerView.HORIZONTAL, false));
+                                binding.locationPicsRV.setAdapter(new LocationPicturesAdapter(PlaceActivity.this, placeDetail.result.photos));
+                            } else {
+                            }
+
+                            binding.timingsTv.setText(openingHours);
                         }
 
                     }
@@ -108,12 +117,6 @@ public class PlaceActivity extends AppCompatActivity {
 
         if (!open) {
             openNow = "Closed";
-        }
-
-        if (result.getPhotos() != null) {
-            binding.locationPicsRV.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-            binding.locationPicsRV.setAdapter(new LocationPicturesAdapter(this, result.getPhotos()));
-        } else {
         }
 
         if (result.getName() != null)

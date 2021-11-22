@@ -445,19 +445,16 @@ public class FirebaseRequests {
 
     private void GetBuisnessDetail(boolean isRemember, String fName, String lName, String email, String imageURL, String phoneNumber, String type, Context context, LoginResponseCallback callback) {
         DocumentReference documentReferenceBuisnessUser = firebaseFirestore.collection(Constant.GetConstant().getBuisnessDataCollection()).document(mAuth.getCurrentUser().getUid());
-        documentReferenceBuisnessUser.addSnapshotListener(((Activity) context), new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+        documentReferenceBuisnessUser.addSnapshotListener(((Activity) context), (documentSnapshot, error) -> {
+            UIUpdate.GetUIUpdate(context).DismissProgressDialog();
+            if (documentSnapshot != null) {
+
+                BusinessModel businessModel = documentSnapshot.toObject(BusinessModel.class);
+
+                SetBuisessUserSession(isRemember, fName, lName, email, imageURL, phoneNumber, type, businessModel, callback);
+            } else {
                 UIUpdate.GetUIUpdate(context).DismissProgressDialog();
-                if (documentSnapshot != null) {
-
-                    BusinessModel businessModel = documentSnapshot.toObject(BusinessModel.class);
-
-                    SetBuisessUserSession(isRemember, fName, lName, email, imageURL, phoneNumber, type, businessModel, callback);
-                } else {
-                    UIUpdate.GetUIUpdate(context).DismissProgressDialog();
-                    UIUpdate.GetUIUpdate(context).ShowToastMessage(context.getResources().getString(R.string.user_not_exist));
-                }
+                UIUpdate.GetUIUpdate(context).ShowToastMessage(context.getResources().getString(R.string.user_not_exist));
             }
         });
     }

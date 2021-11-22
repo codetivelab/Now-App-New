@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,11 +22,14 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.FirstTabFragment;
+import com.buzzware.nowapp.Models.BuisnessSignupModel;
 import com.buzzware.nowapp.Permissions.Permissions;
 import com.buzzware.nowapp.R;
+import com.buzzware.nowapp.Screens.UserScreens.UserProfileScreen;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.FragmentB11Binding;
 import com.buzzware.nowapp.databinding.UploadImageBottomDialogBinding;
@@ -36,13 +40,12 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 public class B11Fragment extends Fragment implements View.OnClickListener {
 
@@ -54,10 +57,13 @@ public class B11Fragment extends Fragment implements View.OnClickListener {
 
     String currentPhotoPath;
 
-    String pic1Path;
+//    String pic1Path;
 
-    public B11Fragment() {
+    BuisnessSignupModel buisnessSignupModel;
+
+    public B11Fragment(BuisnessSignupModel buisnessSignupModel) {
         // Required empty public constructor
+        this.buisnessSignupModel = buisnessSignupModel;
     }
 
     @Override
@@ -83,8 +89,8 @@ public class B11Fragment extends Fragment implements View.OnClickListener {
     }
 
     private void Validation() {
-        if (FirstTabFragment.buisnessSignupModel.getBuisnessLogo() != null) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new B12Fragment()).addToBackStack("b12").commit();
+        if (buisnessSignupModel.getBuisnessLogo() != null) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.buisnessApplicationContaner, new B12Fragment(buisnessSignupModel)).addToBackStack("b12").commit();
         } else {
             UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.log_req));
         }
@@ -114,10 +120,8 @@ public class B11Fragment extends Fragment implements View.OnClickListener {
     }
 
     private void CheckPermission(boolean isTakePhoto) {
-//        if (permissions.isStoragePermissionGranted() && permissions.isCameraPermissionGranted()) {
 
         RequestPermission(isTakePhoto);
-//        }
     }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
@@ -138,28 +142,39 @@ public class B11Fragment extends Fragment implements View.OnClickListener {
                         c.close();
 
                         File file = new File(picturePath);
-                        pic1Path = picturePath;
+//                        pic1Path = picturePath;
                         mBinding.logoIV.setImageURI(Uri.fromFile(file));
 
-                        FirstTabFragment.buisnessSignupModel.setBuisnessLogo(Uri.fromFile(file));
+                        buisnessSignupModel.setBuisnessLogo(Uri.fromFile(file));
                     }
                 }
             });
+
     ActivityResultLauncher<Intent> dispatchTakePictureLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        File imageFile = new File(currentPhotoPath);
 
-                        pic1Path = currentPhotoPath;
-                        mBinding.logoIV.setImageURI(Uri.fromFile(imageFile));
+                        Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
 
-                        FirstTabFragment.buisnessSignupModel.setBuisnessLogo(Uri.fromFile(imageFile));
+                        Uri imageUri = getImageUri(getActivity(), photo);
+
+                        buisnessSignupModel.setBuisnessLogo(imageUri);
+                        Glide.with(getActivity()).load(imageUri)
+                                .apply(new RequestOptions().centerCrop()).into(mBinding.logoIV);
                     }
+
                 }
             });
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, new Date().toString(), null);
+        return Uri.parse(path);
+    }
 
     private void pickImageFromGallery() {
         Intent intent = new Intent(
@@ -192,6 +207,18 @@ public class B11Fragment extends Fragment implements View.OnClickListener {
         }).check();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(buisnessSignupModel.getBuisnessLogo() != null) {
+
+            Glide.with(getActivity()).load(buisnessSignupModel.getBuisnessLogo())
+                    .apply(new RequestOptions().centerCrop()).into(mBinding.logoIV);
+
+        }
+    }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
@@ -210,24 +237,8 @@ public class B11Fragment extends Fragment implements View.OnClickListener {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-        // Create the File where the photo should go
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException ex) {
-            // Error occurred while creating the File
-            ex.printStackTrace();
-        }
-        // Continue only if the File was successfully created
-        if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(getActivity(),
-                    "com.buzzware.nowapp.provider",
-                    photoFile);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            dispatchTakePictureLauncher.launch(takePictureIntent);
-        }
+
+        dispatchTakePictureLauncher.launch(takePictureIntent);
     }
 
 }

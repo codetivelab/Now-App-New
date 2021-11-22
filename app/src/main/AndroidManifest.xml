@@ -91,12 +91,10 @@
 
             android:name=".Libraries.libactivities.TrimVideoActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Libraries.libactivities.VideoPreviewActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:hardwareAccelerated="false"
             android:screenOrientation="portrait" />
 
         <activity
@@ -132,12 +130,11 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Screens.General.AddCommentsActivity" />
         <activity android:name=".Screens.General.Video.VideoCommentsLikesActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="com.buzzware.nowapp.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
