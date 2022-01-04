@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.buzzware.nowapp.Addapters.CommentsAdapter;
 import com.buzzware.nowapp.Addapters.RepliesAdapter;
 import com.buzzware.nowapp.Constants.Constant;
@@ -36,6 +37,7 @@ import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.ActivityAddCommentsBinding;
 import com.buzzware.nowapp.databinding.ActivityLikesBinding;
+import com.buzzware.nowapp.databinding.ItemCommentBinding;
 import com.buzzware.nowapp.spyglass.DisableScrollMsg;
 import com.buzzware.nowapp.spyglass.EnableScrollMsg;
 import com.buzzware.nowapp.spyglass.Person;
@@ -299,6 +301,58 @@ public class AddReplyActivity extends AppCompatActivity implements QueryTokenRec
         updateSuggestions();
     }
 
+    private void getUsersData() {
+
+
+        FirebaseFirestore.getInstance().collection(Constant.GetConstant().getUsersCollection())
+                .get()
+                .addOnCompleteListener(task -> {
+
+
+                    if (task.isSuccessful() && task.getResult() != null) {
+
+                        for (DocumentSnapshot snapshot : task.getResult()) {
+
+                            NormalUserModel normalUserModel = snapshot.toObject(NormalUserModel.class);
+
+                            normalUserModel.id = snapshot.getId();
+
+                            for (int i = 0; i < comments.size(); i++) {
+
+                                if (normalUserModel.id.equalsIgnoreCase(comments.get(i).replierId)) {
+
+                                    comments.get(i).replier = normalUserModel;
+
+                                }
+
+                            }
+
+                        }
+
+                        List<ReplyModel> tempList = new ArrayList<>();
+
+//                        comments = new ArrayList<>();
+
+                        for (ReplyModel comment : comments) {
+
+                            if (comment.replier != null)
+
+                                tempList.add(comment);
+
+                        }
+
+                        comments = new ArrayList<>();
+
+                        comments.addAll(tempList);
+
+                        setCommentsList();
+
+
+                    }
+
+                });
+    }
+
     void getComments() {
 
         FirebaseFirestore.getInstance().collection("Replies").whereEqualTo("commentId", commentModel.id)
@@ -326,12 +380,16 @@ public class AddReplyActivity extends AppCompatActivity implements QueryTokenRec
                             comments.add(commentModel);
                         }
 
-                    setCommentsList();
-
+                    getUsersData();
                     setMentionTextField();
 
                 });
 
+    }
+
+    private void filterReplies() {
+
+//       FirebaseAuth
     }
 
     private void setCommentsList() {
@@ -353,7 +411,9 @@ public class AddReplyActivity extends AppCompatActivity implements QueryTokenRec
 //            editor.onReceiveSuggestionsResult(lastPersonSuggestions, PERSON_BUCKET);
 //        } else
         if (lastPersonSuggestions != null) {
+
             SuggestionsResult emptySuggestions = new SuggestionsResult(lastPersonSuggestions.getQueryToken(), new ArrayList<Person>());
+
             binding.addCommentField.onReceiveSuggestionsResult(emptySuggestions, PERSON_BUCKET);
         }
 

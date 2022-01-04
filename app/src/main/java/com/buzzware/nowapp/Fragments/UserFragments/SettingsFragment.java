@@ -1,6 +1,7 @@
 package com.buzzware.nowapp.Fragments.UserFragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -31,6 +32,32 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        mBinding.privacyLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String url = "https://pages.flycricket.io/now-1/privacy.html";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+
+
+            }
+        });
+
+        mBinding.termsLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String url = "https://pages.flycricket.io/now-1/terms.html";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+
+
+            }
+        });
         return mBinding.getRoot();
     }
 

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.buzzware.nowapp.Addapters.Latest24HourAdapter;
 import com.buzzware.nowapp.Addapters.LatestPostAddapters;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
+import com.buzzware.nowapp.FirestoreHelper;
 import com.buzzware.nowapp.Fragments.GeneralFragments.OnBoardingFragments.UserFollowActivity;
 import com.buzzware.nowapp.Libraries.libactivities.VideoPreviewActivity;
 import com.buzzware.nowapp.Models.BusinessModel;
@@ -89,8 +90,9 @@ public class ProfileFragment extends BaseFragment {
 
     private void getUserData() {
 
+        if(FirebaseAuth.getInstance().getCurrentUser() != null)
         if (isOnline()) {
-            db.collection("Users").document(mAuth.getCurrentUser().getUid())
+            db.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -204,13 +206,20 @@ public class ProfileFragment extends BaseFragment {
 
     private void setAdapters() {
 
-        LatestPostAddapters achivementListAddapters = new LatestPostAddapters(getContext(), myPosts, latestItemListener);
+        FirestoreHelper.validatePosts(myPosts, posts -> {
 
-        mBinding.rvLatestPosts.setAdapter(achivementListAddapters);
+            LatestPostAddapters achivementListAddapters = new LatestPostAddapters(getContext(), posts, latestItemListener);
 
-        Latest24HourAdapter latest24HourAdapter = new Latest24HourAdapter(getContext(), pinnedPosts, hour24PostItemListener);
+            mBinding.rvLatestPosts.setAdapter(achivementListAddapters);
 
-        mBinding.rvLatest24Hour.setAdapter(latest24HourAdapter);
+        });
+
+        FirestoreHelper.validatePosts(pinnedPosts, posts -> {
+
+            Latest24HourAdapter latest24HourAdapter = new Latest24HourAdapter(getContext(), posts, hour24PostItemListener);
+
+            mBinding.rvLatest24Hour.setAdapter(latest24HourAdapter);
+        });
 
         mBinding.pointsTV.setText(levels * 10 + " Points");
 

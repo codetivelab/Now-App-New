@@ -114,6 +114,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     public void pushSearchFragment(OpenSearchFragment event) {
 
         hideBottomSheet(new HideBSF());
+
         Fragment s = new SearchFragment(event.isFromFilter, event.filtersList);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, s).addToBackStack("Search").commit();

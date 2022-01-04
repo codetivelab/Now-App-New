@@ -1,38 +1,29 @@
 package com.buzzware.nowapp.Fragments.GeneralFragments.OnBoardingFragments;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.se.omapi.Session;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.buzzware.nowapp.Addapters.Latest24HourAdapter;
 import com.buzzware.nowapp.Addapters.LatestPostAddapters;
-import com.buzzware.nowapp.Addapters.TagUserAdapters;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
+import com.buzzware.nowapp.FirestoreHelper;
 import com.buzzware.nowapp.Libraries.libactivities.VideoPreviewActivity;
-import com.buzzware.nowapp.Models.BusinessModel;
 import com.buzzware.nowapp.Models.FollowModel;
 import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.PostsModel;
-import com.buzzware.nowapp.Models.TagUserModel;
 import com.buzzware.nowapp.R;
-import com.buzzware.nowapp.Screens.BuisnessScreens.ChangeBuisnessProfilePhoto;
 import com.buzzware.nowapp.Screens.General.BaseActivity;
 import com.buzzware.nowapp.Screens.General.Video.VideoCommentsLikesActivity;
-import com.buzzware.nowapp.Screens.UserScreens.UserProfileScreen;
 import com.buzzware.nowapp.Sessions.UserSessions;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.ActivityUserFollowBinding;
@@ -44,7 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -155,11 +145,10 @@ public class UserFollowActivity extends BaseActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                // binding.followingCountTV.setText(String.valueOf(task.getResult().size()));
                 for (QueryDocumentSnapshot document : task.getResult()) {
 
-                    // Log.d("TAG14123", document.getId() + " => " + document.getData());
                     FollowModel followModel = document.toObject(FollowModel.class);
+
                     db.collection("UserFollowings").document(mAuth.getCurrentUser().getUid()).collection(selectedUserID).document(document.getId()).delete();
 
                 }
@@ -393,14 +382,23 @@ public class UserFollowActivity extends BaseActivity {
 
     private void setAdapters() {
 
-        LatestPostAddapters achivementListAddapters = new LatestPostAddapters(UserFollowActivity.this, myPosts, latestItemListener);
+        FirestoreHelper.validatePosts(myPosts, posts -> {
 
-        binding.rvLatestPosts.setAdapter(achivementListAddapters);
+            LatestPostAddapters achivementListAddapters = new LatestPostAddapters(UserFollowActivity.this, posts, latestItemListener);
 
-        Latest24HourAdapter latest24HourAdapter = new Latest24HourAdapter(UserFollowActivity.this, pinnedPosts, hour24PostItemListener);
+            binding.rvLatestPosts.setAdapter(achivementListAddapters);
 
-        binding.rvLatest24Hour.setAdapter(latest24HourAdapter);
-    }
+        });
+
+        FirestoreHelper.validatePosts(pinnedPosts, posts -> {
+
+            Latest24HourAdapter latest24HourAdapter = new Latest24HourAdapter(UserFollowActivity.this, posts, hour24PostItemListener);
+
+            binding.rvLatest24Hour.setAdapter(latest24HourAdapter);
+
+        });
+
+     }
 
     LatestPostAddapters.ItemClickListener latestItemListener = achivementModel -> ShowDialog(achivementModel);
     Latest24HourAdapter.ItemClickListener hour24PostItemListener = postsModel -> ShowDialog(postsModel);

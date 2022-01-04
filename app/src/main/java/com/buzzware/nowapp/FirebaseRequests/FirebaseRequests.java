@@ -248,6 +248,7 @@ public class FirebaseRequests {
         userData.put(Constant.GetConstant().getUserPasswordDocument(), buisnessSignupModel.getPassword());
         userData.put(Constant.GetConstant().getUserTokenDocument(), Constant.GetConstant().getNullString());
         userData.put(Constant.GetConstant().getUserTypeDocument(), Constant.GetConstant().getNormalUser());
+        userData.put("userStatus","pending");
         DocumentReference documentReferenceUser = firebaseFirestore.collection(Constant.GetConstant().getUsersCollection()).document(firebaseUser.getUid());
         documentReferenceUser.set(userData);
 

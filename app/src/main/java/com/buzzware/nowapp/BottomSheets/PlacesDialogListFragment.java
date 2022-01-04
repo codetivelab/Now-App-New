@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.buzzware.nowapp.Addapters.NearbyPlacesAdapter;
 import com.buzzware.nowapp.Addapters.RestaurantsPicturesAdapter;
+import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.Libraries.libactivities.VideoCameraActivity;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.UserScreens.Home;
@@ -112,7 +113,7 @@ public class PlacesDialogListFragment extends BottomSheetDialogFragment {
 
     private void getPlaces() {
 
-        String url = "/maps/api/place/nearbysearch/json?location=" + location.getLatitude() + "," + location.getLongitude() + "&radius=1500&type=restaurant&key=AIzaSyDO-ypkG16_MoqMW0DbDErsEVJo8ikMojM";
+        String url = "/maps/api/place/nearbysearch/json?location=" + location.getLatitude() + "," + location.getLongitude() + "&radius=1500&type=restaurant&key="+ GOOGLE_PLACES_API_KEY+"&type"+"restaurant|night_club|bar";
         Controller.getApi().getPlaces(url, "asdasd")
                 .enqueue(new Callback<String>() {
                     @Override
@@ -146,13 +147,15 @@ public class PlacesDialogListFragment extends BottomSheetDialogFragment {
     }
 
     private void setAdapter(NearbyPlacesResponse nearbyPlacesResponse) {
-//        binding.include.latestPlacesRV.setVisibility(View.GONE);
+
         binding.include.listRestaurantsRV.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+
         binding.include.latestPlacesRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         binding.include.listRestaurantsRV.setAdapter(new RestaurantsPicturesAdapter(getActivity(), nearbyPlacesResponse.getResults()));
+
         binding.include.latestPlacesRV.setAdapter(new NearbyPlacesAdapter(getActivity(), nearbyPlacesResponse.getResults()));
 
-//        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     public float dpFromPx(final Context context, final float px) {

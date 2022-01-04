@@ -63,7 +63,7 @@
                     android:textSize="12dp"
                     android:textColor="@color/white"
                     android:textStyle="normal"
-                    android:text="Integer facilisis lobortis arcu, ut ornare mi blandit sed. Morbi gravida, turpis id"
+                    android:text="Fill Out Your Application. Submit Your Business Details &amp; Personal Contact Information"
                     android:fontFamily="@font/raleway_regular"/>
             </LinearLayout>
 

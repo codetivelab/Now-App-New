@@ -1,7 +1,9 @@
 package com.buzzware.nowapp.Addapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -16,10 +18,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.buzzware.nowapp.Constants.Constant;
+import com.buzzware.nowapp.FirestoreHelper;
 import com.buzzware.nowapp.Fragments.GeneralFragments.OnBoardingFragments.UserFollowActivity;
 import com.buzzware.nowapp.Models.CommentModel;
 import com.buzzware.nowapp.Models.MentionUser;
@@ -54,10 +58,13 @@ import java.util.concurrent.TimeUnit;
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentsHolder> {
 
     List<CommentModel> comments;
+
     Activity c;
 
     public CommentsAdapter(Activity c, List<CommentModel> comments) {
+
         this.c = c;
+
         this.comments = comments;
     }
 
@@ -73,7 +80,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     public void onBindViewHolder(@NonNull @NotNull CommentsHolder holder, int position) {
 
         CommentModel comment = comments.get(position);
-
 
         if (comment.likes != null) {
 
@@ -99,9 +105,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
             }
         }
+
         String time = covertTimeToText(new Date(comment.time));
 
         holder.binding.timeTV.setText(time);
+
         if (comment.text != null) {
 
             holder.binding.commentTV.setMovementMethod(LinkMovementMethod.getInstance());
@@ -110,13 +118,30 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
 
             for (MentionUser user : comment.mentioned)
+
                 spannableString.setSpan(new ClickableSpan() {
                     @Override
                     public void onClick(@NonNull @NotNull View view) {
 
-                        c.startActivity(new Intent(c, UserFollowActivity.class)
-                                .putExtra("userId", user.userId));
+                        FirestoreHelper.checkUserDeleted(user.userId, isDeleted -> {
 
+                            if (!isDeleted) {
+
+                                c.startActivity(new Intent(c, UserFollowActivity.class)
+                                        .putExtra("userId", user.userId));
+
+                                return;
+
+                            } else {
+
+                                if (c != null)
+
+                                    FirestoreHelper.showUserDeletedAlert(c);
+
+                            }
+
+
+                        });
                     }
                 }, user.start, user.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -136,11 +161,31 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
         holder.binding.likeIV.setOnClickListener(view -> likeAComment(comment));
 
-        if (comment.repliesCount > 0)
+        FirestoreHelper.validateReplies(comment.replies, posts -> {
 
-            holder.binding.replyTV.setText("View Replies(" + comment.repliesCount + ")");
+            holder.binding.replyTV.setText("View Replies(" + posts.size() + ")");
 
-        getUserData(holder.binding, comment);
+        });
+
+        holder.binding.userNameTV.setText(comment.commenter.getUserFirstName() + " " + comment.commenter.getUserLastName());
+
+        Glide.with(c).load(comment.commenter.getUserImageUrl()).into(holder.binding.picCIV);
+
+    }
+
+    private void showErrorAlert() {
+
+        new AlertDialog.Builder(c)
+                .setTitle("Alert")
+                .setMessage("This user is deleted from Admin panel.")
+                .setPositiveButton("Ok", (dialogInterface, i) -> {
+
+                    dialogInterface.dismiss();
+
+
+                })
+                .create()
+                .show();
 
     }
 
@@ -161,15 +206,15 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
             long second = TimeUnit.MILLISECONDS.toSeconds(dateDiff);
             long minute = TimeUnit.MILLISECONDS.toMinutes(dateDiff);
-            long hour   = TimeUnit.MILLISECONDS.toHours(dateDiff);
-            long day  = TimeUnit.MILLISECONDS.toDays(dateDiff);
+            long hour = TimeUnit.MILLISECONDS.toHours(dateDiff);
+            long day = TimeUnit.MILLISECONDS.toDays(dateDiff);
 
             if (second < 60) {
                 convTime = second + " Seconds " + suffix;
             } else if (minute < 60) {
-                convTime = minute + " Minutes "+suffix;
+                convTime = minute + " Minutes " + suffix;
             } else if (hour < 24) {
-                convTime = hour + " Hours "+suffix;
+                convTime = hour + " Hours " + suffix;
             } else if (day >= 7) {
                 if (day > 360) {
                     convTime = (day / 360) + " Years " + suffix;
@@ -182,10 +227,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
                 String days = "Days";
 
-                if(day == 1)
+                if (day == 1)
                     days = "Day";
 
-                convTime = day+ " "+ days +" "+suffix;
+                convTime = day + " " + days + " " + suffix;
             }
 
         } catch (Exception e) {
@@ -194,28 +239,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         }
 
         return convTime;
-    }
-
-
-
-    private void getUserData(ItemCommentBinding binding, CommentModel comment) {
-
-
-        FirebaseFirestore.getInstance().collection(Constant.GetConstant().getUsersCollection())
-                .document(comment.commenterId)
-                .get()
-                .addOnCompleteListener(task -> {
-
-                    if (task.isSuccessful() && task.getResult() != null) {
-
-                        NormalUserModel normalUserModel = task.getResult().toObject(NormalUserModel.class);
-
-                        binding.userNameTV.setText(normalUserModel.getUserFirstName() + " " + normalUserModel.getUserLastName());
-
-                        Glide.with(c).load(normalUserModel.getUserImageUrl()).into(binding.picCIV);
-                    }
-
-                });
     }
 
     private void moveToReplyActivity(CommentModel commentModel) {

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public class PostsModel implements Parcelable {
+    public NormalUserModel user;
     String UserID;
     String createdAt;
     String tagBusinessId;

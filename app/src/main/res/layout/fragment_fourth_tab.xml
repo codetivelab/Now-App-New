@@ -79,7 +79,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:fontFamily="@font/raleway_regular"
-                                android:text="Integer facilisis lobortis arcu, ut ornare mi blandit sed. Morbi gravida, turpis id"
+                                android:text="Verify You Own The Business By Uploading A Piece of Mail With The Business Address Details On It"
                                 android:textColor="@color/white"
                                 android:textSize="12dp"
                                 android:textStyle="normal" />

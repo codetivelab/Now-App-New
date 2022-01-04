@@ -63,7 +63,7 @@
                     android:textSize="12dp"
                     android:textColor="@color/white"
                     android:textStyle="normal"
-                    android:text="Integer facilisis lobortis arcu, ut ornare mi blandit sed. Morbi gravida, turpis id"
+                    android:text="Tap The Pink Icon To The Right &amp; Drop The Pin Where Your Business Is Located On The Map"
                     android:fontFamily="@font/raleway_regular"/>
             </LinearLayout>
 

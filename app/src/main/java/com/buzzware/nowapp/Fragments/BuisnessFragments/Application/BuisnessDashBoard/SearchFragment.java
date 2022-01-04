@@ -21,10 +21,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.buzzware.nowapp.Addapters.HomeListAddapters;
+import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
 import com.buzzware.nowapp.FirebaseRequests.Interfaces.RestaurantResponseCallback;
 import com.buzzware.nowapp.Fragments.UserFragments.BaseFragment;
 import com.buzzware.nowapp.Fragments.UserFragments.HomeFragment;
+import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.RestaurantDataModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
@@ -33,6 +35,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.karumi.dexter.Dexter;
@@ -269,11 +273,55 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     }
 
 
+    private void getUsersList(List<RestaurantDataModel> list) {
+
+        FirebaseFirestore.getInstance().collection(Constant.GetConstant().getUsersCollection())
+                .addSnapshotListener(getActivity(), (value, error) -> {
+
+                    for (DocumentSnapshot document : value.getDocuments()) {
+
+                        NormalUserModel user = document.toObject(NormalUserModel.class);
+
+                        if (user != null) {
+
+                            user.id = document.getId();
+
+                            for (int i = 0; i < list.size(); i++) {
+
+                                if (list.get(i).getId().equalsIgnoreCase(user.id)) {
+
+                                    list.get(i).userDeleted = false;
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                    for (int i = 0; i < list.size(); i++) {
+
+                        if (list.get(i).userDeleted) {
+
+                            list.remove(i);
+
+                        }
+
+                    }
+
+                    homeListAddapters = new HomeListAddapters(getActivity(), list);
+
+                    mBinding.rvSearch.setAdapter(homeListAddapters);
+
+
+                });
+
+    }
+
+
     private void SetData(List<RestaurantDataModel> list) {
 
-        homeListAddapters = new HomeListAddapters(getActivity(), list);
-
-        mBinding.rvSearch.setAdapter(homeListAddapters);
+        getUsersList(list);
 
 //        homeListAddapters.notifyDataSetChanged();
     }
@@ -330,11 +378,24 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         });
 
         //clicks
+        //clicks
         btnOneStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "1";
-                btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+                if (selectedFilterStar.equalsIgnoreCase("1")) {
+
+                    btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+                    selectedFilterStar = "";
+
+                } else {
+
+                    btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "1";
+
+                }
+
+
                 btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
@@ -345,9 +406,21 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnTwoStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "2";
+
+                if (selectedFilterStar.equalsIgnoreCase("2")) {
+
+                    btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+                    selectedFilterStar = "";
+
+                } else {
+
+                    btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "2";
+
+                }
+
+
                 btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
@@ -357,10 +430,22 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnThreeStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "3";
+
+                if (selectedFilterStar.equalsIgnoreCase("3")) {
+
+                    btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+                    selectedFilterStar = "";
+
+                } else {
+
+                    btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "3";
+
+                }
+
+
                 btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
             }
@@ -369,11 +454,24 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnFourStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "4";
+
                 btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+                if (selectedFilterStar.equalsIgnoreCase("4")) {
+                    selectedFilterStar = "";
+
+                    btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "4";
+
+                }
+
+
                 btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
             }
         });
@@ -381,20 +479,44 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnFiveStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "5";
+
+                if (selectedFilterStar.equalsIgnoreCase("5")) {
+
+                    btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+                    selectedFilterStar = "";
+
+                } else {
+
+                    btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "5";
+
+                }
+
+
                 btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
             }
         });
 
         btnCrowdy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterOccupation = "2";
-                btnCrowdy.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
+
+                if (selectedFilterOccupation.equalsIgnoreCase("2")) {
+
+                    btnCrowdy.setBackground(null);
+                    selectedFilterOccupation = "";
+
+                } else {
+
+                    btnCrowdy.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
+                    selectedFilterOccupation = "2";
+
+                }
+
+
                 btnRoomy.setBackground(null);
                 btnEmpty.setBackground(null);
             }
@@ -403,9 +525,20 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnRoomy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterOccupation = "0";
+
+
+                if (selectedFilterOccupation.equalsIgnoreCase("0")) {
+
+                    btnRoomy.setBackground(null);
+                    selectedFilterOccupation = "";
+
+                } else {
+
+                    btnRoomy.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
+                    selectedFilterOccupation = "0";
+
+                }
                 btnCrowdy.setBackground(null);
-                btnRoomy.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
                 btnEmpty.setBackground(null);
             }
         });
@@ -413,18 +546,46 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnEmpty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterOccupation = "-2";
+
+                if (selectedFilterOccupation.equalsIgnoreCase("-2")) {
+
+                    selectedFilterOccupation = "";
+
+                    btnEmpty.setBackground(null);
+
+                } else {
+
+                    selectedFilterOccupation = "-2";
+
+                    btnEmpty.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
+
+                }
+
+
                 btnCrowdy.setBackground(null);
                 btnRoomy.setBackground(null);
-                btnEmpty.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
             }
         });
 
         btnGlobeype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getString(R.string.nightClub);
-                btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+                if (selectedFilterPlaces.equalsIgnoreCase(getString(R.string.nightClub))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = getString(R.string.nightClub);
+
+                }
+
                 btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
@@ -435,9 +596,24 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnBarType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getString(R.string.club);
+
+                if (selectedFilterPlaces.equalsIgnoreCase(getString(R.string.bar))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = getString(R.string.bar);
+
+                }
+
+
                 btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
@@ -447,10 +623,25 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnCoffeeType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getString(R.string.coffeeShop);
+
+
+                if (selectedFilterPlaces.equalsIgnoreCase(getString(R.string.coffeeShop))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = getString(R.string.coffeeShop);
+
+                }
+
                 btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
             }
@@ -459,11 +650,25 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnGuestType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getActivity().getString(R.string.bar);
+
+
+
+                if (selectedFilterPlaces.equalsIgnoreCase(getActivity().getString(R.string.club))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = getActivity().getString(R.string.club);
+                }
                 btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
             }
         });
@@ -471,12 +676,25 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         btnRestType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getString(R.string.restaurant);
+
+                if (selectedFilterPlaces.equalsIgnoreCase(getActivity().getString(R.string.restaurant))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = getActivity().getString(R.string.restaurant);
+                }
                 btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
             }
         });
         bottomSheetDialog.show();

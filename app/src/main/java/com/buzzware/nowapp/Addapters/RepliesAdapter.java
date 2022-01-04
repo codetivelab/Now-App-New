@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.buzzware.nowapp.Constants.Constant;
+import com.buzzware.nowapp.FirestoreHelper;
 import com.buzzware.nowapp.Fragments.GeneralFragments.OnBoardingFragments.UserFollowActivity;
 import com.buzzware.nowapp.Models.CommentModel;
 import com.buzzware.nowapp.Models.MentionUser;
@@ -101,8 +102,26 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.Comments
                     @Override
                     public void onClick(@NonNull @NotNull View view) {
 
-                        c.startActivity(new Intent(c, UserFollowActivity.class)
-                                .putExtra("userId", user.userId));
+                        FirestoreHelper.checkUserDeleted(user.userId, isDeleted -> {
+
+                            if (!isDeleted) {
+
+
+                                c.startActivity(new Intent(c, UserFollowActivity.class)
+                                        .putExtra("userId", user.userId));
+
+                                return;
+
+                            } else {
+
+                                if (c != null)
+
+                                    FirestoreHelper.showUserDeletedAlert(c);
+
+                            }
+
+
+                        });
 
                     }
                 }, user.start, user.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

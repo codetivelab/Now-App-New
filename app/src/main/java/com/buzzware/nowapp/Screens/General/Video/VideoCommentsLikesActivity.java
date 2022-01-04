@@ -21,6 +21,7 @@ import com.buzzware.nowapp.BottomSheets.PlacesDialogListFragment;
 import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.FilterTextEditor.PreviewVideoActivity;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
+import com.buzzware.nowapp.FirestoreHelper;
 import com.buzzware.nowapp.Fragments.GeneralFragments.CommentsFragment;
 import com.buzzware.nowapp.Libraries.libactivities.VideoPreviewActivity;
 import com.buzzware.nowapp.Models.BusinessModel;
@@ -42,6 +43,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VideoCommentsLikesActivity extends AppCompatActivity {
 
@@ -242,14 +244,33 @@ public class VideoCommentsLikesActivity extends AppCompatActivity {
 
                     int commentCount = 0;
 
-                    if (!value.isEmpty())
+                    binding.commentTV.setText(commentCount + "");
+
+                    if (!value.isEmpty()) {
+
+                        List<CommentModel> commentModelList = new ArrayList<>();
 
                         for (DocumentSnapshot document : value.getDocuments()) {
 
-                            commentCount++;
+                            CommentModel commentModel = document.toObject(CommentModel.class);
+
+                            if(commentModel != null) {
+
+                                commentModel.id = document.getId();
+
+                                commentModelList.add(commentModel);
+
+                            }
                         }
 
-                    binding.commentTV.setText(commentCount + "");
+                        FirestoreHelper.validateComments(commentModelList, comments -> {
+
+                            binding.commentTV.setText(commentModelList.size() + "");
+
+                        });
+                    }
+
+
 
                 });
     }

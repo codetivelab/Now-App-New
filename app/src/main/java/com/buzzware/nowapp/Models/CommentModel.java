@@ -3,6 +3,8 @@ package com.buzzware.nowapp.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.auth.User;
+
 import java.util.List;
 
 public class CommentModel implements Parcelable {
@@ -16,6 +18,9 @@ public class CommentModel implements Parcelable {
     public List<MentionUser> mentioned;
     public List<String> likes;
     public int repliesCount;
+    public List<ReplyModel> replies;
+
+    public NormalUserModel commenter;
 
     public CommentModel() {
 

@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.android.exoplayer:exoplayer-core:2.7.3@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fbb4039b8d7c125c5ad5e10286337283/jetified-exoplayer-core-2.7.3/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/594d94c04287c30555ea95f761445129/jetified-exoplayer-core-2.7.3/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cb4ecae6e4f89d630ac391404751b30b/jetified-exoplayer-core-2.7.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/19ecb39d85c55ba9a04f5a46b6f28683/jetified-exoplayer-core-2.7.3/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fbb4039b8d7c125c5ad5e10286337283/jetified-exoplayer-core-2.7.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fbb4039b8d7c125c5ad5e10286337283/jetified-exoplayer-core-2.7.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fbb4039b8d7c125c5ad5e10286337283/jetified-exoplayer-core-2.7.3/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/594d94c04287c30555ea95f761445129/jetified-exoplayer-core-2.7.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/594d94c04287c30555ea95f761445129/jetified-exoplayer-core-2.7.3/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/594d94c04287c30555ea95f761445129/jetified-exoplayer-core-2.7.3/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-core/2.7.3/55af5347a76fb2686557058e2ec295ae58fe0d07/exoplayer-core-2.7.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.exoplayer/exoplayer-core/2.7.3/a63d80147d468018131193646fa283e3d4294621/exoplayer-core-2.7.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -55,8 +55,11 @@ import java.util.List;
 public class LocationSelectionScreen extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener{
 
     ActivityLocationSelectionScreenBinding binding;
+
     public static GoogleMap mMap;
+
     Context context;
+
     public static Marker marker;
     public LocationManager locationManager;
     public LocationListener locationListener;

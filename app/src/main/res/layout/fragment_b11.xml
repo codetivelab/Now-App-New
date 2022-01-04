@@ -67,7 +67,7 @@
                         android:textSize="12dp"
                         android:textColor="@color/white"
                         android:textStyle="normal"
-                        android:text="Integer facilisis lobortis arcu, ut ornare mi blandit sed. Morbi gravida, turpis id"
+                        android:text=""
                         android:fontFamily="@font/raleway_regular"/>
                 </LinearLayout>
 
@@ -152,7 +152,7 @@
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:text="Upload your store brand"
+                            android:text="Upload Your Store Logo"
                             android:fontFamily="@font/raleway_regular"/>
 
                         <RelativeLayout

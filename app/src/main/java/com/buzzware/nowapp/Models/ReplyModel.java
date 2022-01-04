@@ -8,6 +8,9 @@ public class ReplyModel {
     public Long time;
     public String commentId;
     public String replierId;
+
+    public NormalUserModel replier;
+
     public String text;
     public String imageUrl;
     public List<MentionUser> mentioned;

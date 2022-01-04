@@ -51,7 +51,7 @@
             android:textAlignment="center"
             android:textColor="@color/text_gray"
             android:textStyle="bold"
-            android:text="Integer facilisis lobortis arcu, ut ornare mi blandit sed. Morbi gravida, turpis id eleifend cursus, urna quam dictum enim, fermentum sodales risus mauris ut lectus. Morbi varius ex convallis libero pharetra fermentum. Proin volutpat mi eget sollicitudin consectetur. Mauris at finibus est, id pharetra ante"
+            android:text="Claim Your NOW Business Account Today &amp; Give Customers Real Time Insight Into Whats Happening At Your Restaurant, Bar, Night Club, Coffeee Shop &amp; More - Now. "
             android:fontFamily="@font/raleway_regular"/>
 
         <RelativeLayout

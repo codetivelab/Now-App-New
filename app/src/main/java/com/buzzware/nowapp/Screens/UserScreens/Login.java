@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
 import com.buzzware.nowapp.FirebaseRequests.Interfaces.LoginResponseCallback;
+import com.buzzware.nowapp.FirestoreHelper;
 import com.buzzware.nowapp.Permissions.Permissions;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.Screens.BuisnessScreens.BuisnessApplicationStartUpScreen;
@@ -320,16 +321,38 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         public void onResponse(boolean isError, String type) {
             if (!isError) {
                 if (type.equals(Constant.GetConstant().getBuisnessUser())) {
-                    Intent intent = new Intent(context, BuisnessHome.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intent);
-                    ((Activity) context).finish();
+
+                    FirestoreHelper.checkUserPending(FirebaseAuth.getInstance().getCurrentUser().getUid(), new FirestoreHelper.UserPendingCallback() {
+                        @Override
+                        public void onReceived(Boolean isPending) {
+
+                            if(!isPending) {
+                                Intent intent = new Intent(context, BuisnessHome.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.startActivity(intent);
+                                ((Activity) context).finish();
+                            } else {
+
+                                FirebaseAuth.getInstance().signOut();
+
+                                showPendingApprovalAlert();
+
+                            }
+                        }
+                    });
                 } else {
                     CheckPermission();
                 }
             }
         }
     };
+
+    private void showPendingApprovalAlert() {
+//        UIUpdate.GetUIUpdate(this).d
+        UIUpdate.GetUIUpdate(this).AlertDialog("Alert","Your account is waiting for admin approval. Once admin approves you will be able to login to this business account");
+
+    }
+
 
     private void CheckPermission() {
         if (permissions.isLocationPermissionGranted()) {

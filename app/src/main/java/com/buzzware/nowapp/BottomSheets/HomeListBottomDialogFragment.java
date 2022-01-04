@@ -21,16 +21,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.buzzware.nowapp.Addapters.HomeListAddapters;
+import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
 import com.buzzware.nowapp.FirebaseRequests.Interfaces.RestaurantResponseCallback;
 import com.buzzware.nowapp.Fragments.UserFragments.HomeFragment;
 import com.buzzware.nowapp.Models.HomeListModel;
+import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.RestaurantDataModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
+import com.buzzware.nowapp.spyglass.Person;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -39,6 +45,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import im.delight.android.location.SimpleLocation;
 
@@ -175,11 +182,56 @@ public class HomeListBottomDialogFragment extends BottomSheetDialogFragment {
     };
 
 
+    private void getUsersList(List<RestaurantDataModel> list) {
+
+        UIUpdate.GetUIUpdate(getActivity()).setProgressDialog("", "Loading", getActivity());
+
+        FirebaseFirestore.getInstance().collection(Constant.GetConstant().getUsersCollection())
+                .addSnapshotListener(getActivity(), (value, error) -> {
+
+                    for (DocumentSnapshot document : value.getDocuments()) {
+
+                        NormalUserModel user = document.toObject(NormalUserModel.class);
+
+                        if(user != null) {
+
+                            user.id = document.getId();
+
+                            for (int i = 0; i < list.size(); i++) {
+
+                                if (list.get(i).getId().equalsIgnoreCase(user.id)) {
+
+                                    list.get(i).userDeleted = false;
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                    for(int i = 0; i< list.size() ; i++) {
+
+                        if(list.get(i).userDeleted) {
+
+                            list.remove(i);
+
+                        }
+
+                    }
+
+                    HomeListAddapters homeListAddapters = new HomeListAddapters(getActivity(), list, () -> dismiss());
+                    rv_list.setAdapter(homeListAddapters);
+                    homeListAddapters.notifyDataSetChanged();
+
+                });
+
+    }
+
 
     private void SetData(List<RestaurantDataModel> list) {
-        HomeListAddapters homeListAddapters = new HomeListAddapters(getActivity(), list, () -> dismiss());
-        rv_list.setAdapter(homeListAddapters);
-        homeListAddapters.notifyDataSetChanged();
+
+        getUsersList(list);
     }
 
     private void GetNearestRestaurant() {

@@ -18,7 +18,7 @@ import java.util.List;
 public class Constant {
 
     public static String camera = "back";
-    public static final String GOOGLE_PLACES_API_KEY = "AIzaSyDO-ypkG16_MoqMW0DbDErsEVJo8ikMojM";
+    public static final String GOOGLE_PLACES_API_KEY = "AIzaSyAV3MX38CxYlJuvEVwjXfKGFWUL3qt5LbA";
 
     private final int splashExpire = 4000;
     private String COUNTRY_CODE = "+92";

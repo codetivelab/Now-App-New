@@ -62,18 +62,22 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <RelativeLayout
                     android:id="@+id/btnTwoStar"
                     android:layout_centerInParent="true"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/rounder_circle_dark_blue">
+
                     <ImageView
                         android:layout_centerInParent="true"
                         android:layout_width="@dimen/_14ssp"
                         android:layout_height="@dimen/_14ssp"
                         android:src="@drawable/two_star"/>
+
                 </RelativeLayout>
+
             </RelativeLayout>
 
 

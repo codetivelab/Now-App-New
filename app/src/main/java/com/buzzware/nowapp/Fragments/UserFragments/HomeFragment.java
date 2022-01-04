@@ -37,9 +37,11 @@ import android.widget.RelativeLayout;
 import com.buzzware.nowapp.Addapters.HomeSearchListAddapters;
 import com.buzzware.nowapp.Addapters.HomeTopListAddapters;
 import com.buzzware.nowapp.BottomSheets.HomeListBottomDialogFragment;
+import com.buzzware.nowapp.EventMessages.OnRestaurantSelectedMessage;
 import com.buzzware.nowapp.EventMessages.OpenSearchFragment;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
 import com.buzzware.nowapp.FirebaseRequests.Interfaces.RestaurantResponseCallback;
+import com.buzzware.nowapp.Fragments.BuisnessFragments.Application.BuisnessDashBoard.BuisnessHomeFragment;
 import com.buzzware.nowapp.Models.BusinessModel;
 import com.buzzware.nowapp.Models.HomeListModel;
 import com.buzzware.nowapp.Models.RestaurantDataModel;
@@ -80,6 +82,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import org.greenrobot.eventbus.EventBus;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -91,6 +94,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
+import static com.buzzware.nowapp.Screens.BuisnessScreens.BuisnessHome.SetBottomNavigation;
 
 public class HomeFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, View.OnClickListener {
 
@@ -171,10 +175,10 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     private void GetNearestRestaurant() {
         for (int i = 0; i < restaurantDataModelList.size(); i++) {
             RestaurantDataModel restaurantDataModel = restaurantDataModelList.get(i);
-            double diatanceBetween = distance(latitude, longitude, Double.parseDouble(restaurantDataModel.getBusinessLatitude()), Double.parseDouble(restaurantDataModel.getBusinessLongitude()));
-            if (diatanceBetween <= 7) { /// 7 miles = 1.6 * 7= 11.2 KM
+//            double diatanceBetween = distance(latitude, longitude, Double.parseDouble(restaurantDataModel.getBusinessLatitude()), Double.parseDouble(restaurantDataModel.getBusinessLongitude()));
+//            if (diatanceBetween <= 7) { /// 7 miles = 1.6 * 7= 11.2 KM
                 nearestRestaurantData.add(restaurantDataModel);
-            }
+//            }
         }
         ShowMarkers();
     }
@@ -185,6 +189,8 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
                 RestaurantDataModel restaurantDataModel = nearestRestaurantData.get(i);
                 LatLng latLng = new LatLng(Double.parseDouble(restaurantDataModel.getBusinessLatitude()), Double.parseDouble(restaurantDataModel.getBusinessLongitude()));
                 marker = mMap.addMarker(new MarkerOptions().position(latLng).title(restaurantDataModel.getBusinessName()).icon(BitmapFromVector(context, R.drawable.dummy_marker)));
+                marker.setTag(restaurantDataModel.getId());
+
             }
         }
     }
@@ -213,6 +219,7 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        googleMap.setOnMarkerClickListener(marker -> moveToRestaurant(marker));
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style));
 
@@ -221,6 +228,18 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
 
         ///getCurrent location
         CheckPermission();
+    }
+
+    private boolean moveToRestaurant(Marker marker) {
+
+        if(marker.getTag() != null) {
+
+//            selectedFragment = ;
+            EventBus.getDefault().post(new OnRestaurantSelectedMessage(marker.getTag().toString()));
+
+        }
+
+        return false;
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
@@ -232,7 +251,7 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    public void ShowRatingDialog() {
+    public void ShowRatingDilog() {
         RelativeLayout btnCancel;
         myDialog.setContentView(R.layout.home_rating_dialog_lay);
         btnCancel = myDialog.findViewById(R.id.btnCancel);
@@ -279,7 +298,7 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         } else if (v == mBinding.currentLocationDialog) {
             ShowCurrentLocationDialog();
         } else if (v == mBinding.profileLay) {
-           EventBus.getDefault().post(new HideBSF());
+            EventBus.getDefault().post(new HideBSF());
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).addToBackStack("profile").commit();
         }
     }
@@ -345,8 +364,20 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnOneStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "1";
-                btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+                if (selectedFilterStar.equalsIgnoreCase("1")) {
+
+                    btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+                    selectedFilterStar = "";
+
+                } else {
+
+                    btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "1";
+
+                }
+
+
                 btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
@@ -357,9 +388,21 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnTwoStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "2";
+
+                if (selectedFilterStar.equalsIgnoreCase("2")) {
+
+                    btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+                    selectedFilterStar = "";
+
+                } else {
+
+                    btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "2";
+
+                }
+
+
                 btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
@@ -369,10 +412,22 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnThreeStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "3";
+
+                if (selectedFilterStar.equalsIgnoreCase("3")) {
+
+                    btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+                    selectedFilterStar = "";
+
+                } else {
+
+                    btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "3";
+
+                }
+
+
                 btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
             }
@@ -381,11 +436,24 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnFourStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "4";
+
                 btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+                if (selectedFilterStar.equalsIgnoreCase("4")) {
+                    selectedFilterStar = "";
+
+                    btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "4";
+
+                }
+
+
                 btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
             }
         });
@@ -393,20 +461,44 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnFiveStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterStar = "5";
+
+                if (selectedFilterStar.equalsIgnoreCase("5")) {
+
+                    btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+                    selectedFilterStar = "";
+
+                } else {
+
+                    btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+                    selectedFilterStar = "5";
+
+                }
+
+
                 btnOneStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnTwoStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnThreeStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnFourStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnFiveStar.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
             }
         });
 
         btnCrowdy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterOccupation = "2";
-                btnCrowdy.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
+
+                if (selectedFilterOccupation.equalsIgnoreCase("2")) {
+
+                    btnCrowdy.setBackground(null);
+                    selectedFilterOccupation = "";
+
+                } else {
+
+                    btnCrowdy.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
+                    selectedFilterOccupation = "2";
+
+                }
+
+
                 btnRoomy.setBackground(null);
                 btnEmpty.setBackground(null);
             }
@@ -415,9 +507,20 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnRoomy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterOccupation = "0";
+
+
+                if (selectedFilterOccupation.equalsIgnoreCase("0")) {
+
+                    btnRoomy.setBackground(null);
+                    selectedFilterOccupation = "";
+
+                } else {
+
+                    btnRoomy.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
+                    selectedFilterOccupation = "0";
+
+                }
                 btnCrowdy.setBackground(null);
-                btnRoomy.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
                 btnEmpty.setBackground(null);
             }
         });
@@ -425,18 +528,46 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnEmpty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterOccupation = "-2";
+
+                if (selectedFilterOccupation.equalsIgnoreCase("-2")) {
+
+                    selectedFilterOccupation = "";
+
+                    btnEmpty.setBackground(null);
+
+                } else {
+
+                    selectedFilterOccupation = "-2";
+
+                    btnEmpty.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
+
+                }
+
+
                 btnCrowdy.setBackground(null);
                 btnRoomy.setBackground(null);
-                btnEmpty.setBackground(getResources().getDrawable(R.drawable.rounder_circle_golden_border));
             }
         });
 
         btnGlobeype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getString(R.string.nightClub);
-                btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+                if (selectedFilterPlaces.equalsIgnoreCase(getString(R.string.nightClub))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = getString(R.string.nightClub);
+
+                }
+
                 btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
@@ -447,9 +578,24 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnBarType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getString(R.string.bar);
+
+                if (selectedFilterPlaces.equalsIgnoreCase(getString(R.string.bar))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = getString(R.string.bar);
+
+                }
+
+
                 btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
@@ -459,10 +605,25 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnCoffeeType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getString(R.string.coffeeShop);
+
+
+                if (selectedFilterPlaces.equalsIgnoreCase(getString(R.string.coffeeShop))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = getString(R.string.coffeeShop);
+
+                }
+
                 btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
             }
@@ -471,11 +632,25 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnGuestType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = context.getString(R.string.club);
+
+
+
+                if (selectedFilterPlaces.equalsIgnoreCase(context.getString(R.string.club))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = context.getString(R.string.club);
+                }
                 btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
                 btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
             }
         });
@@ -483,12 +658,25 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
         btnRestType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedFilterPlaces = getString(R.string.restaurant);
+
+                if (selectedFilterPlaces.equalsIgnoreCase(context.getString(R.string.restaurant))) {
+
+                    selectedFilterPlaces = "";
+
+                    btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
+
+                } else {
+
+                    btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
+
+                    selectedFilterPlaces = context.getString(R.string.restaurant);
+                }
                 btnGlobeype.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnBarType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnCoffeeType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
                 btnGuestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_dark_blue));
-                btnRestType.setBackground(getResources().getDrawable(R.drawable.rounder_circle_pink));
+
             }
         });
         bottomSheetDialog.show();
@@ -527,7 +715,7 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
             if (filterList.size() > 0) {
 
                 EventBus.getDefault().post(new OpenSearchFragment(new Gson().toJson(filterList), "true"));
-                
+
             } else {
                 UIUpdate.GetUIUpdate(context).ShowToastMessage(getString(R.string.restaurant_not_avail));
             }
@@ -580,7 +768,7 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
 //        if (permissions.isLocationPermissionGranted()) {
 //            CreateLocationRequest();
 //        } else {
-            RequestPermission();
+        RequestPermission();
 //        }
     }
 
@@ -678,6 +866,7 @@ public class HomeFragment extends Fragment implements GoogleApiClient.Connection
                 LatLng latLng = new LatLng(latitude, longitude);
                 if (mMap != null) {
                     marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Your Location").icon(BitmapFromVector(context, R.drawable.dummy_marker)));
+
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
                     ConvertLatLangToAddress(latitude, longitude);
                     locationManager.removeUpdates(locationListener);

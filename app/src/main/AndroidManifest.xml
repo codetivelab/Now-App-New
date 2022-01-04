@@ -40,7 +40,7 @@
         <activity android:name=".Screens.General.LocationSelectionScreen" />
         <activity android:name=".Screens.BuisnessScreens.ChangeBuisnessLocation" />
         <activity android:name=".Screens.BuisnessScreens.ChangeBuinessPassword" />
-        <activity android:name=".Screens.BuisnessScreens.BuisnessAddress" />
+        <activity android:name=".Screens.BuisnessScreens.BusinessAddress" />
         <activity android:name=".Screens.BuisnessScreens.BuisnessInfo" />
         <activity android:name=".Screens.BuisnessScreens.ChangeBackgroundCover" />
         <activity android:name=".Screens.BuisnessScreens.ChangeBuisnessProfilePhoto" />

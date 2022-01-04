@@ -131,6 +131,7 @@ public class CommentsFragment extends BottomSheetDialogFragment implements Stick
         setTitle();
 
         setListeners();
+
         return binding.getRoot();
     }
 
@@ -375,10 +376,54 @@ public class CommentsFragment extends BottomSheetDialogFragment implements Stick
 
             }
 
+        FirebaseFirestore.getInstance().collection(Constant.GetConstant().getUsersCollection())
+                .get()
+                .addOnCompleteListener(task -> {
 
-        binding.commentsListRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.commentsListRV.setAdapter(new CommentsAdapter(getActivity(), comments));
-    }
+                    if (task.isSuccessful() && task.getResult() != null) {
+
+                        for (DocumentSnapshot snapshot: task.getResult()) {
+
+                            NormalUserModel normalUserModel = snapshot.toObject(NormalUserModel.class);
+
+                            normalUserModel.id = snapshot.getId();
+
+                            for(int i = 0; i< comments.size(); i ++ ){
+
+                                if(normalUserModel.id.equalsIgnoreCase(comments.get(i).commenterId)) {
+
+                                    comments.get(i).commenter = normalUserModel;
+
+                                }
+
+                            }
+
+                        }
+
+                        List<CommentModel> commentsNewList = new ArrayList<>();
+
+                        for(CommentModel comment: comments) {
+
+                            if(comment.commenter != null)
+
+                                commentsNewList.add(comment);
+
+                        }
+
+                        comments = new ArrayList<>();
+
+                        comments.addAll(commentsNewList);
+
+                        binding.commentsListRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+                        binding.commentsListRV.setAdapter(new CommentsAdapter(getActivity(), comments));
+
+
+                    }
+
+                });
+
+     }
 
     void getReplies() {
 
@@ -405,10 +450,14 @@ public class CommentsFragment extends BottomSheetDialogFragment implements Stick
 
                     for (CommentModel comment : comments) {
 
+                        comment.replies = new ArrayList<>();
+
                         for (ReplyModel reply : replies) {
 
                             if (reply.commentId.equalsIgnoreCase(comment.id)) {
-                                comment.repliesCount++;
+
+                                comment.replies.add(reply);
+
                             }
                         }
                     }

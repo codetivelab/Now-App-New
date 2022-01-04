@@ -3,11 +3,13 @@ package com.buzzware.nowapp.Models;
 public class NormalUserModel {
 
     String userEmail;
+    public String id;
     String userFirstName;
     String userLastName;
     String userImageUrl;
     String userFollowers = "0";
     String userFollowings = "0";
+    public String userStatus;
     String userPassword;
     String userPhoneNumber;
     String userToken;

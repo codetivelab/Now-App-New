@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.buzzware.nowapp.Addapters.Latest24HourAdapter;
 import com.buzzware.nowapp.Addapters.LatestPostAddapters;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
+import com.buzzware.nowapp.FirestoreHelper;
 import com.buzzware.nowapp.Libraries.libactivities.VideoPreviewActivity;
 import com.buzzware.nowapp.Models.BusinessModel;
 import com.buzzware.nowapp.Models.PostsModel;
@@ -242,13 +243,23 @@ public class BuisnessProfile extends BaseActivity {
 
     private void setAdapters() {
 
-        LatestPostAddapters achivementListAddapters = new LatestPostAddapters(this, myPosts, latestItemListener);
+        FirestoreHelper.validatePosts(myPosts, posts -> {
 
-        mBinding.rvlatestPostsProfile.setAdapter(achivementListAddapters);
+            LatestPostAddapters achivementListAddapters = new LatestPostAddapters(this, posts, latestItemListener);
 
-        Latest24HourAdapter latest24HourAdapter = new Latest24HourAdapter(this, pinnedPosts, hour24PostItemListener);
+            mBinding.rvlatestPostsProfile.setAdapter(achivementListAddapters);
 
-        mBinding.rvlatest24HourProfile.setAdapter(latest24HourAdapter);
+        });
+
+
+        FirestoreHelper.validatePosts(pinnedPosts, posts -> {
+            Latest24HourAdapter latest24HourAdapter = new Latest24HourAdapter(this, posts, hour24PostItemListener);
+
+            mBinding.rvlatest24HourProfile.setAdapter(latest24HourAdapter);
+
+        });
+
+
     }
 
     LatestPostAddapters.ItemClickListener latestItemListener = achivementModel -> ShowDialog(achivementModel);

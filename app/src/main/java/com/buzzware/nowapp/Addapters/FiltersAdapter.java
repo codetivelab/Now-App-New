@@ -25,8 +25,11 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageSaturationFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageVibranceFilter;
 
 public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.imageViewHolder> {
+
     public Context context;
+
     View view;
+
     OnItemSelectedListener listener;
 
     public FiltersAdapter(Context context, OnItemSelectedListener listener) {

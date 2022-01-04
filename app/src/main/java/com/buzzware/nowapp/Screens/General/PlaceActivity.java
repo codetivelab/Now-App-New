@@ -71,6 +71,26 @@ public class PlaceActivity extends AppCompatActivity {
                             if (placeDetail.result.formatted_phone_number != null)
                                 binding.phoneTV.setText(placeDetail.result.formatted_phone_number);
 
+                            String type = "";
+
+                            if(placeDetail.result.types != null && placeDetail.result.types.size()>0)
+                            {
+                                type = placeDetail.result.types.toString()+"\n";
+                                type = type.replace("[","");
+                                type = type.replace("]","");
+
+                            }
+
+                            if (result.getPriceLevel() != null) {
+
+                                String level = "Price Level ";
+                                for (int i = 0; i < result.getPriceLevel(); i++) {
+                                    level = level + "$";
+                                }
+
+                                binding.typeTV.setText(type+level);
+                            }
+
                             String openingHours = "";
 
                             for (String time : placeDetail.result.opening_hours.weekday_text) {
@@ -103,6 +123,7 @@ public class PlaceActivity extends AppCompatActivity {
     private void setListeners() {
 
         binding.include2.backIcon.setOnClickListener(view -> onBackPressed());
+
     }
 
     private void setData() {
@@ -130,15 +151,7 @@ public class PlaceActivity extends AppCompatActivity {
 
         if (result.getVicinity() != null)
             binding.locationTV.setText(result.getVicinity());
-        if (result.getPriceLevel() != null) {
 
-            String level = "Price Level ";
-            for (int i = 0; i < result.getPriceLevel(); i++) {
-                level = level + "$";
-            }
-
-            binding.typeTV.setText(level);
-        }
     }
 
     private void getExtrasFromIntent() {

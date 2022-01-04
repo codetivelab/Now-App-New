@@ -14,12 +14,16 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.buzzware.nowapp.Addapters.HomeListAddapters;
+import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.Fragments.UserFragments.HomeFragment;
+import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.RestaurantDataModel;
 import com.buzzware.nowapp.R;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.ActivitySearchBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -120,10 +124,52 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void SetData(List<RestaurantDataModel> list) {
-        homeListAddapters = new HomeListAddapters(context, list);
-        binding.rvSearch.setAdapter(homeListAddapters);
-        homeListAddapters.notifyDataSetChanged();
+        getUsersList(list);
+
     }
+
+    private void getUsersList(List<RestaurantDataModel> list) {
+
+        FirebaseFirestore.getInstance().collection(Constant.GetConstant().getUsersCollection())
+                .addSnapshotListener(this, (value, error) -> {
+
+                    for (DocumentSnapshot document : value.getDocuments()) {
+
+                        NormalUserModel user = document.toObject(NormalUserModel.class);
+
+                        if(user != null) {
+                            user.id = document.getId();
+
+                            for (int i = 0; i < list.size(); i++) {
+
+                                if (list.get(i).getId().equalsIgnoreCase(user.id)) {
+
+                                    list.get(i).userDeleted = false;
+                                }
+
+                            }
+                        }
+                    }
+
+                    for(int i = 0; i< list.size() ; i++) {
+
+                        if(list.get(i).userDeleted) {
+
+                            list.remove(i);
+
+                        }
+
+                    }
+
+
+                    homeListAddapters = new HomeListAddapters(context, list);
+                    binding.rvSearch.setAdapter(homeListAddapters);
+                    homeListAddapters.notifyDataSetChanged();
+
+                });
+
+    }
+
 
     @Override
     public void onClick(View v) {

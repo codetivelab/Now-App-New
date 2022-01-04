@@ -83,11 +83,13 @@ public class Signup extends AppCompatActivity implements View.OnClickListener{
 
     private void SignupUser() {
         BuisnessSignupModel buisnessSignupModel= new BuisnessSignupModel();
+
         buisnessSignupModel.setApplicantFirstName(mBinding.fnameEt.getText().toString());
         buisnessSignupModel.setApplicantLastName(mBinding.lnameEt.getText().toString());
         buisnessSignupModel.setBuisessEmail(mBinding.emailEt.getText().toString());
         buisnessSignupModel.setPassword(mBinding.passwordEt.getText().toString());
         buisnessSignupModel.setApplicantNumber(mBinding.phoneEt.getText().toString());
+
         FirebaseRequests.GetFirebaseRequests(context).SignUpUser(buisnessSignupModel, context, callback, Constant.GetConstant().getNormalUser());
     }
 

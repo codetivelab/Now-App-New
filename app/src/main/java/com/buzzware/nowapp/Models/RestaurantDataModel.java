@@ -7,7 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RestaurantDataModel {
-    String id, businessName, businessType, businessNumber, businessAddress, businessCity, businessState,businessZipcode,
+
+    public Boolean userDeleted = true;
+    String id, businessName, businessType, businessNumber, businessAddress, businessCity, businessState, businessZipcode,
             businessLatitude, businessLongitude, businessLogo, businessBackgroundImage, businessLicenceImage, businessVenueAddress,
             businessResponse, businessTotalRating;
 
@@ -161,21 +163,21 @@ public class RestaurantDataModel {
         this.businessTotalRating = businessTotalRating;
     }
 
-    public String GetIntensity(int day, int hour){
-        String intensity="-2";
+    public String GetIntensity(int day, int hour) {
+        String intensity = "-2";
         int finalIndex;
         try {
-            JSONObject jsonObject= new JSONObject(businessResponse);
-            JSONArray jsonArray= jsonObject.getJSONArray("analysis");
-            JSONObject jsonObjectCurrentDay= jsonArray.getJSONObject(day);
-            JSONArray jsonArrayHourAnalysis= jsonObjectCurrentDay.getJSONArray("hour_analysis");
-            if(hour >= 6){
-                finalIndex= hour - 6;
-            }else{
-                finalIndex= hour + 18;
+            JSONObject jsonObject = new JSONObject(businessResponse);
+            JSONArray jsonArray = jsonObject.getJSONArray("analysis");
+            JSONObject jsonObjectCurrentDay = jsonArray.getJSONObject(day);
+            JSONArray jsonArrayHourAnalysis = jsonObjectCurrentDay.getJSONArray("hour_analysis");
+            if (hour >= 6) {
+                finalIndex = hour - 6;
+            } else {
+                finalIndex = hour + 18;
             }
-            JSONObject jsonObjectHourData= jsonArrayHourAnalysis.getJSONObject(finalIndex);
-            intensity= jsonObjectHourData.getString("intensity_nr");
+            JSONObject jsonObjectHourData = jsonArrayHourAnalysis.getJSONObject(finalIndex);
+            intensity = jsonObjectHourData.getString("intensity_nr");
         } catch (JSONException e) {
             e.printStackTrace();
         }

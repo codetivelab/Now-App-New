@@ -21,17 +21,23 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.buzzware.nowapp.Addapters.HomeListAddapters;
 import com.buzzware.nowapp.Addapters.Latest24HourAdapter;
 import com.buzzware.nowapp.Addapters.LatestPostAddapters;
 import com.buzzware.nowapp.Addapters.TagUserAdapters;
+import com.buzzware.nowapp.Constants.Constant;
 import com.buzzware.nowapp.FirebaseRequests.FirebaseRequests;
+import com.buzzware.nowapp.FirestoreHelper;
 import com.buzzware.nowapp.Fragments.GeneralFragments.OnBoardingFragments.UserFollowActivity;
 import com.buzzware.nowapp.Fragments.UserFragments.BaseFragment;
 import com.buzzware.nowapp.Fragments.UserFragments.PostDetailFragment;
 import com.buzzware.nowapp.Libraries.libactivities.VideoPreviewActivity;
 import com.buzzware.nowapp.Models.BusinessHomeGraphData;
 import com.buzzware.nowapp.Models.BusinessModel;
+import com.buzzware.nowapp.Models.NormalUserModel;
 import com.buzzware.nowapp.Models.PostsModel;
+import com.buzzware.nowapp.Models.ReplyModel;
+import com.buzzware.nowapp.Models.RestaurantDataModel;
 import com.buzzware.nowapp.Models.TagUserModel;
 import com.buzzware.nowapp.NetworkRequests.Interfaces.NetWorkRequestsCallBack;
 import com.buzzware.nowapp.NetworkRequests.NetworkRequests;
@@ -41,6 +47,12 @@ import com.buzzware.nowapp.Screens.General.Video.VideoCommentsLikesActivity;
 import com.buzzware.nowapp.Sessions.UserSessions;
 import com.buzzware.nowapp.UIUpdates.UIUpdate;
 import com.buzzware.nowapp.databinding.FragmentBuisnessHomeBinding;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -198,31 +210,34 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void CreateFinalHourCount(int hour) {
+        hour = hour - 1;
+
         if (hour <= 24) {
+
             switch (hour) {
                 case 19:
-                    hour = hour - 1;
-                    finalHours = hour + 6;
+                    currentHour = hour - 18;
+                    finalHours = hour + 18;
                 case 20:
-                    hour = hour - 2;
-                    finalHours = hour + 6;
+                    currentHour = hour - 19;
+                    finalHours = hour + 19;
                 case 21:
-                    hour = hour - 3;
-                    finalHours = hour + 6;
+                    currentHour = hour - 20;
+                    finalHours = hour + 20;
                 case 22:
-                    hour = hour - 4;
-                    finalHours = hour + 6;
+                    currentHour = hour - 21;
+                    finalHours = hour + 21;
                 case 23:
-                    hour = hour - 5;
-                    finalHours = hour + 6;
+                    currentHour = hour - 22;
+                    finalHours = hour + 22;
                 case 24:
-                    hour = hour - 6;
-                    finalHours = hour + 6;
+                    currentHour = hour - 23;
+                    finalHours = hour + 23;
                 default:
                     finalHours = hour + 6;
             }
         }
-
+//
         GetData();
     }
 
@@ -295,7 +310,7 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
 
             NetworkRequests.GetNetworkRequests(getContext()).GetVenueDetail(callBack, model.getBusinessName(), model.getBusinessAddress(), getContext());
 
-        } catch ( Exception e) {
+        } catch (Exception e) {
 
         }
     }
@@ -326,7 +341,7 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
                 JSONObject currentDayData = jsonArray.getJSONObject(GetCurrentDay());
                 JSONArray hoursAnalysis = currentDayData.getJSONArray("hour_analysis");
 
-                for (int i = currentHour; i < finalHours; i++) {
+                for (int i = 0; i < 24; i++) {
 
                     for (int j = 0; j < hoursAnalysis.length(); j++) {
 
@@ -347,7 +362,7 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
 
                 mBinding.graphInfo.setVisibility(View.GONE);
 
-                SetData(graphDataList);
+                setChart(graphDataList);
 
             } else {
 
@@ -365,164 +380,68 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
         }
     }
 
-    private void SetData(List<BusinessHomeGraphData> graphDataList) {
+    private void setChart(List<BusinessHomeGraphData> graphDataList) {
+        ArrayList NoOfEmp = new ArrayList();
+        ArrayList year = new ArrayList();
+        int colors[] = {
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+                Color.rgb(255, 255, 255),
+        };
 
-        for (int i = 0; i < graphDataList.size(); i++) {
+        int i = 0;
+        for (BusinessHomeGraphData data : graphDataList) {
 
-            BusinessHomeGraphData businessHomeGraphData = graphDataList.get(i);
+            float intensity = Float.parseFloat(data.getIntensity());
 
-            if (i == 0) {
+            if (intensity < 0) {
 
-                if (!businessHomeGraphData.getHour().equals("0")) {
+                intensity = intensity * -1;
 
-                    mBinding.businessGraph.bottomLable1.setText(businessHomeGraphData.getHour() + "H");
-
-                    int progress = GetProgressFromIntensity(businessHomeGraphData.getIntensity());
-
-                    mBinding.businessGraph.verticalProgressbar1.setProgress(progress);
-
-                    SetProgressColor(progress, mBinding.businessGraph.verticalProgressbar1);
-
-                    Log.e("cxxdd", businessHomeGraphData.getHour() + " : " + GetProgressFromIntensity(businessHomeGraphData.getIntensity()));
-
-                } else {
-
-                    mBinding.businessGraph.bottomLable1.setText("0H");
-
-                    mBinding.businessGraph.verticalProgressbar1.setProgress(0);
-                }
-            } else if (i == 1) {
-
-                if (!businessHomeGraphData.getHour().equals("0")) {
-
-                    mBinding.businessGraph.bottomLable2.setText(businessHomeGraphData.getHour() + "H");
-
-                    int progress = GetProgressFromIntensity(businessHomeGraphData.getIntensity());
-
-                    mBinding.businessGraph.verticalProgressbar2.setProgress(progress);
-
-                    SetProgressColor(progress, mBinding.businessGraph.verticalProgressbar2);
-
-                    Log.e("cxxdd", businessHomeGraphData.getHour() + " : " + GetProgressFromIntensity(businessHomeGraphData.getIntensity()));
-
-                } else {
-
-                    mBinding.businessGraph.bottomLable2.setText("0H");
-
-                    mBinding.businessGraph.verticalProgressbar2.setProgress(0);
-                }
-            } else if (i == 2) {
-
-                if (!businessHomeGraphData.getHour().equals("0")) {
-
-                    mBinding.businessGraph.bottomLable3.setText(businessHomeGraphData.getHour() + "H");
-
-                    int progress = GetProgressFromIntensity(businessHomeGraphData.getIntensity());
-
-                    mBinding.businessGraph.verticalProgressbar3.setProgress(progress);
-
-                    SetProgressColor(progress, mBinding.businessGraph.verticalProgressbar3);
-
-                    Log.e("cxxdd", businessHomeGraphData.getHour() + " : " + GetProgressFromIntensity(businessHomeGraphData.getIntensity()));
-
-                } else {
-
-                    mBinding.businessGraph.bottomLable3.setText("0H");
-
-                    mBinding.businessGraph.verticalProgressbar3.setProgress(0);
-
-                }
-            } else if (i == 3) {
-
-                if (!businessHomeGraphData.getHour().equals("0")) {
-
-                    mBinding.businessGraph.bottomLable4.setText(businessHomeGraphData.getHour() + "H");
-
-                    int progress = GetProgressFromIntensity(businessHomeGraphData.getIntensity());
-
-                    mBinding.businessGraph.verticalProgressbar4.setProgress(progress);
-
-                    SetProgressColor(progress, mBinding.businessGraph.verticalProgressbar4);
-
-                    Log.e("cxxdd", businessHomeGraphData.getHour() + " : " + GetProgressFromIntensity(businessHomeGraphData.getIntensity()));
-
-                } else {
-
-                    mBinding.businessGraph.bottomLable4.setText("0H");
-
-                    mBinding.businessGraph.verticalProgressbar4.setProgress(0);
-
-                }
-            } else if (i == 4) {
-
-                if (!businessHomeGraphData.getHour().equals("0")) {
-
-                    mBinding.businessGraph.bottomLable5.setText(businessHomeGraphData.getHour() + "H");
-
-                    int progress = GetProgressFromIntensity(businessHomeGraphData.getIntensity());
-
-                    mBinding.businessGraph.verticalProgressbar5.setProgress(progress);
-
-                    SetProgressColor(progress, mBinding.businessGraph.verticalProgressbar5);
-
-                    Log.e("cxxdd", businessHomeGraphData.getHour() + " : " + GetProgressFromIntensity(businessHomeGraphData.getIntensity()));
-
-                } else {
-
-                    mBinding.businessGraph.bottomLable5.setText("0H");
-
-                    mBinding.businessGraph.verticalProgressbar5.setProgress(0);
-
-                }
-            } else if (i == 5) {
-
-                if (!businessHomeGraphData.getHour().equals("0")) {
-
-                    mBinding.businessGraph.bottomLable6.setText(businessHomeGraphData.getHour() + "H");
-
-                    int progress = GetProgressFromIntensity(businessHomeGraphData.getIntensity());
-
-                    mBinding.businessGraph.verticalProgressbar6.setProgress(progress);
-
-                    SetProgressColor(progress, mBinding.businessGraph.verticalProgressbar6);
-
-                    Log.e("cxxdd", businessHomeGraphData.getHour() + " : " + GetProgressFromIntensity(businessHomeGraphData.getIntensity()));
-                } else {
-
-                    mBinding.businessGraph.bottomLable6.setText("0H");
-
-                    mBinding.businessGraph.verticalProgressbar6.setProgress(0);
-
-                }
             }
+
+            NoOfEmp.add(new BarEntry(intensity, i));
+            year.add(data.getHour() + ":00");
+
+            i++;
         }
+
+
+        mBinding.businessGraph.barChart.setDescription("Busy Times");
+        mBinding.businessGraph.barChart.setDescriptionColor(Color.rgb(255, 255, 255));
+        mBinding.businessGraph.barChart.setBorderColor(Color.rgb(255, 255, 255));
+        mBinding.businessGraph.barChart.getXAxis().setTextColor(Color.rgb(255, 255, 255));
+        mBinding.businessGraph.barChart.getAxisLeft().setTextColor(Color.rgb(255, 255, 255));
+        mBinding.businessGraph.barChart.getAxisRight().setTextColor(Color.rgb(255, 255, 255));
+        BarDataSet bardataset = new BarDataSet(NoOfEmp, "");
+        mBinding.businessGraph.barChart.animateY(5000);
+        BarData data = new BarData(year, bardataset);
+        bardataset.setColors(colors);
+        mBinding.businessGraph.barChart.setData(data);
+
     }
 
-
-    private void SetProgressColor(int progress, ProgressBar verticalProgressbar) {
-
-        if (progress <= 20) {
-
-            verticalProgressbar.setProgressDrawable(getResources().getDrawable(R.drawable.vertical_progress_bar_20));
-
-        } else if (progress > 20 && progress <= 40) {
-
-            verticalProgressbar.setProgressDrawable(getResources().getDrawable(R.drawable.vertical_progress_bar_20));
-
-        } else if (progress > 40 && progress <= 60) {
-
-            verticalProgressbar.setProgressDrawable(getResources().getDrawable(R.drawable.vertical_progress_bar_60));
-
-        } else if (progress > 60 && progress <= 80) {
-
-            verticalProgressbar.setProgressDrawable(getResources().getDrawable(R.drawable.vertical_progress_bar_80));
-
-        } else if (progress > 80 && progress <= 10) {
-
-            verticalProgressbar.setProgressDrawable(getResources().getDrawable(R.drawable.vertical_progress_bar_100));
-
-        }
-    }
 
     public int GetProgressFromIntensity(String intensity) {
 
@@ -691,22 +610,92 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
 
     private void setAdapters() {
 
-        mBinding.nuberOfPostTV.setText(myPosts.size() + "");
 
         mBinding.tagLocationCountTV.setText(String.valueOf(taggedUsers.size() + ""));
 
-        LatestPostAddapters achivementListAddapters = new LatestPostAddapters(getActivity(), myPosts, latestItemListener);
+        FirestoreHelper.validatePosts(myPosts, posts -> {
 
-        mBinding.postRV.setAdapter(achivementListAddapters);
+            mBinding.nuberOfPostTV.setText(posts.size() + "");
 
-        Latest24HourAdapter latest24HourAdapter = new Latest24HourAdapter(getActivity(), pinnedPosts, hour24PostItemListener);
+            LatestPostAddapters achivementListAddapters = new LatestPostAddapters(getActivity(), posts, latestItemListener);
 
-        mBinding.taggedPostsRV.setAdapter(latest24HourAdapter);
+            mBinding.postRV.setAdapter(achivementListAddapters);
 
-        TagUserAdapters adapters = new TagUserAdapters(getActivity(), taggedUsers, onUserTappedCallback);
+        });
 
-        mBinding.tagUserRV.setAdapter(adapters);
+
+        FirestoreHelper.validatePosts(pinnedPosts, posts -> {
+
+            Latest24HourAdapter latest24HourAdapter = new Latest24HourAdapter(getActivity(), posts, hour24PostItemListener);
+
+            mBinding.taggedPostsRV.setAdapter(latest24HourAdapter);
+
+        });
+
+        validateTaggedUser();
     }
+
+    private void validateTaggedUser() {
+
+        getUsersList();
+    }
+
+    private void getUsersList() {
+
+        FirebaseFirestore.getInstance().collection(Constant.GetConstant().getUsersCollection())
+                .addSnapshotListener(getActivity(), (value, error) -> {
+
+                    for (DocumentSnapshot document : value.getDocuments()) {
+
+                        NormalUserModel user = document.toObject(NormalUserModel.class);
+
+                        if (user != null) {
+                            user.id = document.getId();
+
+                            for (int i = 0; i < taggedUsers.size(); i++) {
+
+                                try {
+                                    if (taggedUsers.get(i).getTagUserID().equalsIgnoreCase(user.id)) {
+
+                                        taggedUsers.get(i).user = user;
+                                    }
+                                } catch (Exception e) {
+
+
+                                }
+
+
+                            }
+                        }
+
+                    }
+
+                    List<PostsModel> tempList = new ArrayList<>();
+
+                    for (int i = 0; i < taggedUsers.size(); i++) {
+
+                        if (taggedUsers.get(i).user != null) {
+
+                            tempList.add(taggedUsers.get(i));
+
+                        }
+
+                    }
+
+                    taggedUsers = new ArrayList<>();
+
+                    taggedUsers.addAll(tempList);
+
+                    mBinding.tagLocationCountTV.setText(taggedUsers.size() + "");
+
+                    TagUserAdapters adapters = new TagUserAdapters(getActivity(), taggedUsers, onUserTappedCallback);
+
+                    mBinding.tagUserRV.setAdapter(adapters);
+
+                });
+
+    }
+
 
     TagUserAdapters.OnPostTappedCallback onUserTappedCallback = postsModel -> ShowDialog(postsModel, true);
 
@@ -741,10 +730,28 @@ public class BuisnessHomeFragment extends BaseFragment implements View.OnClickLi
 
     private void onUserPostTapped(PostsModel post) {
 
-        if (businessId != null)
-            startActivity(new Intent(getActivity(), UserFollowActivity.class)
-                    .putExtra("userId", post.getUserID()));
-        else
+        if (businessId != null) {
+
+            FirestoreHelper.checkUserDeleted(post.getUserID(), isDeleted -> {
+
+                if (!isDeleted) {
+
+                    startActivity(new Intent(getActivity(), UserFollowActivity.class)
+                            .putExtra("userId", post.getUserID()));
+
+                    return;
+
+                } else {
+
+                    if (getActivity() != null)
+
+                        FirestoreHelper.showUserDeletedAlert(getActivity());
+
+                }
+
+
+            });
+        } else
             VideoCommentsLikesActivity.startCommentsLikesActivity(post, getActivity());
     }
 
